@@ -138,4 +138,17 @@ class Customise
         return 'exportsales';
     }
     #endregion
+
+    #region[Demo data]
+    public static function hasProjects(): bool
+    {
+        return static::enabled(static::projects());
+    }
+
+    public static function projects(): string
+    {
+        return 'projects';
+    }
+    #endregion
+
 }

@@ -84,7 +84,7 @@ class Index extends Component
 
     #endregion
 
-    #region[task]
+    #region[Task]
 
     public $task_id = '';
     public $task_name = '';
@@ -129,7 +129,6 @@ class Index extends Component
         $this->task_id = $obj['id'] ?? '';
     }
 
-    #[On('refresh-Task')]
     public function refreshTask($v): void
     {
         $this->task_id = $v['id'];
@@ -165,18 +164,13 @@ class Index extends Component
 
     #endregion
 
-//    public function getRoute()
-//    {
-//        return route('activity');
-//    }
-
+    #region[Render]
     public function render()
     {
         $this->getTaskList();
         return view('livewire.task-manger.activity.index')->with([
             'list' => $this->getListForm->getList(Activities::class),
-            'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),
-
         ]);
     }
+    #endregion
 }

@@ -96,7 +96,6 @@ class Index extends Component
     }
     #endregion
 
-
     #region[image]
     public function save_image()
     {

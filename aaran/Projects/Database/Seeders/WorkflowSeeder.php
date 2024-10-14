@@ -1,10 +1,10 @@
 <?php
 
-namespace Aaran\Master\Database\Seeders;
+namespace Aaran\Projects\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class S201_CompanyDetailSeeder extends Seeder
+class WorkflowSeeder extends Seeder
 {
 
     public function run(): void
