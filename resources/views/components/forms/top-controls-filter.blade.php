@@ -15,4 +15,4 @@
         <x-button.new/>
     </div>
 </div>
-
+{{$slot}}
