@@ -5,6 +5,7 @@ namespace App\Livewire\Project\WorkFlow;
 use Aaran\Projects\Models\project;
 use Aaran\Projects\Models\Workflow;
 use App\Livewire\Trait\CommonTraitNew;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
@@ -18,6 +19,7 @@ class Index extends Component
     public $duration;
     public $status;
     public $notes;
+    public $projectId;
     #endregion
 
     #region[rules]
@@ -165,9 +167,9 @@ class Index extends Component
         $this->common->vname = '';
         $this->project_id = '';
         $this->project_name = '';
-        $this->estimated = '';
+        $this->estimated = Carbon::tomorrow()->format('Y-m-d');
         $this->duration = '';
-        $this->status = '';
+        $this->status = '1';
         $this->notes = '';
         $this->common->active_id = '1';
     }
@@ -176,9 +178,11 @@ class Index extends Component
     #region[Render]
     public function render()
     {
-        $this->getProjectList();
+    $this->getProjectList();
         return view('livewire.project.work-flow.index')->with([
-            'list' => $this->getListForm->getList(Workflow::class),
+            'list' => $this->getListForm->getList(Workflow::class,function ($query){
+                return $query->where('project_id',$this->projectId);
+            }),
         ]);
     }
     #endregion

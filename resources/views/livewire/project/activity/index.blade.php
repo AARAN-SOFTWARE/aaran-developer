@@ -1,11 +1,7 @@
 <div>
-
-    <x-slot name="header">Projects</x-slot>
-
+    <x-slot name="header">Project Activity</x-slot>
     <x-forms.m-panel>
-
         <x-forms.top-controls :show-filters="$showFilters"/>
-
         <div class="flex w-full">
 
             <x-table.caption :caption="'Project'">
@@ -22,7 +18,6 @@
                 <x-table.header-serial></x-table.header-serial>
                 <x-table.header-text sort-icon="none">Title</x-table.header-text>
                 <x-table.header-text sort-icon="none">Description</x-table.header-text>
-                <x-table.header-text sort-icon="none">Date</x-table.header-text>
                 <x-table.header-action/>
 
             </x-slot:table_header>
@@ -36,7 +31,6 @@
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
                         <x-table.cell-text>{{$row->vname}}</x-table.cell-text>
                         <x-table.cell-text>{!! $row->description!!}</x-table.cell-text>
-                        <x-table.cell-text>{{ date('d-m-Y',strtotime($row->vdate)) }}</x-table.cell-text>
                         <x-table.cell-action id="{{$row->id}}"/>
                     </x-table.row>
                 @endforeach
@@ -54,12 +48,9 @@
                 <span class="text-red-500 text-xs">{{'Need Project Title.'}}</span>
                 @enderror
 
-               <x-input.rich-text :placeholder="''" wire:model="description"/>
-
-                <x-input.floating wire:model="vdate" type="date" :label="'Description'"/>
+                <x-input.rich-text :placeholder="''" wire:model="description"/>
 
             </div>
         </x-forms.create>
     </x-forms.m-panel>
-
 </div>

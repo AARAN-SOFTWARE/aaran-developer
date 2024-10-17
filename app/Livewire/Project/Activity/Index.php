@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Livewire\Project\Project;
+namespace App\Livewire\Project\Activity;
 
-use Aaran\Projects\Models\project;
+use Aaran\Projects\Models\ProjectActivity;
+use Aaran\Projects\Models\ProjectTask;
 use App\Livewire\Trait\CommonTraitNew;
-use Illuminate\Support\Carbon;
 use Livewire\Component;
 
 class Index extends Component
 {
     use CommonTraitNew;
-
+    #region[Properties]
+    public $projectTaskData;
     public $description;
-    public $vdate;
-
+    #endregion
 
     #region[mount]
-    public function mount()
+    public function mount($id)
     {
-        $this->vdate=Carbon::now()->format('Y-m-d');
+        $this->projectTaskData=ProjectTask::find($id);
     }
     #endregion
 
@@ -49,22 +49,22 @@ class Index extends Component
     public function getSave(): void
     {
         if ($this->common->vid == '') {
-            $project = new project();
+            $projectActivity = new ProjectActivity();
             $extraFields = [
+                'project_task_id' => $this->projectTaskData->id,
                 'description' => $this->description,
-                'vdate' => $this->vdate,
 
             ];
-            $this->common->save($project, $extraFields);
+            $this->common->save($projectActivity, $extraFields);
             $this->clearFields();
             $message = "Saved";
         } else {
-            $project = project::find($this->common->vid);
+            $projectActivity = ProjectActivity::find($this->common->vid);
             $extraFields = [
+                'project_task_id' => $this->projectTaskData->id,
                 'description' => $this->description,
-                'vdate' => $this->vdate,
             ];
-            $this->common->edit($project, $extraFields);
+            $this->common->edit($projectActivity, $extraFields);
             $this->clearFields();
             $message = "Updated";
         }
@@ -76,13 +76,12 @@ class Index extends Component
     public function getObj($id)
     {
         if ($id) {
-            $project = project::find($id);
-            $this->common->vid = $project->id;
-            $this->common->vname = $project->vname;
-            $this->description = $project->description;
-            $this->vdate = $project->vdate;
-            $this->common->active_id = $project->active_id;
-            return $project;
+            $projectActivity = ProjectActivity::find($id);
+            $this->common->vid = $projectActivity->id;
+            $this->common->vname = $projectActivity->vname;
+            $this->description = $projectActivity->description;
+            $this->common->active_id = $projectActivity->active_id;
+            return $projectActivity;
         }
         return null;
     }
@@ -94,16 +93,16 @@ class Index extends Component
         $this->common->vid = '';
         $this->common->vname = '';
         $this->description = '';
-        $this->vdate = Carbon::now()->format('Y-m-d');
         $this->common->active_id = '1';
     }
     #endregion
 
     #region[Render]
+
     public function render()
     {
-        return view('livewire.project.project.index')->with([
-            'list' => $this->getListForm->getList(project::class),
+        return view('livewire.project.activity.index')->with([
+            'list' => $this->getListForm->getList(ProjectActivity::class),
         ]);
     }
     #endregion

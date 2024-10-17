@@ -2,21 +2,27 @@
 
 namespace App\Livewire\Project\ProjectTask;
 
+use Aaran\Projects\Models\ProjectImage;
 use Aaran\Projects\Models\ProjectTask;
 use Aaran\Projects\Models\Workflow;
 use App\Livewire\Trait\CommonTraitNew;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Index extends Component
 {
     use CommonTraitNew;
+    use WithFileUploads;
 
     #region[property]
     public $description;
     public $status;
     public $assignee;
+    public $images=[];
+    public $old_images=[];
     #endregion
 
     #region[rules]
@@ -59,6 +65,7 @@ class Index extends Component
                 'user_id' => auth()->id(),
             ];
             $this->common->save($ProjectTask, $extraFields);
+            $this->saveProjectImage($ProjectTask->id);
             $this->clearFields();
             $message = "Saved";
         } else {
@@ -71,12 +78,47 @@ class Index extends Component
                 'user_id' => auth()->id(),
             ];
             $this->common->edit($ProjectTask, $extraFields);
+            $this->saveProjectImage($ProjectTask->id);
             $this->clearFields();
             $message = "Updated";
         }
         $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
     }
 
+    public function saveProjectImage($id)
+    {
+        foreach ($this->old_images as $old_image) {
+           $old_image->save();
+        }
+
+        if ($this->images!=[]){
+            foreach ($this->images as $image){
+                ProjectImage::create([
+                    'project_task_id'=>$id,
+                    'image'=>$this->saveImage($image),
+                ]);
+            }
+        }
+    }
+
+    #endregion
+
+    #region[Image]
+    public function saveImage($image)
+    {
+        if ($image) {
+
+            $filename = $image->getClientOriginalName();
+
+
+            $image->storeAs('/images', $filename,'public');
+
+            return $filename;
+
+        } else {
+                return 'no image';
+        }
+    }
     #endregion
 
     #region[getObj]
@@ -92,12 +134,24 @@ class Index extends Component
             $this->status = $ProjectTask->status;
             $this->assignee = $ProjectTask->assignee;
             $this->common->active_id = $ProjectTask->active_id;
+            $this->old_images=ProjectImage::where('project_task_id',$id)->get();
             return $ProjectTask;
         }
         return null;
     }
 
     #endregion
+
+    public function DeleteImage($id)
+    {
+        if ($id){
+            $obj=ProjectImage::find($id);
+            if (Storage::disk('public')->exists(Storage::path('public/images/' . $obj->image))) {
+                Storage::disk('public')->delete(Storage::path('public/images/' .$obj->image));
+            }
+            $obj->delete();
+        }
+    }
 
     #region[WorkFlow]
 
@@ -170,6 +224,8 @@ class Index extends Component
         $this->status = '';
         $this->assignee = '';
         $this->common->active_id = '1';
+        $this->old_images=[];
+        $this->images=[];
     }
 
     #endregion

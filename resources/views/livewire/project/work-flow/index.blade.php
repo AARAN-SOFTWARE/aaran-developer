@@ -3,7 +3,21 @@
     <x-slot name="header">Work Flow</x-slot>
 
     <x-forms.m-panel>
-        <x-forms.top-controls :show-filters="$showFilters"/>
+        <x-forms.top-control-without-search>
+            <div class="w-full flex items-center space-x-2">
+
+                <x-input.search-bar wire:model.live="getListForm.searches"
+                                    wire:keydown.escape="$set('getListForm.searches', '')" label="Search"/>
+            </div>
+            <div class="w-full">
+                <x-input.model-select wire:model.live="projectId" :label="'Project'">
+                    <option value="">Choose...</option>
+                    @foreach($projectCollection as $project)
+                        <option value="{{$project->id}}">{{$project->vname}}</option>
+                    @endforeach
+                </x-input.model-select>
+            </div>
+        </x-forms.top-control-without-search>
 
         <div class="flex w-full ">
 
@@ -19,7 +33,6 @@
             <x-slot:table_header name="table_header" class="bg-green-100">
 
                 <x-table.header-serial></x-table.header-serial>
-                <x-table.header-text sort-icon="none">Projects</x-table.header-text>
                 <x-table.header-text sort-icon="none">Title</x-table.header-text>
                 <x-table.header-text sort-icon="none">Estimated</x-table.header-text>
                 <x-table.header-text sort-icon="none">Duration</x-table.header-text>
@@ -36,7 +49,6 @@
 
                     <x-table.row>
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
-                        <x-table.cell-text>{{$row->project->vname}}</x-table.cell-text>
                         <x-table.cell-text>{{$row->vname}}</x-table.cell-text>
                         <x-table.cell-text>{{$row->estimated}}</x-table.cell-text>
                         <x-table.cell-text>{{$row->duration}}</x-table.cell-text>
@@ -53,7 +65,10 @@
 
         <x-forms.create :id="$common->vid">
             <div class="space-y-4">
-
+                <x-input.floating wire:model="common.vname" :label="'Project Title'"/>
+                @error('common.vname')
+                <span class="text-red-500 text-xs">{{'The Project Title is Required.'}}</span>
+                @enderror
 
                 <x-dropdown.wrapper label="Project Name" type="projectTyped">
                     <div class="relative">
@@ -80,12 +95,9 @@
                     </div>
                 </x-dropdown.wrapper>
 
-                <x-input.floating wire:model="common.vname" :label="'Project Title'"/>
-                @error('common.vname')
-                <span class="text-red-500 text-xs">{{'The Project Title is Required.'}}</span>
-                @enderror
 
-                <x-input.floating wire:model="estimated" :label="'Estimate'"/>
+
+                <x-input.floating wire:model="estimated" type="date" :label="'Estimate'"/>
 
                 <x-input.floating wire:model="duration" :label="'Duration'"/>
 
