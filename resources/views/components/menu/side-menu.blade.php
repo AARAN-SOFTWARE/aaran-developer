@@ -26,26 +26,26 @@
             x-data="{selected:null}">
 
 
-            @if(Aaran\Aadmin\Src\Customise::hasCommon())
-                <x-menu.sub.common/>
-            @endif
+{{--            @if(Aaran\Aadmin\Src\Customise::hasCommon())--}}
+{{--                <x-menu.sub.common/>--}}
+{{--            @endif--}}
 
-            @if(Aaran\Aadmin\Src\Customise::hasMaster())
-                <x-menu.sub.master/>
-            @endif
+{{--            @if(Aaran\Aadmin\Src\Customise::hasMaster())--}}
+{{--                <x-menu.sub.master/>--}}
+{{--            @endif--}}
 
-            @if(Aaran\Aadmin\Src\Customise::hasEntries())
-                <x-menu.sub.entries/>
-            @endif
+{{--            @if(Aaran\Aadmin\Src\Customise::hasEntries())--}}
+{{--                <x-menu.sub.entries/>--}}
+{{--            @endif--}}
 
-            @if(Aaran\Aadmin\Src\Customise::hasTransaction())
-                <x-menu.sub.transaction/>
-                <x-menu.sub.reports/>
-            @endif
+{{--            @if(Aaran\Aadmin\Src\Customise::hasTransaction())--}}
+{{--                <x-menu.sub.transaction/>--}}
+{{--                <x-menu.sub.reports/>--}}
+{{--            @endif--}}
 
-            @if(Aaran\Aadmin\Src\Customise::hasDemodata())
-                <x-menu.sub.demodata/>
-            @endif
+{{--            @if(Aaran\Aadmin\Src\Customise::hasDemodata())--}}
+{{--                <x-menu.sub.demodata/>--}}
+{{--            @endif--}}
 
             @if(Aaran\Aadmin\Src\Customise::hasTaskManager())
                 <x-menu.sub.task/>
