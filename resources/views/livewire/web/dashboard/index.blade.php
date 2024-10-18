@@ -5,36 +5,24 @@
     <div class="flex-col flex gap-10 tracking-wider p-2">
 
         <!-- Col 1 ---------------------------------------------------------------------------------------------------->
-        <div class=" bg-[#F8F8FF] gap-10 flex sm:flex-row flex-col tracking-wider rounded-lg">
+        <div class="bg-[#F8F8FF] gap-10 flex sm:flex-row flex-col tracking-wider rounded-lg">
 
-            <x-web.dashboard.greetings/>
-
-            @if(session()->get('role_id')==1|| session()->get('role_id')==2|| session()->get('role_id')==3 )
-                {{--                @if(Aaran\Aadmin\Src\DbMigration::hasEntry())--}}
-                <x-web.dashboard.sales :transactions="$transactions"/>
-                <x-web.dashboard.cards :transactions="$transactions"/>
-            @endif
-
-        </div>
-
-        <!-- Col 2 ---------------------------------------------------------------------------------------------------->
-        <div class=" bg-[#F8F8FF] gap-10 flex sm:flex-row flex-col tracking-wider rounded-lg ">
-
-            <x-web.dashboard.customer :contacts="$contacts"/>
-            <x-web.dashboard.entries :entries="$entries"/>
-
-            <div class="sm:w-5/12 w-auto bg-white  rounded-lg flex-col flex h-[28rem] gap-y-5 hover:shadow-md gap-y">
+            <div class="w-3/4 bg-white  rounded-lg flex-col flex h-[26rem] gap-y-5 hover:shadow-md gap-y">
 
                 <div
                     class="w-full h-[4rem] py-3 border-b border-gray-200 inline-flex items-center justify-between px-8">
                          <span class="inline-flex items-center gap-2">
-                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4 text-cyan-600">
-                          <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z" clip-rule="evenodd" />
+                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                              class="size-4 text-cyan-600">
+                          <path fill-rule="evenodd"
+                                d="M1.5 6a2.25 2.25 0 0 1 2.25-2.25h16.5A2.25 2.25 0 0 1 22.5 6v12a2.25 2.25 0 0 1-2.25 2.25H3.75A2.25 2.25 0 0 1 1.5 18V6ZM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0 0 21 18v-1.94l-2.69-2.689a1.5 1.5 0 0 0-2.12 0l-.88.879.97.97a.75.75 0 1 1-1.06 1.06l-5.16-5.159a1.5 1.5 0 0 0-2.12 0L3 16.061Zm10.125-7.81a1.125 1.125 0 1 1 2.25 0 1.125 1.125 0 0 1-2.25 0Z"
+                                clip-rule="evenodd"/>
                         </svg>
 
                             <span class="font-semibold text-lg font-roboto">Recent Articles</span>
                         </span>
-                    <a href="{{ route('blog') }}" class="inline-flex items-center gap-1 text-gray-500 font-semibold hover:bg-cyan-50 hover:text-cyan-600 px-2 py-1 rounded-md transition-colors duration-300 ease-out">
+                    <a href="{{ route('blog') }}"
+                       class="inline-flex items-center gap-1 text-gray-500 font-semibold hover:bg-cyan-50 hover:text-cyan-600 px-2 py-1 rounded-md transition-colors duration-300 ease-out">
                         <span class="text-xs ">View All</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                              stroke-width="1.5"
@@ -109,6 +97,8 @@
                     @endforelse
                 </div>
             </div>
+
+            <x-web.dashboard.greetings/>
 
         </div>
     </div>

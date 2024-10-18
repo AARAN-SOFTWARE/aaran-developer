@@ -68,53 +68,16 @@
                     @empty
 
                         <x-slider.home-slider
-                            :bg_image="'/../../../images/home/bg_1.webp'"
-                            title="Best Online GST Billing Software in India"
-                            slogan="Create, manage & track invoices, e-invoices, and eWay bills, 100% safe, reliable, and secure..."
-
+                            :bg_image="'/../../../images/home/developer_1.webp'"
+                            title="Developer Series"
+                            slogan="Create, manage & track software..."
                         />
 
                         <x-slider.home-slider
-                            :bg_image="'/../../../images/home/bg_6.webp'"
-                            title="Only GST Billing Software You Need For Your Business"
-                            slogan="Streamline your invoicing with GST billing software, effortlessly create GST-compliant invoices in minutes..."
+                            :bg_image="'/../../../images/home/developer_2.jpeg'"
+                            title="Developer Series"
+                            slogan="Streamline your software development..."
                         />
-
-
-                        <x-slider.home-slider
-                            :bg_image="'/../../../images/home/bg_7.webp'"
-                            title="Book keeping and Transaction Recording"
-                            slogan="Categorized revenue, expenses, assets, liabilities, and other options.
-                            Further, reviewed in detail and adjusted according to the entries to ensure accuracy..."
-                            text_length="28"
-                        />
-
-                        <x-slider.home-slider
-                            :bg_image="'/../../../images/home/bg_2.webp'"
-                            title="Maintain Regular Communication"
-                            slogan="Keeping clients in the loop about their financial standing and any pertinent
-                            changes to tax laws or financial regulations is vital."
-                        />
-
-
-
-                        <x-slider.home-slider
-                            :bg_image="'/../../../images/home/bg_4.webp'"
-                            title="one-stop solution workflow management."
-                            slogan="Devote all your attention to a better customer experience for fast and secure information sharing"
-                        />
-
-                        <x-slider.home-slider
-                            :bg_image="'/../../../images/home/bg_3.webp'"
-                            title="Real-Time Financial Monitoring and Reporting"
-                            slogan="Helps to tracks the KPIs like revenue growth, gross margin, and net profit business
-                            owners to directly access the dashboard, monitor these metrics and make a sensible decision.."
-                            text_length="28"
-                        />
-
-
-
-
 
                     @endforelse
                 @endif
