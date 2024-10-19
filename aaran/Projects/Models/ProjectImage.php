@@ -13,4 +13,9 @@ class ProjectImage extends Model
     {
         return $this->belongsTo(ProjectTask::class);
     }
+
+    public static function image($id)
+    {
+        return self::where('project_task_id',$id)->get();
+    }
 }

@@ -23,6 +23,7 @@ class Index extends Component
     public $assignee;
     public $images=[];
     public $old_images=[];
+    public $workflowId = '';
     #endregion
 
     #region[rules]
@@ -211,9 +212,9 @@ class Index extends Component
             ->get() : WorkFlow::all();
     }
 
-#endregion
+    #endregion
 
-#region[Clear Fields]
+    #region[Clear Fields]
     public function clearFields(): void
     {
         $this->common->vid = '';
@@ -221,19 +222,34 @@ class Index extends Component
         $this->workflow_id = '';
         $this->workflow_name = '';
         $this->description = '';
-        $this->status = '';
+        $this->status = '1';
         $this->assignee = '';
         $this->common->active_id = '1';
         $this->old_images=[];
         $this->images=[];
     }
 
+
+    public function getTaskImage($id)
+    {
+        $data=ProjectImage::where('project_task_id',$id)->get();
+        $arrayImage=[];
+        foreach ($data as $key=>$value) {
+            $arrayImage[$key]['imgSrc']=URL(\Illuminate\Support\Facades\Storage::url('images/'.$value->image));
+        }
+        return $arrayImage;
+    }
     #endregion
     public function render()
     {
         $this->getWorkflowList();
         return view('livewire.project.project-task.index')->with([
-            'list' => $this->getListForm->getList(ProjectTask::class),
+            'list' => $this->getListForm->getList(ProjectTask::class,function ($q){
+                return $q->when($this->workflowId,function ($query){
+                    return $query->where('workflow_id',$this->workflowId);
+                });
+
+            }),
             'users' => DB::table('users')->select('users.*')->get(),
         ]);
     }

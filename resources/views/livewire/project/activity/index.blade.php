@@ -18,6 +18,8 @@
                 <x-table.header-serial></x-table.header-serial>
                 <x-table.header-text sort-icon="none">Title</x-table.header-text>
                 <x-table.header-text sort-icon="none">Description</x-table.header-text>
+                <x-table.header-text sort-icon="none">Start-End Date</x-table.header-text>
+                <x-table.header-text sort-icon="none">Total Duration</x-table.header-text>
                 <x-table.header-action/>
 
             </x-slot:table_header>
@@ -31,6 +33,8 @@
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
                         <x-table.cell-text>{{$row->vname}}</x-table.cell-text>
                         <x-table.cell-text>{!! $row->description!!}</x-table.cell-text>
+                        <x-table.cell-text>{{date('d-m-Y-H-i-s',strtotime($row->start_date))}} - {{date('d-m-Y-H-i-s',strtotime($row->end_date))}}</x-table.cell-text>
+                        <x-table.cell-text>{{$row->total_duration}}</x-table.cell-text>
                         <x-table.cell-action id="{{$row->id}}"/>
                     </x-table.row>
                 @endforeach
@@ -49,6 +53,19 @@
                 @enderror
 
                 <x-input.rich-text :placeholder="''" wire:model="description"/>
+
+                <x-input.floating wire:model.live="start_date" :label="'Start Date'" type="datetime-local"/>
+
+                <x-input.floating wire:model.live="end_date" :label="'End Date'" type="datetime-local"/>
+
+                <x-input.floating wire:model.live="total_duration" :label="'Total Duration'"/>
+
+                <x-input.model-select wire:model.live="status" :label="'Status'">
+                    <option value="">Choose...</option>
+                    @foreach(App\Enums\Status::cases() as $status)
+                        <option value="{{$status->value}}">{{$status->getName()}}</option>
+                    @endforeach
+                </x-input.model-select>
 
             </div>
         </x-forms.create>
