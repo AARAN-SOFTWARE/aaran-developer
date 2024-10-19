@@ -22,6 +22,12 @@ class Label extends Model
         return new LabelFactory();
     }
 
+    public static function search(string $searches)
+    {
+        return empty($searches) ? static::query()
+            : static::where('vname', 'like', '%' . $searches . '%');
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Common::class);

@@ -83,6 +83,7 @@ class Index extends Component
             $this->clearFields();
             $message = "Updated";
         }
+        $this->rerender();
         $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
     }
 
@@ -240,6 +241,11 @@ class Index extends Component
         return $arrayImage;
     }
     #endregion
+
+    public function rerender()
+    {
+        $this->render();
+    }
     public function render()
     {
         $this->getWorkflowList();

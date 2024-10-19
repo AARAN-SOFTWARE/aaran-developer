@@ -36,7 +36,6 @@
                                 :creator="\App\Models\User::getName($row->assignee)"
                                 :slides="\App\Livewire\Project\ProjectTask\Index::getTaskImage($row->id)"
                                 :read-moer="route('projectTasks.show',[$row->id])"
-                                :go-to="route('projectTasks.activity',[$row->id])"
                 />
             @endforeach
         </div>

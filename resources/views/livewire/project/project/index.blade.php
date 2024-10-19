@@ -43,8 +43,8 @@
 
             </x-slot:table_body>
 
-            <x-modal.delete/>
         </x-table.form>
+        <x-modal.delete/>
 
         <x-forms.create :id="$common->vid">
             <div class="space-y-4">
@@ -54,7 +54,7 @@
                 <span class="text-red-500 text-xs">{{'Need Project Title.'}}</span>
                 @enderror
 
-               <x-input.rich-text :placeholder="''" wire:model="description"/>
+                <x-input.rich-text :placeholder="''" wire:model="description"/>
 
                 <x-input.floating wire:model="vdate" type="date" :label="'Description'"/>
 
