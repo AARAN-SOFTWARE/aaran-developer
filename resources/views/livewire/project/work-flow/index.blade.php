@@ -26,66 +26,66 @@
             </x-table.caption>
         </div>
 
-        <!-- Table Header  ------------------------------------------------------------------------------------------>
+        <!-- Table Body  ------------------------------------------------------------------------------------------>
+        <div class="flex flex-col sm:grid grid-cols-4 w-full gap-10">
 
+            @foreach($list as $index=>$row)
 
+                <article
+                    class="flex rounded-xl max-w-sm flex-col overflow-hidden border border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                    <!--Card Content ---------------------------------------------------------------------------------->
 
-            <!-- Table Body  ------------------------------------------------------------------------------------------>
-            <div class="flex flex-col sm:grid grid-cols-4 w-full gap-10">
+                    <div class="flex flex-col gap-4 p-3">
 
-                @foreach($list as $index=>$row)
-
-                    <article
-                        class="flex rounded-xl max-w-sm flex-col overflow-hidden border border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                        <!--Card Content ---------------------------------------------------------------------------------->
-
-                        <div class="flex flex-col gap-4 p-6">
-                            <div class="flex justify-between">
-                                <div class="flex items-center gap-1 font-medium">
-                            <span class="text-xl">
-                                </span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                         class="size-6">
-                                        <path fill-rule="evenodd"
-                                              d="M14.615 1.595a.75.75 0 0 1 .359.852L12.982 9.75h7.268a.75.75 0 0 1 .548 1.262l-10.5 11.25a.75.75 0 0 1-1.272-.71l1.992-7.302H3.75a.75.75 0 0 1-.548-1.262l10.5-11.25a.75.75 0 0 1 .913-.143Z"
-                                              clip-rule="evenodd"/>
-                                    </svg>
-
-                                    <span>
-                                    {{ \App\Enums\Status::tryFrom($row->status)->getName() }}
-                                | {{$row->label->vname}} -> {{$row->model->vname}}
+                        <div class="flex justify-end">
+                            <span class="text-xs bg-amber-300 px-1 rounded">
+                                {{ \App\Enums\Status::tryFrom($row->status)->getName() }}
                             </span>
-                                </div>
+                        </div>
 
-                                <!--Edit & Delete ------------------------------------------------------------------------->
 
-                                <div class="flex justify-center items-center gap-4 self-center">
-                                    <x-button.edit wire:click="edit({{$row->id}})"/>
-                                    <x-button.delete wire:click="getDelete({{$row->id}})"/>
-                                </div>
+                        <div class="flex justify-between">
+                            <div class="flex items-center gap-1 font-medium">
+                            <span class="text-xl">
+                                {{$row->label->vname}} -> {{$row->model->vname}}
+                            </span>
                             </div>
 
-                            <!--Title & Body ------------------------------------------------------------------------------>
 
-                            <a href="{{route('projectTasks')}}" class="text-balance text-xl lg:text-2xl font-bold text-black dark:text-white"
-                                aria-describedby="tripDescription">{{$row->vname}}</a>
-
-                            <a href="{{route('projectTasks')}}" id="tripDescription" class="text-pretty text-sm mb-2">
-                                {{$row->duration}}
-                            </a>
-                            <a href="{{route('projectTasks')}}" id="tripDescription" class="text-pretty text-sm mb-2">
-                                Estimated :  {{date('d-m-Y',strtotime($row->estimated))}}
-                            </a>
-                            <a href="{{route('projectTasks')}}" id="tripDescription" class="text-pretty text-sm mb-2">
-                                {{$row->notes}}
-                            </a>
                         </div>
-                    </article>
-                @endforeach
 
-            </div>
+                        <!--Title & Body ------------------------------------------------------------------------------>
 
-            <x-modal.delete/>
+                        <a href="{{route('projectTasks')}}"
+                           class="text-balance text-xl lg:text-2xl font-bold text-black dark:text-white"
+                           aria-describedby="tripDescription">{{$row->vname}}</a>
+
+                        <a href="{{route('projectTasks')}}" id="tripDescription" class="text-pretty text-sm">
+                            {{$row->duration}}
+                        </a>
+                        <a href="{{route('projectTasks')}}" id="tripDescription" class="text-pretty text-sm">
+                            Estimated : {{date('d-m-Y',strtotime($row->estimated))}}
+                        </a>
+                        <a href="{{route('projectTasks')}}" id="tripDescription" class="text-pretty text-sm">
+                            {{$row->notes}}
+                        </a>
+                    </div>
+
+                    <div>
+                        <!--Edit & Delete ------------------------------------------------------------------------->
+                        <div class="flex justify-end p-2 items-center gap-4 self-center">
+                            <x-button.edit wire:click="edit({{$row->id}})"/>
+                            <x-button.delete wire:click="getDelete({{$row->id}})"/>
+                        </div>
+                    </div>
+
+                </article>
+
+            @endforeach
+
+        </div>
+
+        <x-modal.delete/>
 
         <x-forms.create :id="$common->vid">
             <div class="space-y-4">
@@ -112,7 +112,7 @@
                                         {{ $label->vname }}
                                     </x-dropdown.option>
                                 @empty
-                                    <x-dropdown.create wire:click.prevent="labelSave('{{$label_name}}')" label="Label" />
+                                    <x-dropdown.create wire:click.prevent="labelSave('{{$label_name}}')" label="Label"/>
                                 @endforelse
                             @endif
                         </x-dropdown.select>
@@ -136,7 +136,7 @@
                                         {{ $model->vname }}
                                     </x-dropdown.option>
                                 @empty
-                                    <x-dropdown.create wire:click.prevent="modelSave('{{$model_name}}')" label="Model" />
+                                    <x-dropdown.create wire:click.prevent="modelSave('{{$model_name}}')" label="Model"/>
                                 @endforelse
                             @endif
                         </x-dropdown.select>

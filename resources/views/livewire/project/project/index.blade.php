@@ -22,7 +22,7 @@
                 <x-table.header-serial></x-table.header-serial>
                 <x-table.header-text sort-icon="none">Title</x-table.header-text>
                 <x-table.header-text sort-icon="none">Description</x-table.header-text>
-                <x-table.header-text sort-icon="none">Date</x-table.header-text>
+                <x-table.header-text sort-icon="none">Started On</x-table.header-text>
                 <x-table.header-action/>
 
             </x-slot:table_header>
@@ -30,12 +30,12 @@
             <!-- Table Body  ------------------------------------------------------------------------------------------>
             <x-slot:table_body name="table_body">
 
-                @foreach($list as $index=>$row)
+                @foreach($list as $row)
 
                     <x-table.row>
 
                         <x-table.cell-text>
-                            <a href="{{route('projects.work-flows',[$row->id])}}">{{$index+1}}</a>
+                            <a href="{{route('projects.work-flows',[$row->id])}}">{{$row->id}}</a>
                         </x-table.cell-text>
 
                         <x-table.cell-text>
@@ -69,7 +69,7 @@
 
                 <x-input.rich-text :placeholder="''" wire:model="description"/>
 
-                <x-input.floating wire:model="vdate" type="date" :label="'Description'"/>
+                <x-input.floating wire:model="vdate" type="date" :label="'Started On'"/>
 
             </div>
         </x-forms.create>
