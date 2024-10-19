@@ -30,10 +30,6 @@
             <div class="w-full">
                 @if($projectTaskImage)
 
-{{--                    <img src="{{URL(\Illuminate\Support\Facades\Storage::url('images/'.$row->image))}}"--}}
-{{--                         class="w-full h-[45rem] object-cover rounded-lg"--}}
-{{--                         alt="view of a coastal Mediterranean village on a hillside, with small boats in the water."/>--}}
-
                         <div class="h-[40rem] md:h-[40rem] overflow-hidden">
                             <div x-data="{
             slides: [
@@ -116,6 +112,8 @@
             </div>
             <div class="text-xl text-justify ">{!! $projectTask->description !!}</div>
             <div class="border-b-2 border-gray-400">&nbsp;</div>
+            @livewire('project.activity.index',[$projectTask->id])
+        </div>
 
     </x-forms.m-panel>
 </div>

@@ -84,11 +84,6 @@
                 </svg>
                 Read More...
             </a>
-
-            <a href="{{$goTo}}" type="button" class="flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap bg-blue-700 px-4 py-2 text-center text-sm font-medium tracking-wide text-slate-100 transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:opacity-100 active:outline-offset-0 dark:bg-blue-600 dark:text-slate-100 dark:focus-visible:outline-blue-600 rounded-xl">
-                Go To Activity
-            </a>
-
         </div>
     </div>
 </article>

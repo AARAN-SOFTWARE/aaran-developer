@@ -12,6 +12,8 @@ return new class extends Migration
         Schema::create('workflows', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->references('id')->on('projects');
+            $table->foreignId('label_id')->references('id')->on('labels');
+            $table->foreignId('model_id')->references('id')->on('commons');
             $table->string('vname');
             $table->string('estimated')->nullable();
             $table->string('duration')->nullable();

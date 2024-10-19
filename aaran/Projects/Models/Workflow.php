@@ -2,6 +2,8 @@
 
 namespace Aaran\Projects\Models;
 
+use Aaran\Common\Models\Common;
+use Aaran\Common\Models\Label;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,4 +27,16 @@ class Workflow extends Model
     {
         return $this->belongsTo(Project::class);
     }
+
+    public function label():BelongsTo
+    {
+        return $this->belongsTo(Label::class);
+    }
+
+    public function model():BelongsTo
+    {
+        return $this->belongsTo(Common::class);
+    }
+
+
 }
