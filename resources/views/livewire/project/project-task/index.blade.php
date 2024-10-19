@@ -3,7 +3,21 @@
     <x-slot name="header">Project Task</x-slot>
 
     <x-forms.m-panel>
-        <x-forms.top-controls :show-filters="$showFilters"/>
+        <x-forms.top-control-without-search>
+            <div class="w-full flex items-center space-x-2">
+
+                <x-input.search-bar wire:model.live="getListForm.searches"
+                                    wire:keydown.escape="$set('getListForm.searches', '')" label="Search"/>
+            </div>
+            <div class="w-full">
+                <x-input.model-select wire:model.live="workflowId" :label="'Project'">
+                    <option value="">Choose...</option>
+                    @foreach($workflowCollection as $workFlow)
+                        <option value="{{$workFlow->id}}">{{$workFlow->vname}}</option>
+                    @endforeach
+                </x-input.model-select>
+            </div>
+        </x-forms.top-control-without-search>
 
         <div class="flex w-full ">
 
@@ -13,48 +27,21 @@
         </div>
 
         <!-- Table Header  ------------------------------------------------------------------------------------------>
+        <div class="flex flex-col sm:grid grid-cols-4 w-full gap-10">
+            @foreach($list as $index=>$row)
+                <x-cards.card-3 :id="$row->id"
+                                :title="$row->vname"
+                                :description="$row->description"
+                                :price="\App\Enums\Status::tryFrom($row->status)->getName()"
+                                :creator="\App\Models\User::getName($row->assignee)"
+                                :slides="\App\Livewire\Project\ProjectTask\Index::getTaskImage($row->id)"
+                                :read-moer="route('projectTasks.show',[$row->id])"
+                                :go-to="route('projectTasks.activity',[$row->id])"
+                />
+            @endforeach
+        </div>
 
-        <x-table.form>
 
-            <x-slot:table_header name="table_header" class="bg-green-100">
-
-                <x-table.header-serial></x-table.header-serial>
-                <x-table.header-text sort-icon="none">Work Flow</x-table.header-text>
-                <x-table.header-text sort-icon="none">Title</x-table.header-text>
-                <x-table.header-text sort-icon="none">Assignee</x-table.header-text>
-                <x-table.header-text sort-icon="none">Status</x-table.header-text>
-                <x-table.header-action/>
-
-            </x-slot:table_header>
-
-            <!-- Table Body  ------------------------------------------------------------------------------------------>
-            <x-slot:table_body name="table_body">
-
-                @foreach($list as $index=>$row)
-
-                    <x-table.row>
-                        <x-table.cell-text><a href="{{  route('projectTasks.activity',[$row->id])}}"> {{$index+1}}</a>
-                        </x-table.cell-text>
-                        <x-table.cell-text><a
-                                href="{{  route('projectTasks.activity',[$row->id])}}"> {{$row->Workflow->vname}}</a>
-                        </x-table.cell-text>
-                        <x-table.cell-text><a
-                                href="{{  route('projectTasks.activity',[$row->id])}}"> {{$row->vname}}</a>
-                        </x-table.cell-text>
-                        <x-table.cell-text><a
-                                href="{{  route('projectTasks.activity',[$row->id])}}"> {{\Aaran\Projects\Models\ProjectTask::assignee($row->assignee)}}</a>
-                        </x-table.cell-text>
-                        <x-table.cell-text><a
-                                href="{{  route('projectTasks.activity',[$row->id])}}"> {{ \App\Enums\Status::tryFrom($row->status)->getName() }}</a>
-                        </x-table.cell-text>
-                        <x-table.cell-action id="{{$row->id}}"/>
-                    </x-table.row>
-                @endforeach
-
-            </x-slot:table_body>
-
-            <x-modal.delete/>
-        </x-table.form>
 
         <x-forms.create :id="$common->vid">
             <div class="space-y-4">

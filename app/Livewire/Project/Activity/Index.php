@@ -4,6 +4,7 @@ namespace App\Livewire\Project\Activity;
 
 use Aaran\Projects\Models\ProjectActivity;
 use Aaran\Projects\Models\ProjectTask;
+use Aaran\Projects\Models\Workflow;
 use App\Livewire\Trait\CommonTraitNew;
 use Livewire\Component;
 
@@ -13,12 +14,17 @@ class Index extends Component
     #region[Properties]
     public $projectTaskData;
     public $description;
+    public $start_date;
+    public $end_date;
+    public $total_duration;
+    public $status;
     #endregion
 
     #region[mount]
     public function mount($id)
     {
         $this->projectTaskData=ProjectTask::find($id);
+        $this->status=$this->projectTaskData->status;
     }
     #endregion
 
@@ -53,9 +59,12 @@ class Index extends Component
             $extraFields = [
                 'project_task_id' => $this->projectTaskData->id,
                 'description' => $this->description,
-
+                'start_date' => $this->start_date,
+                'end_date' => $this->end_date,
+                'total_duration' => $this->total_duration,
             ];
             $this->common->save($projectActivity, $extraFields);
+            $this->updateTaskStatus();
             $this->clearFields();
             $message = "Saved";
         } else {
@@ -63,12 +72,30 @@ class Index extends Component
             $extraFields = [
                 'project_task_id' => $this->projectTaskData->id,
                 'description' => $this->description,
+                'start_date' => $this->start_date,
+                'end_date' => $this->end_date,
+                'total_duration' => $this->total_duration,
             ];
             $this->common->edit($projectActivity, $extraFields);
+            $this->updateTaskStatus();
             $this->clearFields();
             $message = "Updated";
         }
         $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
+    }
+
+    public function updateTaskStatus()
+    {
+        if ($this->status){
+           $this->projectTaskData->status = $this->status;
+           $this->projectTaskData->save();
+           if ($this->status==6){
+               $obj=Workflow::where('id',$this->projectTaskData->workflow_id)->first();
+               $obj->status=7;
+               $obj->active_id=false;
+               $obj->save();
+           }
+        }
     }
     #endregion
 
@@ -80,6 +107,9 @@ class Index extends Component
             $this->common->vid = $projectActivity->id;
             $this->common->vname = $projectActivity->vname;
             $this->description = $projectActivity->description;
+            $this->start_date = $projectActivity->start_date;
+            $this->end_date = $projectActivity->end_date;
+            $this->total_duration = $projectActivity->total_duration;
             $this->common->active_id = $projectActivity->active_id;
             return $projectActivity;
         }
@@ -93,6 +123,9 @@ class Index extends Component
         $this->common->vid = '';
         $this->common->vname = '';
         $this->description = '';
+        $this->start_date = '';
+        $this->end_date = '';
+        $this->total_duration = '';
         $this->common->active_id = '1';
     }
     #endregion
@@ -102,7 +135,9 @@ class Index extends Component
     public function render()
     {
         return view('livewire.project.activity.index')->with([
-            'list' => $this->getListForm->getList(ProjectActivity::class),
+            'list' => $this->getListForm->getList(ProjectActivity::class,function ($q){
+                return $q->where('project_task_id',$this->projectTaskData->id);
+            }),
         ]);
     }
     #endregion

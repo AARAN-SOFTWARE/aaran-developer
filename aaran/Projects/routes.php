@@ -9,5 +9,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('workFlows', App\Livewire\Project\WorkFlow\Index::class)->name('workFlows');
     Route::get('projectTasks', App\Livewire\Project\ProjectTask\Index::class)->name('projectTasks');
     Route::get('projectTasks/{id}/activity', App\Livewire\Project\Activity\Index::class)->name('projectTasks.activity');
+    Route::get('projectTasks/{id}/show', App\Livewire\Project\ProjectTask\Show::class)->name('projectTasks.show');
 
 });

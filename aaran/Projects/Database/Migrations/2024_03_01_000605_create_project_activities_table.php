@@ -14,6 +14,9 @@ return new class extends Migration
             $table->foreignId('project_task_id')->references('id')->on('project_tasks')->onDelete('cascade');
             $table->string('vname');
             $table->longText('description')->nullable();
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
+            $table->string('total_duration')->nullable();
             $table->decimal('active_id',3);
             $table->timestamps();
         });
