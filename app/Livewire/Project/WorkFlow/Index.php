@@ -21,7 +21,7 @@ class Index extends Component
     public $duration;
     public $status;
     public $notes;
-    public $projectId='';
+    public $projectId = '';
     #endregion
 
     #region[rules]
@@ -53,8 +53,8 @@ class Index extends Component
             $workflow = new Workflow();
             $extraFields = [
                 'project_id' => $this->project_id,
-                'label_id'=>$this->label_id,
-                'model_id'=>$this->model_id,
+                'label_id' => $this->label_id,
+                'model_id' => $this->model_id,
                 'estimated' => $this->estimated,
                 'duration' => $this->duration,
                 'status' => $this->status ?: 1,
@@ -68,8 +68,8 @@ class Index extends Component
             $workflow = Workflow::find($this->common->vid);
             $extraFields = [
                 'project_id' => $this->project_id,
-                'label_id'=>$this->label_id,
-                'model_id'=>$this->model_id,
+                'label_id' => $this->label_id,
+                'model_id' => $this->model_id,
                 'estimated' => $this->estimated,
                 'duration' => $this->duration,
                 'status' => $this->status,
@@ -177,10 +177,10 @@ class Index extends Component
         $this->common->vname = '';
         $this->project_id = '';
         $this->project_name = '';
-        $this->label_name='';
-        $this->label_id='';
-        $this->model_id='';
-        $this->model_name='';
+        $this->label_name = '';
+        $this->label_id = '';
+        $this->model_id = '';
+        $this->model_name = '';
         $this->estimated = Carbon::tomorrow()->format('Y-m-d');
         $this->duration = '';
         $this->status = '1';
@@ -244,7 +244,7 @@ class Index extends Component
     {
         $obj = Label::create([
             'vname' => $name,
-            'cols'=>1,
+            'cols' => 1,
             'active_id' => '1'
         ]);
         $v = ['name' => $name, 'id' => $obj->id];
@@ -330,15 +330,24 @@ class Index extends Component
     #endregion
 
     #region[Render]
+
+    public function mount($id = null): void
+    {
+        $this->projectId = $id;
+    }
+
+
     public function render()
     {
         $this->getLabelList();
         $this->getModelList();
         $this->getProjectList();
+
         return view('livewire.project.work-flow.index')->with([
+
             'list' => $this->getListForm->getList(Workflow::class, function ($query) {
-                return $query->when($this->projectId,function ($q){
-                 return $q->where('project_id', $this->projectId);
+                return $query->when($this->projectId, function ($q) {
+                    return $q->where('project_id', $this->projectId);
                 });
 
             }),

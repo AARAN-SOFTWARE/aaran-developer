@@ -33,10 +33,23 @@
                 @foreach($list as $index=>$row)
 
                     <x-table.row>
-                        <x-table.cell-text>{{$index+1}}</x-table.cell-text>
-                        <x-table.cell-text>{{$row->vname}}</x-table.cell-text>
-                        <x-table.cell-text>{!! $row->description!!}</x-table.cell-text>
-                        <x-table.cell-text>{{ date('d-m-Y',strtotime($row->vdate)) }}</x-table.cell-text>
+
+                        <x-table.cell-text>
+                            <a href="{{route('projects.work-flows',[$row->id])}}">{{$index+1}}</a>
+                        </x-table.cell-text>
+
+                        <x-table.cell-text>
+                            <a href="{{route('projects.work-flows',[$row->id])}}">{{$row->vname}}</a>
+                        </x-table.cell-text>
+
+                        <x-table.cell-text>
+                            <a href="{{route('projects.work-flows',[$row->id])}}">{!! $row->description!!}</a>
+                        </x-table.cell-text>
+
+                        <x-table.cell-text>
+                            <a href="{{route('projects.work-flows',[$row->id])}}">{{ date('d-m-Y',strtotime($row->vdate)) }}</a>
+                        </x-table.cell-text>
+
                         <x-table.cell-action id="{{$row->id}}"/>
                     </x-table.row>
                 @endforeach
