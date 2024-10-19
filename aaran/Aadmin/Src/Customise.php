@@ -151,4 +151,16 @@ class Customise
     }
     #endregion
 
+    #region[Contact]
+    public static function hasContact(): bool
+    {
+        return static::enabled(static::contacts());
+    }
+
+    public static function contacts(): string
+    {
+        return 'contacts';
+    }
+    #endregion
+
 }

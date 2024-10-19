@@ -52,7 +52,7 @@
                     @enderror
                 </div>
 
-                <x-dropdown.wrapper label="WorkFlow Name" type="workflowTyped">
+                <x-dropdown.wrapper label="WorkFlow" type="workflowTyped">
                     <div class="relative">
 
                         <x-dropdown.input label="WorkFlow Name*" id="workflow_name"

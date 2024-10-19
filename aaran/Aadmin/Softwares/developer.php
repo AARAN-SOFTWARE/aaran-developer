@@ -17,6 +17,7 @@ return [
         Customise::taskManager(),
         Customise::exportsales(),
         Customise::projects(),
+        Customise::contacts(),
     ],
     'SalesEntry' => [
         SaleEntry::order(),

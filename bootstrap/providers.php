@@ -21,4 +21,6 @@ return [
 
     Aaran\Projects\Providers\ProjectServiceProvider::class,
 
+    Aaran\Contact\Providers\ContactServiceProvider::class,
+
 ];

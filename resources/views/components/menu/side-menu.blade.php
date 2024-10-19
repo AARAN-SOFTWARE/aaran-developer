@@ -55,6 +55,12 @@
                 <x-menu.sub.projects/>
             @endif
 
+            @if(Aaran\Aadmin\Src\Customise::hasContact())
+                <x-menu.sub.contact/>
+            @endif
+
+
+
 
             <x-menu.sub.logout/>
 
