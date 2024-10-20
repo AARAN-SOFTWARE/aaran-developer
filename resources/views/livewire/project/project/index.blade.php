@@ -38,12 +38,12 @@
                             <a href="{{route('projects.work-flows',[$row->id])}}">{{$row->id}}</a>
                         </x-table.cell-text>
 
-                        <x-table.cell-text>
+                        <x-table.cell-text left>
                             <a href="{{route('projects.work-flows',[$row->id])}}">{{$row->vname}}</a>
                         </x-table.cell-text>
 
-                        <x-table.cell-text>
-                            <a href="{{route('projects.work-flows',[$row->id])}}">{!! $row->description!!}</a>
+                        <x-table.cell-text left>
+                            <a class="line-clamp-3" href="{{route('projects.work-flows',[$row->id])}}">{!! $row->description!!}</a>
                         </x-table.cell-text>
 
                         <x-table.cell-text>

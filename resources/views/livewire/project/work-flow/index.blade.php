@@ -35,47 +35,32 @@
                     class="flex rounded-xl max-w-sm flex-col overflow-hidden border border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
                     <!--Card Content ---------------------------------------------------------------------------------->
 
-                    <div class="flex flex-col gap-4 p-3">
+                    <div class="flex flex-col gap-2 p-3">
 
-                        <div class="flex justify-end">
-                            <span class="text-xs bg-amber-300 px-1 rounded">
-                                {{ \App\Enums\Status::tryFrom($row->status)->getName() }}
-                            </span>
-                        </div>
-
-
-                        <div class="flex justify-between">
-                            <div class="flex items-center gap-1 font-medium">
+                        <div class="flex items-center gap-1 font-medium">
                             <span class="text-xl">
                                 {{$row->label->vname}} -> {{$row->model->vname}}
                             </span>
-                            </div>
-
-
                         </div>
 
                         <!--Title & Body ------------------------------------------------------------------------------>
 
                         <a href="{{route('projectTasks')}}"
-                           class="text-balance text-xl lg:text-2xl font-bold text-black dark:text-white"
-                           aria-describedby="tripDescription">{{$row->vname}}</a>
+                           class="text-balance font-bold text-black ">
+                            {{$row->vname}}
+                        </a>
 
-                        <a href="{{route('projectTasks')}}" id="tripDescription" class="text-pretty text-sm">
-                            {{$row->duration}}
-                        </a>
-                        <a href="{{route('projectTasks')}}" id="tripDescription" class="text-pretty text-sm">
-                            Estimated : {{date('d-m-Y',strtotime($row->estimated))}}
-                        </a>
-                        <a href="{{route('projectTasks')}}" id="tripDescription" class="text-pretty text-sm">
+                        <a href="{{route('projectTasks')}}"
+                           class="text-xs font-bold text-black ">
                             {{$row->notes}}
                         </a>
-                    </div>
 
-                    <div>
-                        <!--Edit & Delete ------------------------------------------------------------------------->
-                        <div class="flex justify-end p-2 items-center gap-4 self-center">
-                            <x-button.edit wire:click="edit({{$row->id}})"/>
-                            <x-button.delete wire:click="getDelete({{$row->id}})"/>
+                        <div>
+                            <!--Edit & Delete ------------------------------------------------------------------------->
+                            <div class="flex justify-end items-center gap-4 self-center">
+                                <x-button.edit wire:click="edit({{$row->id}})"/>
+                                <x-button.delete wire:click="getDelete({{$row->id}})"/>
+                            </div>
                         </div>
                     </div>
 
@@ -89,17 +74,47 @@
 
         <x-forms.create :id="$common->vid">
             <div class="space-y-4">
-                <x-input.floating wire:model="common.vname" :label="'Project Title'"/>
+
+
+                <!-- Name -------------------------------------------------------------------------------------------->
+                <x-input.floating wire:model="common.vname" :label="'Work flow Name'"/>
+
                 @error('common.vname')
                 <span class="text-red-500 text-xs">{{'The Project Title is Required.'}}</span>
                 @enderror
 
+                <!-- Project ------------------------------------------------------------------------------------------>
 
-                <!-- Label ----------------------------------------------------------------------------->
+                <x-dropdown.wrapper>
+                    <div class="relative">
 
-                <x-dropdown.wrapper label="Folder" type="labelTyped">
+                        <x-dropdown.input label="Project" id="project_name"
+                                          wire:model.live="project_name"
+                                          wire:keydown.arrow-up="decrementProject"
+                                          wire:keydown.arrow-down="incrementProject"
+                                          wire:keydown.enter="enterProject"/>
+                        <x-dropdown.select>
+
+                            @if($projectCollection)
+                                @forelse ($projectCollection as $i => $project)
+                                    <x-dropdown.option highlight="{{ $highlightProject === $i }}"
+                                                       wire:click.prevent="setProject('{{$project->vname}}','{{$project->id}}')">
+                                        {{ $project->vname }}
+                                    </x-dropdown.option>
+                                @empty
+                                    <x-dropdown.new href="{{ route('projects') }}" label="Project"/>
+                                @endforelse
+                            @endif
+
+                        </x-dropdown.select>
+                    </div>
+                </x-dropdown.wrapper>
+
+                <!-- Label -------------------------------------------------------------------------------------------->
+
+                <x-dropdown.wrapper>
                     <div class="relative ">
-                        <x-dropdown.input label="Label" id="label_name"
+                        <x-dropdown.input label="Group" id="label_name"
                                           wire:model.live="label_name"
                                           wire:keydown.arrow-up="decrementLabel"
                                           wire:keydown.arrow-down="incrementLabel"
@@ -119,7 +134,7 @@
                     </div>
                 </x-dropdown.wrapper>
 
-                <!-- Model ----------------------------------------------------------------------------->
+                <!-- Model -------------------------------------------------------------------------------------------->
 
                 <x-dropdown.wrapper label="Model Name" type="modelTyped">
                     <div class="relative ">
@@ -143,45 +158,7 @@
                     </div>
                 </x-dropdown.wrapper>
 
-
-                <x-dropdown.wrapper label="Project Name" type="projectTyped">
-                    <div class="relative">
-
-                        <x-dropdown.input label="Project Name*" id="project_name"
-                                          wire:model.live="project_name"
-                                          wire:keydown.arrow-up="decrementProject"
-                                          wire:keydown.arrow-down="incrementProject"
-                                          wire:keydown.enter="enterProject"/>
-                        <x-dropdown.select>
-
-                            @if($projectCollection)
-                                @forelse ($projectCollection as $i => $project)
-                                    <x-dropdown.option highlight="{{ $highlightProject === $i }}"
-                                                       wire:click.prevent="setProject('{{$project->vname}}','{{$project->id}}')">
-                                        {{ $project->vname }}
-                                    </x-dropdown.option>
-                                @empty
-                                    <x-dropdown.new href="{{ route('projects') }}" label="Project"/>
-                                @endforelse
-                            @endif
-
-                        </x-dropdown.select>
-                    </div>
-                </x-dropdown.wrapper>
-
-                <x-input.floating wire:model="estimated" type="date" :label="'Estimate'"/>
-
-                <x-input.floating wire:model="duration" :label="'Duration'"/>
-
-                <x-input.model-select wire:model="status" :label="'Status'">
-                    <option value="">Choose...</option>
-                    @foreach(App\Enums\Status::cases() as $status)
-                        <option value="{{$status->value}}">{{$status->getName()}}</option>
-                    @endforeach
-                </x-input.model-select>
-
-                <x-input.floating wire:model="notes" :label="'Notes'"/>
-
+                <x-input.textarea wire:model="notes" :label="'Notes'"/>
             </div>
         </x-forms.create>
 
