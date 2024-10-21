@@ -12,8 +12,10 @@
                 <x-cards.card-3 :id="$row->id"
                                 :title="$row->vname"
                                 :description="$row->body"
-                                :price="\App\Enums\Status::tryFrom($row->status)->getName()"
-                                :creator="\App\Models\User::getName($row->allocated)"
+                                :status="\App\Enums\Status::tryFrom($row->status)->getName()"
+                                :priority="\App\Enums\Priority::tryFrom($row->priority)->getName()"
+                                :allocated="\App\Models\User::getName($row->allocated)"
+                                :createdBy="\App\Models\User::getName($row->user_id)"
                                 :slides="\App\Livewire\TaskManger\AllTask\Index::getTaskImage($row->id)"
                                 :read-moer="route('task.upsert',[$row->id])"
                 />
@@ -48,6 +50,13 @@
                     @endforeach
                 </x-input.model-select>
 
+                <x-input.model-select wire:model="priority" :label="'Priority'">
+                    <option value="">Choose...</option>
+                    @foreach(App\Enums\Priority::cases() as $priority)
+                        <option value="{{$priority->value}}">{{$priority->getName()}}</option>
+                    @endforeach
+                </x-input.model-select>
+
                 <x-input.model-select wire:model="status" :label="'Status'">
                     <option value="">Choose...</option>
                     @foreach(App\Enums\Status::cases() as $status)
@@ -55,12 +64,7 @@
                     @endforeach
                 </x-input.model-select>
 
-                <x-input.model-select wire:model="priority" :label="'Priority'">
-                    <option value="">Choose...</option>
-                    @foreach(App\Enums\Priority::cases() as $priority)
-                        <option value="{{$priority->value}}">{{$priority->getName()}}</option>
-                    @endforeach
-                </x-input.model-select>
+
 
                 <!-- Image  ----------------------------------------------------------------------------------------------->
 

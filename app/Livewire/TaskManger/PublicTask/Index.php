@@ -160,13 +160,15 @@ class Index extends Component
 
     public function getRoute()
     {
-        return route('task');
+        return route('publicTask');
     }
 
     public function render()
     {
         return view('livewire.task-manger.public-task.index')->with([
-            'list' => $this->getListForm->getList(Task::class),
+            'list' => $this->getListForm->getList(Task::class,function ($q){
+                return $q->where('allocated','=','2');
+            }),
             'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),
         ]);
     }

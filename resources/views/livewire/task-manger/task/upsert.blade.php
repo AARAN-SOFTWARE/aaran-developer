@@ -99,10 +99,11 @@
             </div>
 
             <div>
-                <div class="flex justify-between items-center gap-1 font-medium">
+                <div class="flex  items-center gap-1 font-medium">
                     <div>Created By : {{$taskData->user->name}} | {{$taskData->created_at->diffForHumans()}}</div>
-                    <div>Allocated To : {{\Aaran\Taskmanager\Models\Task::allocate($taskData->allocated)}}</div>
-                    <div class="bg-amber-300 px-2 rounded-full py-0.5">{{ \App\Enums\Status::tryFrom($taskData->status)->getName() }}</div>
+                    <div>| Allocated To : {{\Aaran\Taskmanager\Models\Task::allocate($taskData->allocated)}}</div>
+                    <div>| Priority To :</div><div class="bg-yellow-200/50 text-yellow-600 px-2 rounded-full py-0.5">{{ \App\Enums\Priority::tryFrom($taskData->priority)->getName() }}</div>
+                    <div>| Status :</div><div class="bg-sky-200/50 text-sky-600 px-2 rounded-full py-0.5">{{ \App\Enums\Status::tryFrom($taskData->status)->getName() }}</div>
                 </div>
             </div>
 

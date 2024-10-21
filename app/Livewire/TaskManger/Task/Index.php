@@ -160,7 +160,7 @@ class Index extends Component
 
     public function getRoute()
     {
-        return route('task');
+        return route('myTask');
     }
 
     public function render()
