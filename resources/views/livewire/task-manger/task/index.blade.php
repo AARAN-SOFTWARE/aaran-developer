@@ -27,53 +27,49 @@
 
                     <!--Card Content ---------------------------------------------------------------------------------->
 
-                    <div class="flex flex-col gap-4 p-6">
-                        <div class="flex justify-between">
-                            <div class="flex items-center gap-1 font-medium">
-                            <span class="text-xl">
-                            {{$row->id}}.
-                                </span>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                     class="size-6">
-                                    <path fill-rule="evenodd"
-                                          d="M14.615 1.595a.75.75 0 0 1 .359.852L12.982 9.75h7.268a.75.75 0 0 1 .548 1.262l-10.5
-                                          11.25a.75.75 0 0 1-1.272-.71l1.992-7.302H3.75a.75.75 0 0 1-.548-1.262l10.5-11.25a.75.75 0 0 1 .913-.143Z"
-                                          clip-rule="evenodd"/>
-                                </svg>
+                    <div class="flex flex-col gap-4 p-4">
+                        <div class="flex justify-between w-full items-center gap-1 font-medium">
 
-                                <span>
-                                    {{ \App\Enums\Status::tryFrom($row->status)->getName() }}
-                                | {{\Aaran\Taskmanager\Models\Task::allocate($row->allocated)}}
-                            </span>
+                            <div class="text-xl">
+                                {{$row->id}}.
+                            </div>
+                            <div>
+                                {{\Aaran\Taskmanager\Models\Task::allocate($row->allocated)}}
+                                |
+                                <span class="bg-amber-300 rounded-full px-2 py-0.5">
+                                   {{ \App\Enums\Status::tryFrom($row->status)->getName() }}
+                               </span>
                             </div>
 
-                            <!--Edit & Delete ------------------------------------------------------------------------->
+                        </div>
 
+                        <!--Title & Body ------------------------------------------------------------------------------>
+
+                        <h3 class="text-balance text-xl lg:text-2xl font-bold text-black dark:text-white">
+                            {{\Illuminate\Support\Str::words($row->vname,5)}}
+                        </h3>
+
+                        <div class="text-pretty text-sm line-clamp-2 mb-2">
+                            {!! $row->body !!}
+                        </div>
+
+                        <div class="flex justify-between items-center gap-4">
+                            <a href="{{route('task.upsert',[$row->id])}}">
+                                <button type="button"
+                                        class="cursor-pointer whitespace-nowrap bg-blue-700 px-4 py-2 text-center mt-2
+                            text-sm font-medium tracking-wide text-slate-100 transition hover:opacity-75
+                            focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
+                            focus-visible:outline-blue-700 active:opacity-100 active:outline-offset-0
+                            dark:bg-blue-600 dark:text-slate-100 dark:focus-visible:outline-blue-600 rounded-xl">Read
+                                    More
+                                </button>
+                            </a>
+                            <!--Edit & Delete ------------------------------------------------------------------------->
                             <div class="flex justify-center items-center gap-4 self-center">
                                 <x-button.edit wire:click="edit({{$row->id}})"/>
                                 <x-button.delete wire:click="getDelete({{$row->id}})"/>
                             </div>
                         </div>
-
-                        <!--Title & Body ------------------------------------------------------------------------------>
-
-                        <h3 class="text-balance text-xl lg:text-2xl font-bold text-black dark:text-white"
-                            aria-describedby="tripDescription">{{\Illuminate\Support\Str::words($row->vname,2)}}</h3>
-
-                        <p id="tripDescription" class="text-pretty text-sm mb-2">
-                            {!!\Illuminate\Support\Str::words( $row->body,25 )!!}
-                        </p>
-
-                        <a href="{{route('task.upsert',[$row->id])}}">
-                            <button type="button"
-                                    class="cursor-pointer whitespace-nowrap bg-blue-700 px-4 py-2 text-center mt-2
-                            text-sm font-medium tracking-wide text-slate-100 transition hover:opacity-75
-                            focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2
-                            focus-visible:outline-blue-700 active:opacity-100 active:outline-offset-0
-                            dark:bg-blue-600 dark:text-slate-100 dark:focus-visible:outline-blue-600 rounded-xl">Read
-                                More
-                            </button>
-                        </a>
 
                     </div>
                 </article>
