@@ -11,12 +11,9 @@ enum Status : int
     case ARCHIVED = 5;
     case FINISHED = 6;
     case CLOSED = 7;
-    case IMPORTANT = 8;
-    case PRIORITY = 9;
-    case TOPMOST = 10;
-    case NOTACTIVE = 11;
-    case RECEIVED = 12;
-    case ADMINCLOSED = 100;
+    case NOTACTIVE = 8;
+    case RECEIVED = 9;
+    case ADMINCLOSED = 10;
 
     public function getName(): string
     {
@@ -28,9 +25,6 @@ enum Status : int
             self::ARCHIVED => 'Archived',
             self::FINISHED => 'Finished',
             self::CLOSED => 'Closed',
-            self::IMPORTANT => 'Important',
-            self::PRIORITY => 'Priority',
-            self::TOPMOST => 'Topmost',
             self::NOTACTIVE => 'NotActive',
             self::RECEIVED => 'Received',
             self::ADMINCLOSED => 'Sundar Closed',
@@ -47,9 +41,6 @@ enum Status : int
             self::ARCHIVED => 'text-red-200 bg-slate-300',
             self::FINISHED => 'text-white bg-green-500',
             self::CLOSED => 'text-black bg-green-400',
-            self::IMPORTANT => 'text-yellow-700 bg-yellow-500',
-            self::PRIORITY => 'text-white bg-yellow-600',
-            self::TOPMOST => 'text-red-700 bg-red-300',
             self::NOTACTIVE => 'text-zinc-200 bg-red-700',
             self::RECEIVED => 'text-white bg-green-600',
             self::ADMINCLOSED => 'text-blue-100 bg-purple-100',

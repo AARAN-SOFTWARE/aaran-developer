@@ -13,14 +13,13 @@ return new class extends Migration {
                 $table->id();
                 $table->string('vname');
                 $table->longText('body');
-                $table->longText('image')->nullable();
                 $table->foreignId('allocated')->references('id')->on('users')->onDelete('cascade');
-                $table->string('status', 3)->nullable();
                 $table->string('priority', 3)->nullable();
-                $table->string('active_id', 3)->nullable();
-                $table->foreignId('user_id')->references('id')->on('users');
+                $table->string('status', 3)->nullable();
                 $table->string('verified')->nullable();
                 $table->string('verified_on')->nullable();
+                $table->foreignId('user_id')->references('id')->on('users');
+                $table->string('active_id', 3)->nullable();
                 $table->timestamps();
             });
         }

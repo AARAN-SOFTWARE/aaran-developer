@@ -1,103 +1,64 @@
 <div>
-
-    <x-slot name="header">Project Task</x-slot>
+    <x-slot name="header">Task</x-slot>
 
     <x-forms.m-panel>
 
-        <x-forms.top-control-without-search>
+        <!--Top Controls ---------------------------------------------------------------------------------------------->
 
-            <div class="w-full flex items-center space-x-2">
+        <x-forms.top-controls :show-filters="$showFilters"/>
 
-                <x-input.search-bar wire:model.live="getListForm.searches"
-                                    wire:keydown.escape="$set('getListForm.searches', '')" label="Search"/>
-            </div>
-
-            <div class="w-full">
-                <x-input.model-select wire:model.live="workflowId" :label="'Project'">
-                    <option value="">Choose...</option>
-                    @foreach($workflowCollection as $workFlow)
-                        <option value="{{$workFlow->id}}">{{$workFlow->vname}}</option>
-                    @endforeach
-                </x-input.model-select>
-            </div>
-        </x-forms.top-control-without-search>
-
-        <div class="flex w-full ">
-
-            <x-table.caption :caption="'Project Task'">
-                {{$list->count()}}
-            </x-table.caption>
-        </div>
-
-        <!-- Table Header  ------------------------------------------------------------------------------------------>
-
-        <div class="flex flex-col sm:grid grid-cols-4 w-full gap-10 capitalize">
+        <div class="flex flex-col sm:grid grid-cols-4 w-full gap-10">
             @foreach($list as $index=>$row)
                 <x-cards.card-3 :id="$row->id"
                                 :title="$row->vname"
-                                :description="$row->description"
+                                :description="$row->body"
                                 :price="\App\Enums\Status::tryFrom($row->status)->getName()"
-                                :creator="\App\Models\User::getName($row->assignee)"
-                                :slides="\App\Livewire\Project\ProjectTask\Index::getTaskImage($row->id)"
-                                :read-moer="route('projectTasks.show',[$row->id])"
+                                :creator="\App\Models\User::getName($row->allocated)"
+                                :slides="\App\Livewire\TaskManger\AllTask\Index::getTaskImage($row->id)"
+                                :read-moer="route('task.upsert',[$row->id])"
                 />
             @endforeach
         </div>
+    </x-forms.m-panel>
 
+    <x-modal.delete/>
 
+    <!--Create Record ------------------------------------------------------------------------------------------------->
 
-        <x-forms.create :id="$common->vid">
-            <div class="space-y-4">
-                <div>
-                    <x-input.floating wire:model="common.vname" :label="'Task Name'"/>
+    <x-forms.create :id="$common->vid" :max-width="'6xl'">
 
-                    @error('common.vname')
-                    <span class="text-red-500 text-xs">{{'The TaskName is Required.'}}</span>
-                    @enderror
-                </div>
+        <!--Left Side ------------------------------------------------------------------------------------------------->
+        <div class="flex flex-row space-x-5 w-full">
+            <div class="flex flex-col space-y-5 w-full">
 
-                <x-dropdown.wrapper label="WorkFlow" type="workflowTyped">
-                    <div class="relative">
+                <x-input.floating wire:model="common.vname" :label="'Title'"/>
 
-                        <x-dropdown.input label="WorkFlow Name*" id="workflow_name"
-                                          wire:model.live="workflow_name"
-                                          wire:keydown.arrow-up="decrementWorkflow"
-                                          wire:keydown.arrow-down="incrementWorkflow"
-                                          wire:keydown.enter="enterWorkflow"/>
-                        <x-dropdown.select>
+                <x-input.rich-text wire:model="body" :placeholder="'Write the error'"/>
 
-                            @if($workflowCollection)
-                                @forelse ($workflowCollection as $i => $workflow)
-                                    <x-dropdown.option highlight="{{ $highlightWorkflow === $i }}"
-                                                       wire:click.prevent="setWorkflow('{{$workflow->vname}}','{{$workflow->id}}')">
-                                        {{ $workflow->vname }}
-                                    </x-dropdown.option>
-                                @empty
-                                    <x-dropdown.new href="{{ route('workFlows') }}" label="WorkFlow"/>
-                                @endforelse
-                            @endif
+            </div>
 
-                        </x-dropdown.select>
-                    </div>
-                </x-dropdown.wrapper>
+            <!--Right Side -------------------------------------------------------------------------------------------->
 
-                <x-input.rich-text :placeholder="''" wire:model="description"/>
+            <div class="flex flex-col space-y-5 w-full">
 
-                <x-input.model-select wire:model="assignee" :label="'Assign To'">
+                <x-input.model-select wire:model="allocated" :label="'Allocated'">
                     <option value="">Choose...</option>
                     @foreach($users as $user)
                         <option value="{{$user->id}}">{{$user->name}}</option>
                     @endforeach
                 </x-input.model-select>
 
-                @error('assignee')
-                <span class="text-red-500 text-xs">{{'Select Assignee.'}}</span>
-                @enderror
-
                 <x-input.model-select wire:model="status" :label="'Status'">
                     <option value="">Choose...</option>
                     @foreach(App\Enums\Status::cases() as $status)
                         <option value="{{$status->value}}">{{$status->getName()}}</option>
+                    @endforeach
+                </x-input.model-select>
+
+                <x-input.model-select wire:model="priority" :label="'Priority'">
+                    <option value="">Choose...</option>
+                    @foreach(App\Enums\Priority::cases() as $priority)
+                        <option value="{{$priority->value}}">{{$priority->getName()}}</option>
                     @endforeach
                 </x-input.model-select>
 
@@ -158,7 +119,7 @@
                                 </label>
                             </div>
 
-                            <div wire:loading wire:target="image" class="z-10 absolute top-6 left-12">
+                            <div wire:loading wire:target="images" class="z-10 absolute top-6 left-12">
                                 <div class="w-14 h-14 rounded-full animate-spin
                                                         border-y-4 border-dashed border-green-500 border-t-transparent"></div>
                             </div>
@@ -166,9 +127,8 @@
                     </div>
                 </div>
 
+
             </div>
-        </x-forms.create>
-
-    </x-forms.m-panel>
-
+        </div>
+    </x-forms.create>
 </div>

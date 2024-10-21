@@ -9,18 +9,17 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::create('projects', function (Blueprint $table) {
+        Schema::create('task_images', function (Blueprint $table) {
             $table->id();
-            $table->string('vname');
-            $table->longText('description');
-            $table->date('vdate')->nullable();
-            $table->string('active_id')->nullable();
+            $table->foreignId('task_id')->references('id')->on('tasks')->onDelete('cascade');
+            $table->longText('image')->nullable();
             $table->timestamps();
         });
     }
 
+
     public function down(): void
     {
-        Schema::dropIfExists('projects');
+        Schema::dropIfExists('task_images');
     }
 };
