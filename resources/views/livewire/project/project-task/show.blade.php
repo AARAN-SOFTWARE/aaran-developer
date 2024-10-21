@@ -6,7 +6,7 @@
 
             <div class="inline-flex">
 
-                <div class="text-5xl font-bold tracking-wider">{{$projectTask->vname}}</div>
+                <div class="lg:text-4xl font-bold tracking-wide sm:text-xs capitalize">{{$projectTask->vname}}</div>
 
             </div>
 

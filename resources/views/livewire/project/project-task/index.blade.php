@@ -3,12 +3,15 @@
     <x-slot name="header">Project Task</x-slot>
 
     <x-forms.m-panel>
+
         <x-forms.top-control-without-search>
+
             <div class="w-full flex items-center space-x-2">
 
                 <x-input.search-bar wire:model.live="getListForm.searches"
                                     wire:keydown.escape="$set('getListForm.searches', '')" label="Search"/>
             </div>
+
             <div class="w-full">
                 <x-input.model-select wire:model.live="workflowId" :label="'Project'">
                     <option value="">Choose...</option>
@@ -27,7 +30,8 @@
         </div>
 
         <!-- Table Header  ------------------------------------------------------------------------------------------>
-        <div class="flex flex-col sm:grid grid-cols-4 w-full gap-10">
+
+        <div class="flex flex-col sm:grid grid-cols-4 w-full gap-10 capitalize">
             @foreach($list as $index=>$row)
                 <x-cards.card-3 :id="$row->id"
                                 :title="$row->vname"
@@ -85,6 +89,7 @@
                         <option value="{{$user->id}}">{{$user->name}}</option>
                     @endforeach
                 </x-input.model-select>
+
                 @error('assignee')
                 <span class="text-red-500 text-xs">{{'Select Assignee.'}}</span>
                 @enderror
@@ -101,6 +106,7 @@
                 <div class="flex flex-col py-2">
                     <label for="bg_image"
                            class="w-full text-zinc-500 tracking-wide pb-4 px-2">Image</label>
+
                     <div class="flex flex-wrap gap-2">
                         <div class="flex-shrink-0">
                             <div>

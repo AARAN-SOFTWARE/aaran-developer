@@ -1,61 +1,72 @@
 <div>
     <x-slot name="header">Project Activity</x-slot>
+
     <x-forms.top-controls :show-filters="$showFilters"/>
+
     <div class="flex w-full">
 
-        <x-table.caption :caption="'Project'">
+        <x-table.caption :caption="'Activity'">
             {{$list->count()}}
         </x-table.caption>
     </div>
 
-        <!-- Card Body  ------------------------------------------------------------------------------------------>
-        <div class="flex flex-col sm:grid grid-cols-4 w-full gap-10 mt-3">
+    <!-- Card Body  ------------------------------------------------------------------------------------------>
+    <div class="flex flex-col w-full h-auto gap-10 mt-3">
 
-            @foreach($list as $index=>$row)
+        @foreach($list as $index=>$row)
 
-                <article
-                    class="flex rounded-xl max-w-sm flex-col overflow-hidden border border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                    <!--Card Content ---------------------------------------------------------------------------------->
+            <article
+                class="flex flex-col w-full rounded-xl overflow-hidden border border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
 
-                    <div class="flex flex-col gap-4 p-6">
-                        <div class="flex justify-between">
-                            <div class="flex items-center gap-1 font-medium">
+                <!--Card Content ---------------------------------------------------------------------------------->
+
+                <div class="flex flex-col gap-4 p-6">
+
+                    <div class="flex justify-between">
+
+                        <div class="flex items-center gap-1 text-xl text-teal-800 capitalize">
                                 <span>
                                     {{$row->vname}}
                                 </span>
-                            </div>
-
-                            <!--Edit & Delete ------------------------------------------------------------------------->
-
-                            <div class="flex justify-center items-center gap-4 self-center">
-                                <x-button.edit wire:click="edit({{$row->id}})"/>
-                                <x-button.delete wire:click="getDelete({{$row->id}})"/>
-                            </div>
                         </div>
 
-                        <!--Title & Body ------------------------------------------------------------------------------>
+                        <!--Edit & Delete ------------------------------------------------------------------------->
 
-
-                        <p id="tripDescription" class="text-pretty text-sm mb-2">
-                            {!! $row->description !!}
-                        </p>
-                        <p id="tripDescription" class="text-pretty text-sm mb-2">
-                           Duration : {{date('d-m-Y',strtotime($row->total_duration))}}
-                        </p>
-                        <p id="tripDescription" class="text-pretty text-sm mb-2">
-                            Start Date: {{date('d-m-Y-H-i-s',(strtotime($row->start_date)))}}
-                        </p>
-                        <p id="tripDescription" class="text-pretty text-sm mb-2">
-                            End Date: {{date('d-m-Y-H-i-s',(strtotime($row->end_date)))}}
-                        </p>
+                        <div class="flex justify-center items-center gap-4 self-center">
+                            <x-button.edit wire:click="edit({{$row->id}})"/>
+                            <x-button.delete wire:click="getDelete({{$row->id}})"/>
+                        </div>
                     </div>
-                </article>
-            @endforeach
 
-        </div>
+                    <!--Title & Body ------------------------------------------------------------------------------>
 
 
-        <x-modal.delete/>
+                    <div id="tripDescription" class="text-pretty text-sm mb-2">
+                        {!! $row->description !!}
+                    </div>
+
+                    <div id="tripDescription" class="text-pretty text-sm mb-2">
+                        <span class="text-teal-600"> Duration :</span>
+                        <span>{{date('d-m-Y',strtotime($row->total_duration))}}</span>
+                    </div>
+
+                    <div id="tripDescription" class="text-pretty text-sm mb-2">
+                        <span class="text-red-700">Start Date :</span>
+                        <span>{{date('d-m-Y-H-i-s',(strtotime($row->start_date)))}}</span>
+                    </div>
+
+                    <div id="tripDescription" class="text-pretty text-sm mb-2">
+                        <span class="text-red-700"> End Date :</span>
+                        <span>{{date('d-m-Y-H-i-s',(strtotime($row->end_date)))}}</span>
+                    </div>
+                </div>
+            </article>
+        @endforeach
+
+    </div>
+
+
+    <x-modal.delete/>
 
     <x-forms.create :id="$common->vid">
         <div class="space-y-4">

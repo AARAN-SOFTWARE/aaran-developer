@@ -5,6 +5,14 @@
 
         <x-forms.top-controls :show-filters="$showFilters"/>
 
+        <div class="hidden lg:flex justify-end mb-6">
+            <a href="{{route('soft')}}"
+               class="transition-colors duration-300 relative inline-flex items-center text-lg hover:text-blue-500 gap-1 mr-2">
+                <x-icons.icon-fill :iconfill="'chevron-d-left'" class="w-5 h-5" ></x-icons.icon-fill>
+                Back
+            </a>
+        </div>
+
         <!-- Table Header  ------------------------------------------------------------------------------------------>
 
         <x-table.form>
@@ -33,9 +41,9 @@
 
                         <x-table.cell-text>{{$row->latest_version}}</x-table.cell-text>
 
-                        <x-table.cell-text>{{$row->notes}}</x-table.cell-text>
-
                         <x-table.cell-text>{{ date('d-m-Y',strtotime($row->vdate)) }}</x-table.cell-text>
+
+                        <x-table.cell-text>{{$row->notes}}</x-table.cell-text>
 
                         <x-table.cell-action id="{{$row->id}}"/>
                     </x-table.row>

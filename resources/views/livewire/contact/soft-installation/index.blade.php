@@ -7,7 +7,7 @@
 
         <div class="flex w-full">
 
-            <x-table.caption :caption="'Project'">
+            <x-table.caption :caption="'Contact Details'">
                 {{$soft->count()}}
             </x-table.caption>
         </div>
