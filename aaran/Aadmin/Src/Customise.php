@@ -39,19 +39,6 @@ class Customise
 
     #endregion
 
-//    #region[Entries]
-//    public static function hasEntries(): bool
-//    {
-//        return static::enabled(static::entries());
-//    }
-//
-//    public static function entries(): string
-//    {
-//        return 'entries';
-//    }
-//
-//    #endregion
-
     #region[Blog]
     public static function hasBlog(): bool
     {
@@ -89,55 +76,6 @@ class Customise
         return 'core';
     }
     #endregion
-
-//    #region[GST-API]
-//    public static function hasGstApi(): bool
-//    {
-//        return static::enabled(static::gstapi());
-//    }
-//
-//    public static function gstapi(): string
-//    {
-//        return 'gstapi';
-//    }
-//    #endregion
-
-//    #region[Transaction]
-//    public static function hasTransaction(): bool
-//    {
-//        return static::enabled(static::transaction());
-//    }
-//
-//    public static function transaction(): string
-//    {
-//        return 'transaction';
-//    }
-//    #endregion
-
-//    #region[Demo data]
-//    public static function hasDemodata(): bool
-//    {
-//        return static::enabled(static::demodata());
-//    }
-//
-//    public static function demodata(): string
-//    {
-//        return 'demodata';
-//    }
-//    #endregion
-
-
-//    #region[ExportSales]
-//    public static function hasExportSales(): bool
-//    {
-//        return static::enabled(static::exportsales());
-//    }
-//
-//    public static function exportsales(): string
-//    {
-//        return 'exportsales';
-//    }
-//    #endregion
 
     #region[Project]
     public static function hasProjects(): bool
