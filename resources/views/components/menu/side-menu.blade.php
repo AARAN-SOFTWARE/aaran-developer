@@ -25,27 +25,10 @@
         <ul class="flex flex-col py-6 space-y-1"
             x-data="{selected:null}">
 
+            {{--            @if(Aaran\Aadmin\Src\Customise::hasMaster())--}}
+            {{--                <x-menu.sub.master/>--}}
+            {{--            @endif--}}
 
-{{--            @if(Aaran\Aadmin\Src\Customise::hasCommon())--}}
-{{--                <x-menu.sub.common/>--}}
-{{--            @endif--}}
-
-{{--            @if(Aaran\Aadmin\Src\Customise::hasMaster())--}}
-{{--                <x-menu.sub.master/>--}}
-{{--            @endif--}}
-
-{{--            @if(Aaran\Aadmin\Src\Customise::hasEntries())--}}
-{{--                <x-menu.sub.entries/>--}}
-{{--            @endif--}}
-
-{{--            @if(Aaran\Aadmin\Src\Customise::hasTransaction())--}}
-{{--                <x-menu.sub.transaction/>--}}
-{{--                <x-menu.sub.reports/>--}}
-{{--            @endif--}}
-
-{{--            @if(Aaran\Aadmin\Src\Customise::hasDemodata())--}}
-{{--                <x-menu.sub.demodata/>--}}
-{{--            @endif--}}
 
             @if(Aaran\Aadmin\Src\Customise::hasTaskManager())
                 <x-menu.sub.task/>
@@ -58,9 +41,6 @@
             @if(Aaran\Aadmin\Src\Customise::hasContact())
                 <x-menu.sub.contact/>
             @endif
-
-
-
 
             <x-menu.sub.logout/>
 
