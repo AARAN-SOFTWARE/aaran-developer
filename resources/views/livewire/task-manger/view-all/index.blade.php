@@ -16,7 +16,7 @@
                                 :priority="\App\Enums\Priority::tryFrom($row->priority)->getName()"
                                 :allocated="\App\Models\User::getName($row->allocated)"
                                 :createdBy="\App\Models\User::getName($row->user_id)"
-                                :slides="\App\Livewire\TaskManger\PublicTask\Index::getTaskImage($row->id)"
+                                :slides="\App\Livewire\TaskManger\ViewAll\Index::getTaskImage($row->id)"
                                 :read-moer="route('task.upsert',[$row->id])"
                 />
             @endforeach

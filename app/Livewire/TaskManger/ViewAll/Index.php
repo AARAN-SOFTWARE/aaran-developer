@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\TaskManger\AllTask;
+namespace App\Livewire\TaskManger\ViewAll;
 
 use Aaran\Taskmanager\Models\Task;
 use Aaran\Taskmanager\Models\TaskImage;
@@ -23,8 +23,8 @@ class Index extends Component
     public $verified;
     public $verified_on;
 
-    public $images = [];
-    public $old_images = [];
+    public $images=[];
+    public $old_images=[];
     #endregion
 
     #region[getSave]
@@ -70,11 +70,11 @@ class Index extends Component
             $old_image->save();
         }
 
-        if ($this->images != []) {
-            foreach ($this->images as $image) {
+        if ($this->images!=[]){
+            foreach ($this->images as $image){
                 TaskImage::create([
-                    'task_id' => $id,
-                    'image' => $this->saveImage($image),
+                    'task_id'=>$id,
+                    'image'=>$this->saveImage($image),
                 ]);
             }
         }
@@ -95,18 +95,17 @@ class Index extends Component
             $this->verified = $task->verified;
             $this->verified_on = $task->verified_on;
             $this->common->active_id = $task->active_id;
-            $this->old_images = TaskImage::where('task_id', $id)->get();
+            $this->old_images=TaskImage::where('task_id',$id)->get();
             return $task;
         }
         return null;
     }
-
     public function getTaskImage($id)
     {
-        $data = TaskImage::where('task_id', $id)->get();
-        $arrayImage = [];
-        foreach ($data as $key => $value) {
-            $arrayImage[$key]['imgSrc'] = URL(\Illuminate\Support\Facades\Storage::url('images/' . $value->image));
+        $data=TaskImage::where('task_id',$id)->get();
+        $arrayImage=[];
+        foreach ($data as $key=>$value) {
+            $arrayImage[$key]['imgSrc']=URL(\Illuminate\Support\Facades\Storage::url('images/'.$value->image));
         }
         return $arrayImage;
     }
@@ -124,8 +123,8 @@ class Index extends Component
         $this->verified = '';
         $this->verified_on = '';
         $this->status = '';
-        $this->images = [];
-        $this->old_images = [];
+        $this->images=[];
+        $this->old_images=[];
     }
     #endregion
 
@@ -137,7 +136,7 @@ class Index extends Component
             $filename = $image->getClientOriginalName();
 
 
-            $image->storeAs('/images', $filename, 'public');
+            $image->storeAs('/images', $filename,'public');
 
             return $filename;
 
@@ -148,10 +147,10 @@ class Index extends Component
 
     public function DeleteImage($id)
     {
-        if ($id) {
-            $obj = TaskImage::find($id);
+        if ($id){
+            $obj=TaskImage::find($id);
             if (Storage::disk('public')->exists(Storage::path('public/images/' . $obj->image))) {
-                Storage::disk('public')->delete(Storage::path('public/images/' . $obj->image));
+                Storage::disk('public')->delete(Storage::path('public/images/' .$obj->image));
             }
             $obj->delete();
         }
@@ -161,17 +160,13 @@ class Index extends Component
 
     public function getRoute()
     {
-        return route('allTask');
+        return route('viewAllTask');
     }
 
     public function render()
     {
-        return view('livewire.task-manger.all-task.index')->with([
-            'list' => $this->getListForm->getList(Task::class, function ($q) {
-                return $q
-                    ->where('user_id', auth()->id())
-                    ->orWhere('allocated', '=', auth()->id());
-            }),
+        return view('livewire.task-manger.view-all.index')->with([
+            'list' => $this->getListForm->getList(Task::class),
             'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),
         ]);
     }

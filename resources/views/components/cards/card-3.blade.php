@@ -72,17 +72,19 @@
 
             <!-- Price -->
             <span
-                class="bg-indigo-700 h-fit rounded-xl px-2 py-1 text-xs font-medium text-slate-100 dark:bg-indigo-600 dark:text-slate-100"><span
-                    class="sr-only">price</span> {{$price }}</span>
+                class="bg-indigo-700 h-fit rounded-xl px-2 py-1 text-xs font-medium text-slate-100 dark:bg-indigo-600 dark:text-slate-100">
+                {{$status }}
+            </span>
         </div>
 
-        <p id="nftDescription" class="mb-2 text-pretty text-sm">
-            To : <a href="#" class="text-blue-700 dark:text-blue-600">{{$creator }}</a><br/><br/>
-            {!!\Illuminate\Support\Str::words($description,20)!!}
+        <p id="nftDescription" class="text-pretty text-sm">
+            To : <a href="#" class="text-blue-700 dark:text-blue-600">{{$allocated}}</a><span> - {{$priority}} </span> <br/><br/>
+            {!!\Illuminate\Support\Str::words($description,20)!!} <br/><br/>
+            By : <span>{{$createdBy}}</span>
         </p>
 
         <!-- Button -->
-        <div class="flex gap-3 ">
+        <div class="flex gap-3 mt-2">
 
             <a href="{{$readMoer}}" type="button"
                class="flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap bg-blue-700 px-4 py-2 text-center text-sm font-medium tracking-wide text-slate-100 transition hover:opacity-75 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:opacity-100 active:outline-offset-0 dark:bg-blue-600 dark:text-slate-100 dark:focus-visible:outline-blue-600 rounded-xl">
