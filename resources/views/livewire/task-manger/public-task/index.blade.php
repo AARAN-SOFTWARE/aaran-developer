@@ -14,7 +14,7 @@
                                 :description="$row->body"
                                 :price="\App\Enums\Status::tryFrom($row->status)->getName()"
                                 :creator="\App\Models\User::getName($row->allocated)"
-                                :slides="\App\Livewire\TaskManger\Task\Index::getTaskImage($row->id)"
+                                :slides="\App\Livewire\TaskManger\PublicTask\Index::getTaskImage($row->id)"
                                 :read-moer="route('task.upsert',[$row->id])"
                 />
             @endforeach

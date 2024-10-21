@@ -37,6 +37,11 @@ class Task extends Model
         return $this->hasMany(Reply::class);
     }
 
+    public function TaskImage() :HasMany
+    {
+        return $this->hasMany(TaskImage::class);
+    }
+
 
     protected static function newFactory(): TaskFactory
     {

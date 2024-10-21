@@ -4,6 +4,7 @@ namespace App\Livewire\TaskManger\Task;
 
 use Aaran\Taskmanager\Models\Reply;
 use Aaran\Taskmanager\Models\Task;
+use Aaran\Taskmanager\Models\TaskImage;
 use App\Livewire\Trait\CommonTraitNew;
 use Livewire\Component;
 
@@ -11,12 +12,14 @@ class Upsert extends Component
 {
     use CommonTraitNew;
     public $taskData;
+    public $taskImage;
     public $verified;
     public $verified_on;
 
     public function mount($id)
     {
         $this->taskData=Task::find($id);
+        $this->taskImage = TaskImage::where('task_id', $id)->get()->toarray();
     }
 
     #region[getSave]

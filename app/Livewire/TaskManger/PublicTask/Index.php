@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\TaskManger\Task;
+namespace App\Livewire\TaskManger\PublicTask;
 
 use Aaran\Taskmanager\Models\Task;
 use Aaran\Taskmanager\Models\TaskImage;
@@ -165,10 +165,8 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.task-manger.task.index')->with([
-            'list' => $this->getListForm->getList(Task::class,function ($q){
-                return $q->where('allocated','=',auth()->id());
-            }),
+        return view('livewire.task-manger.public-task.index')->with([
+            'list' => $this->getListForm->getList(Task::class),
             'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),
         ]);
     }

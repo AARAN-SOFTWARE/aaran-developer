@@ -15,7 +15,7 @@
             </div>
 
             <div class="hidden lg:flex justify-between mb-6">
-                <a href="{{route('task')}}"
+                <a href="{{route('publicTask')}}"
                    class="transition-colors duration-300 relative inline-flex items-center text-lg hover:text-blue-500">
                     <svg width="22" height="22" viewBox="0 0 22 22" class="mr-2">
                         <g fill="none" fill-rule="evenodd">
@@ -32,10 +32,64 @@
             </div>
 
             <div class="w-full">
-                @if($taskData->image!='no_image')
-                    <img src="{{URL(\Illuminate\Support\Facades\Storage::url('images/'.$taskData->image))}}"
-                         class="w-full h-[45rem] object-cover rounded-lg"
-                         alt="view of a coastal Mediterranean village on a hillside, with small boats in the water."/>
+                @if($taskImage)
+
+                    <div class="h-[40rem] md:h-[40rem] overflow-hidden">
+                        <div x-data="{
+            slides: [
+                @foreach($taskImage as $row)
+                                {
+                                    imgSrc: '{{URL(\Illuminate\Support\Facades\Storage::url('images/'.$row['image']))}}',
+                                    imgAlt: '{{URL(\Illuminate\Support\Facades\Storage::url('images/'.$row['image']))}}',
+                                },
+
+                 @endforeach
+                                ],
+                                currentSlideIndex: 1,
+                                previous() {
+                                    if (this.currentSlideIndex > 1) {
+                                        this.currentSlideIndex = this.currentSlideIndex - 1
+                                    } else {
+                                        // If it's the first slide, go to the last slide
+                                        this.currentSlideIndex = this.slides.length
+                                    }
+                                },
+                                next() {
+                                    if (this.currentSlideIndex < this.slides.length) {
+                                        this.currentSlideIndex = this.currentSlideIndex + 1
+                                    } else {
+                                        // If it's the last slide, go to the first slide
+                                        this.currentSlideIndex = 1
+                                    }
+                                },
+                            }" class="relative w-full overflow-hidden">
+
+                            <!-- previous button -->
+                            <button type="button" class="absolute left-5 top-1/2 z-20 flex rounded-full -translate-y-1/2 items-center justify-center bg-white/40 p-2 text-slate-700 transition hover:bg-white/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:outline-offset-0 dark:bg-slate-900/40 dark:text-slate-300 dark:hover:bg-slate-900/60 dark:focus-visible:outline-blue-600" aria-label="previous slide" x-on:click="previous()">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="3" class="size-5 md:size-6 pr-0.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                                </svg>
+                            </button>
+
+                            <!-- next button -->
+                            <button type="button" class="absolute right-5 top-1/2 z-20 flex rounded-full -translate-y-1/2 items-center justify-center bg-white/40 p-2 text-slate-700 transition hover:bg-white/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:outline-offset-0 dark:bg-slate-900/40 dark:text-slate-300 dark:hover:bg-slate-900/60 dark:focus-visible:outline-blue-600" aria-label="next slide" x-on:click="next()">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="3" class="size-5 md:size-6 pl-0.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                                </svg>
+                            </button>
+
+                            <!-- slides -->
+                            <div class="relative h-[40rem] md:h-[40rem] w-full">
+                                <template x-for="(slide, index) in slides">
+                                    <div x-cloak x-show="currentSlideIndex == index + 1" class="absolute inset-0" x-transition.opacity.duration.300ms>
+                                        <img class="absolute w-full h-full inset-0 object-cover text-slate-700 dark:text-slate-300" x-bind:src="slide.imgSrc" x-bind:alt="slide.imgAlt" />
+                                    </div>
+                                </template>
+                            </div>
+
+                        </div>
+                    </div>
+
                 @else
                     <img
                         src="https://grcviewpoint.com/wp-content/uploads/2022/11/Time-to-Correct-A-Long-standing-Curriculum-Coding-Error-Say-Experts-GRCviewpoint.jpg"
