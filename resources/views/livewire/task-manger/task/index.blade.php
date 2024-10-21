@@ -21,7 +21,7 @@
                             <img
                                 src="https://grcviewpoint.com/wp-content/uploads/2022/11/Time-to-Correct-A-Long-standing-Curriculum-Coding-Error-Say-Experts-GRCviewpoint.jpg"
                                 class="object-cover transition duration-700 ease-out hover:scale-105"
-                                alt="view of a coastal Mediterranean village on a hillside, with small boats in the water."/>
+                                alt="dummy"/>
                         @endif
                     </div>
 
