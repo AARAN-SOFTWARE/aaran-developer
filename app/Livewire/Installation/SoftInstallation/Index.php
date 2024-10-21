@@ -1,24 +1,25 @@
 <?php
 
-namespace App\Livewire\Contact\SoftInstallation;
+namespace App\Livewire\Installation\SoftInstallation;
 
-use Aaran\Contact\Models\SoftInstallation;
+use Aaran\Installation\Models\SoftInstallation;
 use Aaran\Master\Models\Contact;
 use App\Livewire\Trait\CommonTraitNew;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class Index extends Component
 {
     use CommonTraitNew;
+
     #region[Properties]
-    public $domain_url;
     public $db_user;
     public $db_password;
     public $git_url;
     public $soft_version;
     public $status;
-    public  $install_date;
+    public $install_date;
 
     #endregion
 
@@ -30,12 +31,11 @@ class Index extends Component
                 $SoftInstallation = new SoftInstallation();
                 $extraFields = [
                     'contact_id' => $this->contact_id,
-                    'domain_url' => $this->domain_url,
                     'db_user' => $this->db_user,
                     'db_password' => $this->db_password,
                     'git_url' => $this->git_url,
                     'soft_version' => $this->soft_version,
-                    'status' => $this->status,
+                    'status' => $this->status ?: 1,
                     'install_date' => $this->install_date
                 ];
                 $this->common->save($SoftInstallation, $extraFields);
@@ -44,7 +44,6 @@ class Index extends Component
                 $SoftInstallation = SoftInstallation::find($this->common->vid);
                 $extraFields = [
                     'contact_id' => $this->contact_id,
-                    'domain_url' => $this->domain_url,
                     'db_user' => $this->db_user,
                     'db_password' => $this->db_password,
                     'git_url' => $this->git_url,
@@ -129,7 +128,6 @@ class Index extends Component
             $this->common->vname = $SoftInstallation->vname;
             $this->contact_id = $SoftInstallation->contact_id;
             $this->contact_name = $SoftInstallation->contact_id ? Contact::find($SoftInstallation->contact_id)->vname : '';
-            $this->domain_url = $SoftInstallation->domain_url;
             $this->db_user = $SoftInstallation->db_user;
             $this->db_password = $SoftInstallation->db_password;
             $this->git_url = $SoftInstallation->git_url;
@@ -149,13 +147,12 @@ class Index extends Component
         $this->common->vname = '';
         $this->contact_id = '';
         $this->contact_name = '';
-        $this->domain_url = '';
         $this->db_user = '';
         $this->db_password = '';
         $this->git_url = '';
         $this->soft_version = '';
         $this->status = '';
-        $this->install_date = '';
+        $this->install_date = Carbon::now()->format('Y-m-d');
         $this->common->active_id = '1';
     }
     #endregion
@@ -165,7 +162,7 @@ class Index extends Component
     {
         $this->getContactList();
 
-        return view('livewire.contact.soft-installation.index')->with([
+        return view('livewire.Installation.soft-installation.index')->with([
             'soft' => $this->getListForm->getList(SoftInstallation::class),
         ]);
     }

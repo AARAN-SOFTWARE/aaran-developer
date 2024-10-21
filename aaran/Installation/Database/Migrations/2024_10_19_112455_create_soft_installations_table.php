@@ -13,7 +13,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('contact_id')->references('id')->on('contacts');
             $table->string('vname');
-            $table->string('domain_url')->nullable();
             $table->string('db_user')  ->nullable();
             $table->string('db_password')->nullable();
             $table->string('git_url')->nullable();

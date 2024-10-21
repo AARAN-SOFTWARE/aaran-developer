@@ -32,7 +32,7 @@
 
         <ul class="grid-cols-1 grid bg-gray-800">
 
-            @include('components.menu.items.contact-menu')
+            @include('components.menu.items.installation-menu')
             <li class="bg-gray-1000 mt-0.5"></li>
         </ul>
     </div>

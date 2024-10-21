@@ -1,6 +1,6 @@
 <?php
 
-namespace Aaran\Contact\Models;
+namespace Aaran\Installation\Models;
 
 use Aaran\Master\Models\Contact;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

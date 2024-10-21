@@ -90,14 +90,14 @@ class Customise
     #endregion
 
     #region[Contact]
-    public static function hasContact(): bool
+    public static function hasInstallation(): bool
     {
-        return static::enabled(static::contacts());
+        return static::enabled(static::installations());
     }
 
-    public static function contacts(): string
+    public static function installations(): string
     {
-        return 'contacts';
+        return 'installation';
     }
     #endregion
 

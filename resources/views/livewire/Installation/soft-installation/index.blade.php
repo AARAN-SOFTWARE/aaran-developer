@@ -20,7 +20,6 @@
 
                 <x-table.header-serial></x-table.header-serial>
                 <x-table.header-text sort-icon="none">Contact Name</x-table.header-text>
-                <x-table.header-text sort-icon="none">Domain Name</x-table.header-text>
                 <x-table.header-text sort-icon="none">Domain Url</x-table.header-text>
                 <x-table.header-text sort-icon="none">DB User</x-table.header-text>
                 <x-table.header-text sort-icon="none">DB Password</x-table.header-text>
@@ -48,13 +47,13 @@
                             <a href="{{route('maintenance',[$row->id])}}">
                             {{$row->contact->vname}}</x-table.cell-text>
 
-                        <x-table.cell-text>
-                            <a href="{{route('maintenance',[$row->id])}}">
-                            {{$row->vname}}</x-table.cell-text>
+{{--                        <x-table.cell-text>--}}
+{{--                            <a href="{{route('maintenance',[$row->id])}}">--}}
+{{--                            {{$row->vname}}</x-table.cell-text>--}}
 
                         <x-table.cell-text>
-                            <a href="{{$row->domain_url}}" target="_blank">
-                                {{$row->domain_url}}
+                            <a href="{{$row->vname}}" target="_blank">
+                                {{$row->vname}}
                             </a>
                         </x-table.cell-text>
 
@@ -135,20 +134,24 @@
                     </div>
                 </x-dropdown.wrapper>
 
-                <x-input.floating wire:model="common.vname" :label="'Domain Name'"/>
+                <x-input.floating wire:model="common.vname" :label="'Domain Url'"/>
 
-                <x-input.floating wire:model="domain_url" :label="'Domain Url'"/>
+{{--                <x-input.floating wire:model="domain_url" :label="'Domain Url'"/>--}}
+
                 <x-input.floating wire:model="db_user" :label="'DB Name'"/>
+
                 <x-input.floating wire:model="db_password" :label="'DB Password'"/>
+
                 <x-input.floating wire:model="git_url" :label="'Git Url'"/>
+
                 <x-input.floating wire:model="soft_version" :label="'SoftWare Version'"/>
 
-                <x-input.model-select wire:model="status" :label="'Status'">
-                    <option value="">Choose...</option>
-                    @foreach(App\Enums\Status::cases() as $status)
-                        <option value="{{$status->value}}">{{$status->getName()}}</option>
-                    @endforeach
-                </x-input.model-select>
+{{--                <x-input.model-select wire:model="status" :label="'Status'">--}}
+{{--                    <option value="">Choose...</option>--}}
+{{--                    @foreach(App\Enums\Status::cases() as $status)--}}
+{{--                        <option value="{{$status->value}}">{{$status->getName()}}</option>--}}
+{{--                    @endforeach--}}
+{{--                </x-input.model-select>--}}
 
                 <x-input.floating wire:model="install_date" type="date" :label="'Install Date'"/>
 

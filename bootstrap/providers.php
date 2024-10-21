@@ -17,6 +17,6 @@ return [
 
     Aaran\Projects\Providers\ProjectServiceProvider::class,
 
-    Aaran\Contact\Providers\ContactServiceProvider::class,
+    Aaran\Installation\Providers\InstallationServiceProvider::class,
 
 ];

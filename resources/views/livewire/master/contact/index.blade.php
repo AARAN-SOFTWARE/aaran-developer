@@ -44,41 +44,40 @@
 
                     <x-table.row>
 
-                        <x-table.cell-text><a href="{{route('contactReport',[$row->id])}}"> {{$index+1}}</a>
+                        <x-table.cell-text> {{$index+1}}
                         </x-table.cell-text>
 
-                        <x-table.cell-text left><a href="{{route('contacts.upsert',[$row->id])}}"> {{$row->vname}}</a>
+                        <x-table.cell-text left><a href="{{route('contacts.upsert',[$row->id])}}"> {{$row->vname}}
                         </x-table.cell-text>
 
-                        <x-table.cell-text><a href="{{route('contacts.upsert',[$row->id])}}"> {{$row->mobile}}</a>
+                        <x-table.cell-text><a href="{{route('contacts.upsert',[$row->id])}}"> {{$row->mobile}}
                         </x-table.cell-text>
-
-
 
                         <x-table.cell-text>
-                            <a href="{{route('contacts.upsert',[$row->id])}}" class="{{$row->contact_type == 'Debtor'?:'text-orange-400'}}">
-                                {{$row->contact_type}}
-                            </a>
+                            <a href="{{route('contacts.upsert',[$row->id])}}"
+                               class="{{$row->contact_type == 'Debtor'?:'text-orange-400'}}">
+                            {{$row->contact_type}}
+
                         </x-table.cell-text>
 
                         <x-table.cell-text><a
-                                href="{{route('contacts.upsert',[$row->id])}}"> {{$row->contact_person}}</a>
+                                href="{{route('contacts.upsert',[$row->id])}}"> {{$row->contact_person}}
                         </x-table.cell-text>
 
                         <x-table.cell-text><a
-                                href="{{route('contacts.upsert',[$row->id])}}"> {{$row->gstin}}</a>
+                                href="{{route('contacts.upsert',[$row->id])}}"> {{$row->gstin}}
                         </x-table.cell-text>
 
                         <x-table.cell-text><a
-                                href="{{route('contacts.upsert',[$row->id])}}"> {{$row->opening_balance+$row->outstanding}}</a>
+                                href="{{route('contacts.upsert',[$row->id])}}"> {{$row->opening_balance+$row->outstanding}}
                         </x-table.cell-text>
 
                         <td class="max-w-max print:hidden">
                             <div class="flex justify-center items-center sm:gap-4 gap-2 px-1 self-center">
                                 <a href="{{route('contacts.upsert',[$row->id])}}" class="pt-1">
                                     <x-button.edit/>
-                                </a>
-                                <x-button.delete wire:click="getDelete({{$row->id}})"/>
+
+                                    <x-button.delete wire:click="getDelete({{$row->id}})"/>
                             </div>
                         </td>
                     </x-table.row>
@@ -91,7 +90,7 @@
 
         <x-modal.delete/>
 
-{{--        <div class="pt-5">{{ $list->links() }}</div>--}}
+        {{--        <div class="pt-5">{{ $list->links() }}</div>--}}
 
     </x-forms.m-panel>
 </div>

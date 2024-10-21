@@ -38,8 +38,8 @@
                 <x-menu.sub.projects/>
             @endif
 
-            @if(Aaran\Aadmin\Src\Customise::hasContact())
-                <x-menu.sub.contact/>
+            @if(Aaran\Aadmin\Src\Customise::hasInstallation())
+                <x-menu.sub.installtion/>
             @endif
 
             <x-menu.sub.logout/>

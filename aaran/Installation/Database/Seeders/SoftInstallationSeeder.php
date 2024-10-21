@@ -1,10 +1,10 @@
 <?php
 
-namespace Aaran\Contact\Database\Seeders;
+namespace Aaran\Installation\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class MaintenanceSeeder extends Seeder
+class SoftInstallationSeeder extends Seeder
 {
 
     public function run(): void

@@ -27,8 +27,6 @@ class DatabaseSeeder extends Seeder
 
         S200_CompanySeeder::run();
         S202_ContactSeeder::run();
-        S203_ProductSeeder::run();
-        S204_OrderSeeder::run();
-        S205_StyleSeeder::run();
+
     }
 }

@@ -8,30 +8,11 @@ return [
     'customise' => [
         Customise::common(),
         Customise::master(),
-//        Customise::entries(),
         Customise::core(),
         Customise::blog(),
-//        Customise::gstapi(),
-//        Customise::transaction(),
-//        Customise::demodata(),
         Customise::taskManager(),
-//        Customise::exportsales(),
         Customise::projects(),
-        Customise::contacts(),
+        Customise::installations(),
     ],
-//    'SalesEntry' => [
-//        SaleEntry::order(),
-//        SaleEntry::billingAddress(),
-//        SaleEntry::shippingAddress(),
-//        SaleEntry::style(),
-////        SaleEntry::despatch(),
-//        SaleEntry::transport(),
-//        SaleEntry::destination(),
-//        SaleEntry::bundle(),
-//
-//        SaleEntry::productDescription(),
-//        SaleEntry::colour(),
-//        SaleEntry::size(),
 
-//    ],
 ];

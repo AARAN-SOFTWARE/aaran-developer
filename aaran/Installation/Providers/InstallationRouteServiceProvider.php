@@ -1,11 +1,11 @@
 <?php
 
-namespace Aaran\Contact\Providers;
+namespace Aaran\Installation\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
-class ContactRouteServiceProvider extends RouteServiceProvider
+class InstallationRouteServiceProvider extends RouteServiceProvider
 {
     public function boot(): void
     {

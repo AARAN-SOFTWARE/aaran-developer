@@ -43,7 +43,7 @@
 
                         <x-table.cell-text>{{ date('d-m-Y',strtotime($row->vdate)) }}</x-table.cell-text>
 
-                        <x-table.cell-text>{{$row->notes}}</x-table.cell-text>
+                        <x-table.cell-text>{!! $row->notes !!}</x-table.cell-text>
 
                         <x-table.cell-action id="{{$row->id}}"/>
                     </x-table.row>
@@ -64,7 +64,14 @@
 
                 <x-input.floating wire:model="latest_version" :label="'Latest Version'"/>
 
-                <x-input.floating wire:model="notes" :label="'Notes'"/>
+                <x-input.rich-text :placeholder="'Draw Notes'" wire:model="notes" />
+
+                <x-input.model-select wire:model="status" :label="'Status'">
+                    <option value="">Choose...</option>
+                    @foreach(App\Enums\Status::cases() as $status)
+                        <option value="{{$status->value}}">{{$status->getName()}}</option>
+                    @endforeach
+                </x-input.model-select>
 
                 <x-input.floating wire:model="vdate" type="date" :label="'Date'"/>
 
