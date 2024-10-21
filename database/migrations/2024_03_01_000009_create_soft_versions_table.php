@@ -11,10 +11,10 @@ return new class extends Migration {
 
             Schema::create('soft_versions', function (Blueprint $table) {
                 $table->id();
-                $table->string('soft_version');
-                $table->string('db_version');
+                $table->string('version');
                 $table->string('title')->nullable();
                 $table->longText('body')->nullable();
+                $table->longText('image')->nullable();
                 $table->timestamps();
             });
         }

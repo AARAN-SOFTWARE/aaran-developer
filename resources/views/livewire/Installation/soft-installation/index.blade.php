@@ -7,7 +7,7 @@
 
         <div class="flex w-full">
 
-            <x-table.caption :caption="'Contact Details'">
+            <x-table.caption :caption="'Installation'">
                 {{$soft->count()}}
             </x-table.caption>
         </div>
@@ -32,6 +32,7 @@
             </x-slot:table_header>
 
             <!-- Table Body  ------------------------------------------------------------------------------------------>
+
             <x-slot:table_body name="table_body">
 
                 @foreach($soft as $index=>$row)
@@ -46,10 +47,6 @@
                         <x-table.cell-text>
                             <a href="{{route('maintenance',[$row->id])}}">
                             {{$row->contact->vname}}</x-table.cell-text>
-
-{{--                        <x-table.cell-text>--}}
-{{--                            <a href="{{route('maintenance',[$row->id])}}">--}}
-{{--                            {{$row->vname}}</x-table.cell-text>--}}
 
                         <x-table.cell-text>
                             <a href="{{$row->vname}}" target="_blank">
@@ -98,8 +95,9 @@
 
             </x-slot:table_body>
 
-            <x-modal.delete/>
         </x-table.form>
+
+        <x-modal.delete/>
 
         <!-- Create  -------------------------------------------------------------------------------------------------->
 
@@ -136,8 +134,6 @@
 
                 <x-input.floating wire:model="common.vname" :label="'Domain Url'"/>
 
-{{--                <x-input.floating wire:model="domain_url" :label="'Domain Url'"/>--}}
-
                 <x-input.floating wire:model="db_user" :label="'DB Name'"/>
 
                 <x-input.floating wire:model="db_password" :label="'DB Password'"/>
@@ -145,13 +141,6 @@
                 <x-input.floating wire:model="git_url" :label="'Git Url'"/>
 
                 <x-input.floating wire:model="soft_version" :label="'SoftWare Version'"/>
-
-{{--                <x-input.model-select wire:model="status" :label="'Status'">--}}
-{{--                    <option value="">Choose...</option>--}}
-{{--                    @foreach(App\Enums\Status::cases() as $status)--}}
-{{--                        <option value="{{$status->value}}">{{$status->getName()}}</option>--}}
-{{--                    @endforeach--}}
-{{--                </x-input.model-select>--}}
 
                 <x-input.floating wire:model="install_date" type="date" :label="'Install Date'"/>
 
