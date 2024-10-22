@@ -172,8 +172,10 @@
 
                         <x-tabs.content>
                             <x-input.floating wire:model="verified_on" :label="'Verified No'" type="date"/>
+
                             <x-input.floating wire:model="verified" :label="'Verified'"/>
-                            <x-input.floating wire:model="remarks" :label="'Remarks'"/>
+
+                            <x-input.rich-text wire:model="remarks" :placeholder="'Write your remarks'"/>
                         </x-tabs.content>
 
                     </x-slot>

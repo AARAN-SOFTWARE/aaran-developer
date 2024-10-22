@@ -78,13 +78,6 @@
 
         <x-forms.create :id="$common->vid" :max-width="'6xl'">
 
-            {{--            <x-input.model-select wire:model="task_id" :label="'Task'">--}}
-            {{--                <option value=" ">Choose...</option>--}}
-            {{--                @foreach($tasks as $task)--}}
-            {{--                    <option value="{{$tasks->id}}"> {{$task_name}} </option>--}}
-            {{--                @endforeach--}}
-            {{--            </x-input.model-select>--}}
-
             <div class="flex flex-row space-x-5 w-full">
 
                 <div class="flex flex-col space-y-5 w-full">
