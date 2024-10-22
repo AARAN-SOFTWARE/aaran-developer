@@ -2,6 +2,7 @@
 
 namespace App\Livewire\TaskManger\Task;
 
+use Aaran\Taskmanager\Models\Activities;
 use Aaran\Taskmanager\Models\Reply;
 use Aaran\Taskmanager\Models\Task;
 use Aaran\Taskmanager\Models\TaskImage;
@@ -13,38 +14,57 @@ class Upsert extends Component
     use CommonTraitNew;
     public $taskData;
     public $taskImage;
-    public $verified;
-    public $verified_on;
+    #region[property]
+    public $remarks;
+    public $estimated;
+    public $duration;
+    public $start_on;
+    public $end_on;
+    public $cdate;
+    public $task_id;
+    public $task_name;
+    public  $verified = '';
+       public $verified_on = '';
+    #endregion
 
     public function mount($id)
     {
         $this->taskData=Task::find($id);
         $this->taskImage = TaskImage::where('task_id', $id)->get()->toarray();
+        $this->task_id=$id;
     }
 
     #region[getSave]
     public function getSave(): void
     {
         if ($this->common->vid == '') {
-            $task_replay = new Reply();
+            $activity = new Activities();
             $extraFields = [
-                'task_id'=>$this->taskData->id,
-                'user_id'=>auth()->id(),
-                'verified'=>$this->verified,
-                'verified_on'=>$this->verified_on,
+                'task_id' => $this->task_id,
+                'estimated' => $this->estimated,
+                'duration' => $this->duration,
+                'start_on' => $this->start_on,
+                'end_on' => $this->end_on,
+                'cdate' => $this->cdate,
+                'remarks' => $this->remarks,
+                'user_id' => auth()->id(),
             ];
-            $this->common->save($task_replay,$extraFields);
+            $this->common->save($activity, $extraFields);
             $this->clearFields();
             $message = "Saved";
         } else {
-            $task_replay = Reply::find($this->common->vid);
+            $activity = Activities::find($this->common->vid);
             $extraFields = [
-                'task_id'=>$this->taskData->id,
-                'user_id'=>auth()->id(),
-                'verified'=>$this->verified,
-                'verified_on'=>$this->verified_on,
+                'task_id' => $this->task_id,
+                'estimated' => $this->estimated,
+                'duration' => $this->duration,
+                'start_on' => $this->start_on,
+                'end_on' => $this->end_on,
+                'cdate' => $this->cdate,
+                'remarks' => $this->remarks,
+                'user_id' => auth()->id(),
             ];
-            $this->common->edit($task_replay,$extraFields);
+            $this->common->edit($activity, $extraFields);
             $this->clearFields();
             $message = "Updated";
         }
@@ -56,13 +76,19 @@ class Upsert extends Component
     public function getObj($id)
     {
         if ($id) {
-            $task_replay = Reply::find($id);
-            $this->common->vid = $task_replay->id;
-            $this->common->vname = $task_replay->vname;
-            $this->verified=$task_replay->verified;
-            $this->verified_on=$task_replay->verified_on;
-            $this->common->active_id = $task_replay->active_id;
-            return $task_replay;
+            $activity = Activities::find($id);
+            $this->common->vid = $activity->id;
+            $this->common->vname = $activity->vname;
+            $this->task_id = $activity->task_id;
+            $this->task_name = $activity->task->vname;
+            $this->estimated = $activity->estimated;
+            $this->duration = $activity->duration;
+            $this->start_on = $activity->start_on;
+            $this->end_on = $activity->end_on;
+            $this->cdate = $activity->cdate;
+            $this->remarks = $activity->remarks;
+            $this->common->active_id = $activity->active_id;
+            return $activity;
         }
         return null;
     }
@@ -73,7 +99,14 @@ class Upsert extends Component
     {
         $this->common->vid = '';
         $this->common->vname = '';
+        $this->task_id = '';
+        $this->task_name = '';
         $this->common->active_id = '1';
+        $this->estimated = '';
+        $this->duration = '';
+        $this->start_on = '';
+        $this->end_on = '';
+        $this->remarks = '';
         $this->verified = '';
         $this->verified_on = '';
     }
@@ -81,7 +114,7 @@ class Upsert extends Component
 
     public function getList()
     {
-        return Reply::select('replies.*')->where('task_id',$this->taskData->id)->orderBy('id','asc')->paginate($this->getListForm->perPage);
+        return Activities::select('activities.*')->where('task_id',$this->taskData->id)->orderBy('id','asc')->paginate($this->getListForm->perPage);
     }
 
     public function render()

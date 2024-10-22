@@ -65,24 +65,34 @@
                             }" class="relative w-full overflow-hidden">
 
                             <!-- previous button -->
-                            <button type="button" class="absolute left-5 top-1/2 z-20 flex rounded-full -translate-y-1/2 items-center justify-center bg-white/40 p-2 text-slate-700 transition hover:bg-white/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:outline-offset-0 dark:bg-slate-900/40 dark:text-slate-300 dark:hover:bg-slate-900/60 dark:focus-visible:outline-blue-600" aria-label="previous slide" x-on:click="previous()">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="3" class="size-5 md:size-6 pr-0.5" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                            <button type="button"
+                                    class="absolute left-5 top-1/2 z-20 flex rounded-full -translate-y-1/2 items-center justify-center bg-white/40 p-2 text-slate-700 transition hover:bg-white/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:outline-offset-0 dark:bg-slate-900/40 dark:text-slate-300 dark:hover:bg-slate-900/60 dark:focus-visible:outline-blue-600"
+                                    aria-label="previous slide" x-on:click="previous()">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor"
+                                     fill="none" stroke-width="3" class="size-5 md:size-6 pr-0.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M15.75 19.5 8.25 12l7.5-7.5"/>
                                 </svg>
                             </button>
 
                             <!-- next button -->
-                            <button type="button" class="absolute right-5 top-1/2 z-20 flex rounded-full -translate-y-1/2 items-center justify-center bg-white/40 p-2 text-slate-700 transition hover:bg-white/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:outline-offset-0 dark:bg-slate-900/40 dark:text-slate-300 dark:hover:bg-slate-900/60 dark:focus-visible:outline-blue-600" aria-label="next slide" x-on:click="next()">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="3" class="size-5 md:size-6 pl-0.5" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                            <button type="button"
+                                    class="absolute right-5 top-1/2 z-20 flex rounded-full -translate-y-1/2 items-center justify-center bg-white/40 p-2 text-slate-700 transition hover:bg-white/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 active:outline-offset-0 dark:bg-slate-900/40 dark:text-slate-300 dark:hover:bg-slate-900/60 dark:focus-visible:outline-blue-600"
+                                    aria-label="next slide" x-on:click="next()">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor"
+                                     fill="none" stroke-width="3" class="size-5 md:size-6 pl-0.5" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
                                 </svg>
                             </button>
 
                             <!-- slides -->
                             <div class="relative h-[40rem] md:h-[40rem] w-full">
                                 <template x-for="(slide, index) in slides">
-                                    <div x-cloak x-show="currentSlideIndex == index + 1" class="absolute inset-0" x-transition.opacity.duration.300ms>
-                                        <img class="absolute w-full h-full inset-0 object-cover text-slate-700 dark:text-slate-300" x-bind:src="slide.imgSrc" x-bind:alt="slide.imgAlt" />
+                                    <div x-cloak x-show="currentSlideIndex == index + 1" class="absolute inset-0"
+                                         x-transition.opacity.duration.300ms>
+                                        <img
+                                            class="absolute w-full h-full inset-0 object-cover text-slate-700 dark:text-slate-300"
+                                            x-bind:src="slide.imgSrc" x-bind:alt="slide.imgAlt"/>
                                     </div>
                                 </template>
                             </div>
@@ -102,40 +112,75 @@
                 <div class="flex  items-center gap-1 font-medium">
                     <div>Created By : {{$taskData->user->name}} | {{$taskData->created_at->diffForHumans()}}</div>
                     <div>| Allocated To : {{\Aaran\Taskmanager\Models\Task::allocate($taskData->allocated)}}</div>
-                    <div>| Priority To :</div><div class="bg-yellow-200/50 text-yellow-600 px-2 rounded-full py-0.5">{{ \App\Enums\Priority::tryFrom($taskData->priority)->getName() }}</div>
-                    <div>| Status :</div><div class="bg-sky-200/50 text-sky-600 px-2 rounded-full py-0.5">{{ \App\Enums\Status::tryFrom($taskData->status)->getName() }}</div>
+                    <div>| Priority To :</div>
+                    <div
+                        class="bg-yellow-200/50 text-yellow-600 px-2 rounded-full py-0.5">{{ \App\Enums\Priority::tryFrom($taskData->priority)->getName() }}</div>
+                    <div>| Status :</div>
+                    <div
+                        class="bg-sky-200/50 text-sky-600 px-2 rounded-full py-0.5">{{ \App\Enums\Status::tryFrom($taskData->status)->getName() }}</div>
                 </div>
             </div>
 
             <div class="text-xl text-justify p-4">{!! $taskData->body !!}</div>
             <div class="border-b-2 border-gray-400">&nbsp;</div>
 
-            <!--User Comments ----------------------------------------------------------------------------------------->
+            <!-- Activity ----------------------------------------------------------------------------------------->
 
-            <div class="w-full h-96 overflow-scroll p-5 space-y-2">
-                @foreach($list as $index=>$row)
-                    <div class="bg-gray-50 border border-gray-200 p-5 space-y-2 rounded-lg">
-                        <div class="flex justify-between">
-                            <div class="text-indigo-500">By : {{$row->user->name}}
-                                | {{$row->created_at->diffForHumans()}}  </div>
-                            <div class="flex justify-center items-center gap-4 self-center">
-                                <x-button.edit wire:click="edit({{$row->id}})"/>
-                                <x-button.delete wire:click="getDelete({{$row->id}})"/>
-                            </div>
+
+                        <div class="w-full h-96 overflow-scroll p-5 space-y-2">
+                            @foreach($list as $index=>$row)
+                                <div class="bg-gray-50 border border-gray-200 p-5 space-y-2 rounded-lg">
+                                    <div class="flex justify-between">
+                                        <div class="text-indigo-500">By : {{$row->user->name}}
+                                            | {{$row->created_at->diffForHumans()}}  </div>
+                                        <div class="flex justify-center items-center gap-4 self-center">
+                                            <x-button.edit wire:click="edit({{$row->id}})"/>
+                                            <x-button.delete wire:click="getDelete({{$row->id}})"/>
+                                        </div>
+                                    </div>
+                                    <div class="text-justify text-slate-700"> {!! $row->vname !!} </div>
+                                </div>
+                            @endforeach
                         </div>
-                        <div class="text-justify text-slate-700"> {!! $row->vname !!} </div>
-                    </div>
-                @endforeach
-            </div>
 
-            <!--Comments ---------------------------------------------------------------------------------------------->
+            {{--            <!--Comments ---------------------------------------------------------------------------------------------->--}}
 
-            <div class="space-y-5">
-                <div class="text-2xl font-bold tracking-wider underline">Comments :</div>
-                <x-input.rich-text wire:model="common.vname" :placeholder="'Write your comments'"/>
+            <div class="space-y-5 h-[40rem]">
+                <x-tabs.tab-panel >
+                    <x-slot name="tabs">
+                        <x-tabs.tab>Activity</x-tabs.tab>
+                        <x-tabs.tab>Duration</x-tabs.tab>
+                        <x-tabs.tab>Remarks</x-tabs.tab>
+                    </x-slot>
+
+                    <x-slot name="content">
+                        <x-tabs.content>
+                            <x-input.model-date wire:model="cdate" :label="'Date'"/>
+
+                            <x-input.rich-text wire:model="common.vname" :placeholder="'Write your comments'"/>
+                        </x-tabs.content>
+
+                        <x-tabs.content>
+                            <x-input.floating wire:model="estimated" :label="'Estimate'"/>
+
+                            <x-input.floating wire:model="duration" :label="'Duration'"/>
+
+                            <x-input.floating wire:model="start_on" :label="'Start_On'" type="date"/>
+
+                            <x-input.floating wire:model="end_on" :label="'End_On'" type="date"/>
+                        </x-tabs.content>
+
+                        <x-tabs.content>
+                            <x-input.floating wire:model="verified_on" :label="'Verified No'" type="date"/>
+                            <x-input.floating wire:model="verified" :label="'Verified'"/>
+                            <x-input.floating wire:model="remarks" :label="'Remarks'"/>
+                        </x-tabs.content>
+
+                    </x-slot>
+                </x-tabs.tab-panel>
                 <button wire:click.prevent="save"
                         class="w-full bg-emerald-500 p-2 rounded-lg border border-gray-400 hover:bg-emerald-600 text-lg text-white font-bold tracking-wider">
-                    Post Comment
+                    Post Activity
                 </button>
             </div>
         </div>

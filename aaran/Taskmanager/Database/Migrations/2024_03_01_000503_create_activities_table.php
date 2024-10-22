@@ -20,6 +20,8 @@ return new class extends Migration {
                 $table->string('end_on')->nullable();
                 $table->text('remarks')->nullable();
                 $table->string('active_id', 3)->nullable();
+                $table->string('verified')->nullable();
+                $table->string('verified_on')->nullable();
                 $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->timestamps();
             });
