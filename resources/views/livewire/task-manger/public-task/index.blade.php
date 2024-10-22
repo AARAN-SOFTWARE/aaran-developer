@@ -7,9 +7,10 @@
 
         <x-forms.top-controls :show-filters="$showFilters"/>
 
-        <div class="flex flex-col sm:grid grid-cols-4 w-full gap-10">
+        <div class="w-full grid grid-cols-3 gap-y-5 gap-x-10">
             @foreach($list as $index=>$row)
-                <x-cards.card-3 :id="$row->id"
+
+                <x-cards.cardNew :id="$row->id"
                                 :title="$row->vname"
                                 :description="$row->body"
                                 :status="\App\Enums\Status::tryFrom($row->status)->getName()"
@@ -19,6 +20,7 @@
                                 :slides="\App\Livewire\TaskManger\PublicTask\Index::getTaskImage($row->id)"
                                 :read-moer="route('task.upsert',[$row->id])"
                 />
+
             @endforeach
         </div>
     </x-forms.m-panel>
