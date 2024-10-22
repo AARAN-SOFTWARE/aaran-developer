@@ -22,9 +22,8 @@ class Upsert extends Component
     public $end_on;
     public $cdate;
     public $task_id;
-    public $task_name;
     public  $verified = '';
-       public $verified_on = '';
+       public $verified_on;
     #endregion
 
     public function mount($id)
@@ -32,6 +31,7 @@ class Upsert extends Component
         $this->taskData=Task::find($id);
         $this->taskImage = TaskImage::where('task_id', $id)->get()->toarray();
         $this->task_id=$id;
+        $this->common->active_id=1;
     }
 
     #region[getSave]
@@ -48,6 +48,8 @@ class Upsert extends Component
                 'cdate' => $this->cdate,
                 'remarks' => $this->remarks,
                 'user_id' => auth()->id(),
+                'verified'=>$this->verified,
+                'verified_on'=>$this->verified_on,
             ];
             $this->common->save($activity, $extraFields);
             $this->clearFields();
@@ -63,6 +65,8 @@ class Upsert extends Component
                 'cdate' => $this->cdate,
                 'remarks' => $this->remarks,
                 'user_id' => auth()->id(),
+                'verified'=>$this->verified,
+                'verified_on'=>$this->verified_on,
             ];
             $this->common->edit($activity, $extraFields);
             $this->clearFields();
@@ -87,6 +91,8 @@ class Upsert extends Component
             $this->end_on = $activity->end_on;
             $this->cdate = $activity->cdate;
             $this->remarks = $activity->remarks;
+            $this->verified = $activity->verified;
+            $this->verified_on = $activity->verified_on;
             $this->common->active_id = $activity->active_id;
             return $activity;
         }
@@ -99,9 +105,8 @@ class Upsert extends Component
     {
         $this->common->vid = '';
         $this->common->vname = '';
-        $this->task_id = '';
-        $this->task_name = '';
         $this->common->active_id = '1';
+        $this->cdate='';
         $this->estimated = '';
         $this->duration = '';
         $this->start_on = '';
@@ -114,7 +119,10 @@ class Upsert extends Component
 
     public function getList()
     {
-        return Activities::select('activities.*')->where('task_id',$this->taskData->id)->orderBy('id','asc')->paginate($this->getListForm->perPage);
+        return Activities::select('activities.*')
+            ->where('task_id',$this->taskData->id)
+            ->orderBy('id','asc')
+            ->paginate($this->getListForm->perPage);
     }
 
     public function render()
