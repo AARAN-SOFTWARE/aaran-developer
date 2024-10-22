@@ -21,4 +21,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified',
     Route::get('/test', App\Livewire\Test\Index::class)->name('test');
 
     Route::get('sys', App\Livewire\Sys\Artisan\Migration::class)->name('sys');
+
+    Route::get('softVersion', App\Livewire\SoftVersion\Index::class)->name('softVersion');
+    Route::get('softVersion/{id}/show', App\Livewire\SoftVersion\Upsert::class)->name('softVersion.show');
 });
