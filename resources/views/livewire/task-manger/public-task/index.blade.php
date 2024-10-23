@@ -7,7 +7,7 @@
 
         <x-forms.top-controls :show-filters="$showFilters"/>
 
-        <div class="w-full grid grid-cols-3 gap-y-5 gap-x-10">
+        <div class="w-9/12 mx-auto flex-col flex gap-y-10 py-16">
             @foreach($list as $index=>$row)
 
                 <x-cards.cardNew :id="$row->id"
@@ -19,6 +19,8 @@
                                 :createdBy="\App\Models\User::getName($row->user_id)"
                                 :slides="\App\Livewire\TaskManger\PublicTask\Index::getTaskImage($row->id)"
                                 :read-moer="route('task.upsert',[$row->id])"
+                                 :createdAt="$row->created_at->diffForHumans()"
+                                 :updatedAt="$row->updated_at->diffForHumans()"
                 />
 
             @endforeach
