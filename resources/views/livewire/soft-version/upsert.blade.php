@@ -15,8 +15,7 @@
                     </a>
                 </div>
 
-
-                <div class="flex flex-wrap w-8/12 mx-auto md:flex-nowrap my-5 justify-center">
+                <div class="flex flex-wrap w-8/12 mx-auto md:flex-nowrap my-5 justify-center ">
 
                     <div class="md:flex-grow border border-gray-200 p-5 rounded-lg ">
 
@@ -31,7 +30,7 @@
 
                         </div>
 
-                        <div class="border-t border-gray-200 pt-4">
+                        <div class="border-t border-gray-200 pt-4 w-full">
 
                             <div class="flex flex-col space-y-5">
                                 <span class="text-2xl font-medium text-gray-900 title-font capitalize">{{$softVersion->title}}</span>
@@ -40,7 +39,7 @@
                                         src="{{URL(\Illuminate\Support\Facades\Storage::url('/images/'.$softVersion->image))}}"
                                         alt="{{$softVersion->image}}" class="h-[25rem] w-full"/>
 
-                                <span class="leading-relaxed">{!! $softVersion->body !!}</span>
+                                <span class="leading-relaxed w-full">{!! $softVersion->body !!}</span>
                             </div>
 
                         </div>
