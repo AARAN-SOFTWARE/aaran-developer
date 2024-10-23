@@ -7,17 +7,19 @@
 
         <x-forms.top-controls :show-filters="$showFilters"/>
 
-        <div class="w-full grid grid-cols-3 gap-y-5 gap-x-10">
+        <div class="w-9/12 mx-auto flex-col flex gap-y-10 py-16">
             @foreach($list as $index=>$row)
                 <x-cards.cardNew :id="$row->id"
-                                :title="$row->vname"
-                                :description="$row->body"
-                                :status="\App\Enums\Status::tryFrom($row->status)->getName()"
-                                :priority="\App\Enums\Priority::tryFrom($row->priority)->getName()"
-                                :allocated="\App\Models\User::getName($row->allocated)"
-                                :createdBy="\App\Models\User::getName($row->user_id)"
-                                :slides="\App\Livewire\TaskManger\ViewAll\Index::getTaskImage($row->id)"
-                                :read-moer="route('task.upsert',[$row->id])"
+                                 :title="$row->vname"
+                                 :description="$row->body"
+                                 :status="\App\Enums\Status::tryFrom($row->status)->getName()"
+                                 :priority="\App\Enums\Priority::tryFrom($row->priority)->getName()"
+                                 :allocated="\App\Models\User::getName($row->allocated)"
+                                 :createdBy="\App\Models\User::getName($row->user_id)"
+                                 :slides="\App\Livewire\TaskManger\ViewAll\Index::getTaskImage($row->id)"
+                                 :read-moer="route('task.upsert',[$row->id])"
+                                 :createdAt="$row->created_at->diffForHumans()"
+                                 :updatedAt="$row->updated_at->diffForHumans()"
                 />
             @endforeach
         </div>
@@ -63,7 +65,6 @@
                         <option value="{{$status->value}}">{{$status->getName()}}</option>
                     @endforeach
                 </x-input.model-select>
-
 
 
                 <!-- Image  ----------------------------------------------------------------------------------------------->
