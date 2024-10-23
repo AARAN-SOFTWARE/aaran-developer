@@ -7,11 +7,15 @@ use Aaran\Taskmanager\Models\Reply;
 use Aaran\Taskmanager\Models\Task;
 use Aaran\Taskmanager\Models\TaskImage;
 use App\Livewire\Trait\CommonTraitNew;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Upsert extends Component
 {
     use CommonTraitNew;
+    use WithFileUploads;
     public $taskData;
     public $taskImage;
     #region[property]
@@ -24,18 +28,96 @@ class Upsert extends Component
     public $task_id;
     public  $verified = '';
        public $verified_on;
+
+    public $taskTitle;
+    public $body;
+    public $allocated;
+    public $priority;
+    public $status;
+    public $images=[];
+    public $old_images=[];
+
+
     #endregion
 
     public function mount($id)
     {
         $this->taskData=Task::find($id);
+//        dd($this->taskData);
         $this->taskImage = TaskImage::where('task_id', $id)->get()->toarray();
         $this->task_id=$id;
         $this->common->active_id=1;
+        $this->taskTitle=$this->taskData->vname;
+        $this->body = $this->taskData->body;
+        $this->allocated = $this->taskData->allocated;
+        $this->priority = $this->taskData->priority;
+        $this->status = $this->taskData->status;
+        $this->old_images=TaskImage::where('task_id',$id)->get();
     }
 
+    public function getsave()
+    {
+        $this->taskData->vname=$this->taskTitle;
+        $this->taskData->body = $this->body;
+        $this->taskData->allocated = $this->allocated;
+        $this->taskData->priority = $this->priority;
+        $this->taskData->status = $this->status;
+        $this->taskData->save();
+        $this->saveTaskImage($this->task_id);
+        $this->getRoute();
+    }
+
+    public function saveTaskImage($id)
+    {
+        foreach ($this->old_images as $old_image) {
+            $old_image->save();
+        }
+
+        if ($this->images!=[]){
+            foreach ($this->images as $image){
+                TaskImage::create([
+                    'task_id'=>$id,
+                    'image'=>$this->saveImage($image),
+                ]);
+            }
+        }
+    }
+
+    public function DeleteImage($id)
+    {
+        if ($id){
+            $obj=TaskImage::find($id);
+            if (Storage::disk('public')->exists(Storage::path('public/images/' . $obj->image))) {
+                Storage::disk('public')->delete(Storage::path('public/images/' .$obj->image));
+            }
+            $obj->delete();
+        }
+    }
+
+    public function saveImage($image)
+    {
+        if ($image) {
+
+            $filename = $image->getClientOriginalName();
+
+
+            $image->storeAs('/images', $filename,'public');
+
+            return $filename;
+
+        } else {
+            return 'no image';
+        }
+    }
+
+    public function editTask()
+    {
+        $this->showEditModal=true;
+    }
+
+
     #region[getSave]
-    public function getSave(): void
+    public function getSaveActivity(): void
     {
         if ($this->common->vid == '') {
             $activity = new Activities();
@@ -115,6 +197,12 @@ class Upsert extends Component
         $this->verified = '';
         $this->verified_on = '';
     }
+
+    public function editActivity($id)
+    {
+        $this->clearFields();
+        $this->getObj($id);
+    }
     #endregion
 
     public function getList()
@@ -125,8 +213,13 @@ class Upsert extends Component
             ->paginate($this->getListForm->perPage);
     }
 
+    public function getRoute()
+    {
+        return redirect(route('task.upsert',[$this->task_id]));
+    }
+
     public function render()
     {
-        return view('livewire.task-manger.task.upsert')->with(['list'=>$this->getList(),]);
+        return view('livewire.task-manger.task.upsert')->with(['list'=>$this->getList(), 'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),]);
     }
 }

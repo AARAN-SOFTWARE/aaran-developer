@@ -15,6 +15,8 @@
                                 :description="$row->body"
                                 :status="\App\Enums\Status::tryFrom($row->status)->getName()"
                                 :priority="\App\Enums\Priority::tryFrom($row->priority)->getName()"
+                                 :colorStatus="\App\Enums\Status::tryFrom($row->status)->getStyle()"
+                                 :colorPrior="\App\Enums\Priority::tryFrom($row->priority)->getStyle()"
                                 :allocated="\App\Models\User::getName($row->allocated)"
                                 :createdBy="\App\Models\User::getName($row->user_id)"
                                 :slides="\App\Livewire\TaskManger\AllTask\Index::getTaskImage($row->id)"

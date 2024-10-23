@@ -6,14 +6,15 @@
 
     <x-forms.m-panel>
         <div class="max-w-7xl mx-auto p-10 space-y-8">
-
-            <div class="inline-flex">
-                <div class="text-5xl">{{$taskData->id}}.</div>
-
-                <div class="text-5xl font-bold tracking-wider">{{$taskData->vname}}</div>
-
+            <div class="flex justify-between items-center">
+                <div class="inline-flex">
+                    <div class="text-5xl">{{$taskData->id}}.</div>
+                    <div class="text-5xl font-bold tracking-wider">{{$taskData->vname}}</div>
+                </div>
+                <div>
+                    <x-button.edit wire:click="editTask"/>
+                </div>
             </div>
-
             <div class="hidden lg:flex justify-between mb-6">
                 <a href="{{route('publicTask')}}"
                    class="transition-colors duration-300 relative inline-flex items-center text-lg hover:text-blue-500">
@@ -127,26 +128,26 @@
             <!-- Activity ----------------------------------------------------------------------------------------->
 
 
-                        <div class="w-full h-96 overflow-scroll p-5 space-y-2">
-                            @foreach($list as $index=>$row)
-                                <div class="bg-gray-50 border border-gray-200 p-5 space-y-2 rounded-lg">
-                                    <div class="flex justify-between">
-                                        <div class="text-indigo-500">By : {{$row->user->name}}
-                                            | {{$row->created_at->diffForHumans()}}  </div>
-                                        <div class="flex justify-center items-center gap-4 self-center">
-                                            <x-button.edit wire:click="edit({{$row->id}})"/>
-                                            <x-button.delete wire:click="getDelete({{$row->id}})"/>
-                                        </div>
-                                    </div>
-                                    <div class="text-justify text-slate-700"> {!! $row->vname !!} </div>
-                                </div>
-                            @endforeach
+            <div class="w-full h-96 overflow-scroll p-5 space-y-2">
+                @foreach($list as $index=>$row)
+                    <div class="bg-gray-50 border border-gray-200 p-5 space-y-2 rounded-lg">
+                        <div class="flex justify-between">
+                            <div class="text-indigo-500">By : {{$row->user->name}}
+                                | {{$row->created_at->diffForHumans()}}  </div>
+                            <div class="flex justify-center items-center gap-4 self-center">
+                                <x-button.edit wire:click="editActivity({{$row->id}})"/>
+                                <x-button.delete wire:click="getDelete({{$row->id}})"/>
+                            </div>
                         </div>
+                        <div class="text-justify text-slate-700"> {!! $row->vname !!} </div>
+                    </div>
+                @endforeach
+            </div>
 
             {{--            <!--Comments ---------------------------------------------------------------------------------------------->--}}
 
             <div class="space-y-5 h-[40rem]">
-                <x-tabs.tab-panel >
+                <x-tabs.tab-panel>
                     <x-slot name="tabs">
                         <x-tabs.tab>Activity</x-tabs.tab>
                         <x-tabs.tab>Duration</x-tabs.tab>
@@ -180,12 +181,118 @@
 
                     </x-slot>
                 </x-tabs.tab-panel>
-                <button wire:click.prevent="save"
+                <button wire:click.prevent="getSaveActivity"
                         class="w-full bg-emerald-500 p-2 rounded-lg border border-gray-400 hover:bg-emerald-600 text-lg text-white font-bold tracking-wider">
                     Post Activity
                 </button>
             </div>
         </div>
         <x-modal.delete/>
+
+        <x-forms.create :id="$task_id" :max-width="'6xl'">
+            <div class="flex flex-row space-x-5 w-full">
+                <div class="flex flex-col space-y-5 w-full">
+
+                    <x-input.floating wire:model="taskTitle" :label="'Title'"/>
+
+                    <x-input.rich-text wire:model="body" :placeholder="'Write the error'"/>
+
+                </div>
+
+                <!--Right Side -------------------------------------------------------------------------------------------->
+
+                <div class="flex flex-col space-y-5 w-full">
+
+                    <x-input.model-select wire:model="allocated" :label="'Allocated'">
+                        <option value="">Choose...</option>
+                        @foreach($users as $user)
+                            <option value="{{$user->id}}">{{$user->name}}</option>
+                        @endforeach
+                    </x-input.model-select>
+
+                    <x-input.model-select wire:model="priority" :label="'Priority'">
+                        <option value="">Choose...</option>
+                        @foreach(App\Enums\Priority::cases() as $priority)
+                            <option value="{{$priority->value}}">{{$priority->getName()}}</option>
+                        @endforeach
+                    </x-input.model-select>
+
+                    <x-input.model-select wire:model="status" :label="'Status'">
+                        <option value="">Choose...</option>
+                        @foreach(App\Enums\Status::cases() as $status)
+                            <option value="{{$status->value}}">{{$status->getName()}}</option>
+                        @endforeach
+                    </x-input.model-select>
+
+
+                    <!-- Image  ----------------------------------------------------------------------------------------------->
+
+                    <div class="flex flex-col py-2">
+                        <label for="bg_image"
+                               class="w-full text-zinc-500 tracking-wide pb-4 px-2">Image</label>
+
+                        <div class="flex flex-wrap gap-2">
+                            <div class="flex-shrink-0">
+                                <div>
+                                    @if($images)
+                                        <div class="flex gap-5">
+                                            @foreach($images as $image)
+                                                <div
+                                                    class=" flex-shrink-0 border-2 border-dashed border-gray-300 p-1 rounded-lg overflow-hidden">
+                                                    <img
+                                                        class="w-[156px] h-[89px] rounded-lg hover:brightness-110 hover:scale-105 duration-300 transition-all ease-out"
+                                                        src="{{ $image->temporaryUrl() }}"
+                                                        alt="{{$image?:''}}"/>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
+
+                                    @if(isset($old_images))
+                                        <div class="flex gap-5">
+                                            @foreach($old_images as $old_image)
+                                                <div
+                                                    class=" flex-shrink-0 border-2 border-dashed border-gray-300 p-1 rounded-lg overflow-hidden">
+                                                    <img
+                                                        class="w-[156px] h-[89px] rounded-lg hover:brightness-110 hover:scale-105 duration-300 transition-all ease-out"
+                                                        src="{{URL(\Illuminate\Support\Facades\Storage::url('images/'.$old_image->image))}}"
+                                                        alt="">
+                                                    <div class="flex justify-center items-center">
+                                                        <x-button.delete wire:click="DeleteImage({{$old_image->id}})"/>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <x-icons.icon :icon="'logo'" class="w-auto h-auto block "/>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="relative">
+                                <div>
+                                    <label for="bg_image"
+                                           class="text-gray-500 font-semibold text-base rounded flex flex-col items-center
+                                   justify-center cursor-pointer border-2 border-gray-300 border-dashed p-2
+                                   mx-auto font-[sans-serif]">
+                                        <x-icons.icon icon="cloud-upload" class="w-8 h-auto block text-gray-400"/>
+                                        Upload Photo
+                                        <input type="file" id='bg_image' wire:model="images" class="hidden" multiple/>
+                                        <p class="text-xs font-light text-gray-400 mt-2">PNG and JPG are
+                                            Allowed.</p>
+                                    </label>
+                                </div>
+
+                                <div wire:loading wire:target="images" class="z-10 absolute top-6 left-12">
+                                    <div class="w-14 h-14 rounded-full animate-spin
+                                                        border-y-4 border-dashed border-green-500 border-t-transparent"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </x-forms.create>
     </x-forms.m-panel>
 </div>
