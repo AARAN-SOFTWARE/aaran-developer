@@ -20,7 +20,7 @@
                         </a>
                     </div>
 
-                @foreach($list as $index=>$row)
+                    @foreach($list as $index=>$row)
 
                         <!-- left side card --------------------------------------------------------------------------->
 
@@ -65,18 +65,20 @@
 
                                 <!-- Title & Body --------------------------------------------------------------------->
 
-                                <div class="border-t border-gray-200 pt-4">
+                                <div class="border-t border-gray-200 pt-4 flex flex-col h-44">
 
                                     <div class="flex flex-col space-y-3">
                                         <span
                                             class="text-2xl font-medium text-gray-900 title-font capitalize">{{$row->title}}
                                         </span>
 
-                                        <span class="leading-relaxed line-clamp-2">{!! $row->body !!}</span>
+                                        <span class="leading-relaxed line-clamp-3 h-26 ">{!! $row->body !!}</span>
                                     </div>
+                                </div>
 
+                                <div class="my-4">
                                     <a href="{{route('softVersion.show',[$row->id])}}"
-                                       class="text-indigo-500 inline-flex items-center pt-12">Learn More
+                                       class="text-indigo-500 inline-flex items-center">Learn More
                                         <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" stroke="currentColor"
                                              stroke-width="2"
                                              fill="none"
@@ -85,8 +87,8 @@
                                             <path d="M12 5l7 7-7 7"></path>
                                         </svg>
                                     </a>
-
                                 </div>
+
                             </div>
                         </div>
                     @endforeach
