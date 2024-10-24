@@ -7,6 +7,7 @@ use Aaran\Taskmanager\Models\Reply;
 use Aaran\Taskmanager\Models\Task;
 use Aaran\Taskmanager\Models\TaskImage;
 use App\Livewire\Trait\CommonTraitNew;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -53,6 +54,8 @@ class Upsert extends Component
         $this->priority = $this->taskData->priority;
         $this->status = $this->taskData->status;
         $this->old_images=TaskImage::where('task_id',$id)->get();
+        $this->cdate=Carbon::now()->format('Y-m-d');
+        $this->verified_on=Carbon::now()->format('Y-m-d');
     }
 
     public function getsave()
@@ -166,7 +169,6 @@ class Upsert extends Component
             $this->common->vid = $activity->id;
             $this->common->vname = $activity->vname;
             $this->task_id = $activity->task_id;
-            $this->task_name = $activity->task->vname;
             $this->estimated = $activity->estimated;
             $this->duration = $activity->duration;
             $this->start_on = $activity->start_on;
@@ -188,14 +190,12 @@ class Upsert extends Component
         $this->common->vid = '';
         $this->common->vname = '';
         $this->common->active_id = '1';
-        $this->cdate='';
         $this->estimated = '';
         $this->duration = '';
         $this->start_on = '';
         $this->end_on = '';
         $this->remarks = '';
         $this->verified = '';
-        $this->verified_on = '';
     }
 
     public function editActivity($id)
