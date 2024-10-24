@@ -28,13 +28,13 @@ enum Priority : int
     public function getStyle(): string
     {
         return match ($this) {
-            self::NORMAL => 'text-gray-700 bg-gray-500',
-            self::IMPORTANT => 'text-yellow-700 bg-yellow-500',
-            self::PRIORITY => 'text-white bg-yellow-600',
-            self::TOPMOST => 'text-red-700 bg-red-300',
-            self::MOST_IMPORTANT => 'text-zinc-200 bg-red-700',
-            self::URGENT => 'text-sky-200 bg-sky-700',
-            self::MOST_URGENT => 'text-orange-200 bg-orange-700',
+            self::NORMAL => 'text-white bg-amber-500',
+            self::IMPORTANT => 'text-white bg-orange-500',
+            self::PRIORITY => 'text-white bg-pink-500',
+            self::TOPMOST => 'text-white bg-red-500',
+            self::MOST_IMPORTANT => 'text-white bg-green-500',
+            self::URGENT => 'text-white bg-sky-500',
+            self::MOST_URGENT => 'text-white bg-violet-500',
         };
     }
 

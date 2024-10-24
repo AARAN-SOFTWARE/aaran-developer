@@ -34,17 +34,24 @@ enum Status : int
     public function getStyle(): string
     {
         return match ($this) {
-            self::NEW => 'text-gray-500 bg-gray-300',
-            self::PENDING => 'text-white bg-gray-600',
-            self::ONPROGRESS => 'text-black bg-blue-300',
-            self::NOTSTARTED => 'text-gray-100 bg-gray-500',
-            self::ARCHIVED => 'text-red-200 bg-slate-300',
-            self::FINISHED => 'text-white bg-green-500',
-            self::CLOSED => 'text-black bg-green-400',
-            self::NOTACTIVE => 'text-zinc-200 bg-red-700',
-            self::RECEIVED => 'text-white bg-green-600',
-            self::ADMINCLOSED => 'text-blue-100 bg-purple-100',
+            self::NEW => 'text-white bg-green-500',
+            self::PENDING => 'text-white bg-red-500',
+            self::ONPROGRESS => 'text-white bg-orange-500',
+            self::NOTSTARTED => 'text-white bg-amber-500',
+            self::ARCHIVED => 'text-white bg-emerald-500',
+            self::FINISHED => 'text-white bg-gray-500',
+            self::CLOSED => 'text-white bg-sky-500',
+            self::NOTACTIVE => 'text-white bg-rose-500',
+            self::RECEIVED => 'text-white bg-indigo-600',
+            self::ADMINCLOSED => 'text-white bg-violet-100',
         };
     }
 
 }
+//lime
+//cyan
+//purple
+//fuchsia
+//slate
+//stone
+
