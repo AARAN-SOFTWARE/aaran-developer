@@ -19,17 +19,18 @@
 
         <div class="sm:text-5xl text-xl font-semibold animate__animated wow animate__backInRight"
              data-wow-duration="3s">
-            We Design and develop anyone to start, run and grow their business from anywhere
+            We Design and develop anyone to start, run and grow your business from anywhere
         </div>
 
         <div class="text-sm text-gray-600 animate__animated wow animate__backInRight" data-wow-duration="3s">
 
-            My name is Sundar. I've started freelancing aged 25, with Dubai International Airport as my very first paying client.
+            My name is Sundar. I've started freelancing aged 25, with tiruppur friend garment industry as my very first paying client.
             <br/><br/>
-            However fun and satisfying freelancing can be, I had to constantly jump between apps, duplicate data between apps, pay multiple subscriptions
+            However fun and satisfying freelancing can be, I had to constantly jump between apps, organise their data, pay multiple subscriptions
             and then use even more apps to “connect” them all together - I was sunk in a productivity maze, which pulled me back from growing the business.
             <br/><br/>
-            That's when we've decided to build Codexsun - the most intuitive and deeply customisable platform anyone would ever need to start, run and grow their business from anywhere.
+            That's when we've decided to build Codexsun - the most intuitive and deeply customisable platform anyone would ever need to start,
+            run and grow their business from anywhere.
         </div>
 
 {{--        <div class="grid sm:grid-cols-2 grid-cols-1 sm:gap-1 gap-y-3">--}}
