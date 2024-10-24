@@ -43,7 +43,7 @@ shadow-md print:hidden">
                                     <button
                                         class="flex sm:text-sm text-xs border-2 border-gray-300 rounded-full
                                         focus:outline-none focus:border-gray-300 transition">
-                                        <img class="h-10 w-12 rounded-full object-cover"
+                                        <img class="h-10 w-10 rounded-full object-cover"
                                              src="{{ Auth::user()->profile_photo_url }}"
                                              alt="{{ Auth::user()->name }}"/>
                                     </button>

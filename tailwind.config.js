@@ -17,7 +17,8 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
                 roboto:["Roboto Condensed", "sans-serif"],
                 asul:["Asul", "sans-serif"],
-                merri:["Merriweather", "sans-serif"]
+                merri:["Merriweather", "sans-serif"],
+                lex: ["Lexend", "sans-serif"]
 
             },
             screens: {
