@@ -5,37 +5,31 @@
     <!-- Top Control ------------------------------------------------------------------------------------------------>
 
     <x-forms.m-panel>
-        <div class="max-w-7xl mx-auto p-10 space-y-8">
-            <div class="flex justify-between items-center">
-                <div class="inline-flex">
-                    <div class="text-5xl">{{$taskData->id}}.</div>
-                    <div class="text-5xl font-bold tracking-wider">{{$taskData->vname}}</div>
-                </div>
+        <div class="max-w-7xl mx-auto p-10 space-y-8 font-lex">
+
+            <div class="inline-flex items-center space-x-2 font-merri">
+                <div class="text-5xl text-gray-700">{{$taskData->id}}.</div>
+                <div class="text-5xl font-bold tracking-wider capitalize text-gray-700">{{$taskData->vname}}</div>
+            </div>
+            <div class="hidden lg:flex justify-between">
+                <a href="{{route('publicTask')}}"
+                   class=" text-sm text-gray-600 gap-x-3 inline-flex items-center font-semibold hover:underline hover:decoration-blue-600 hover:text-blue-600 transition-all duration-300 ease-in-out">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                        <path fill-rule="evenodd"
+                              d="M4.72 9.47a.75.75 0 0 0 0 1.06l4.25 4.25a.75.75 0 1 0 1.06-1.06L6.31 10l3.72-3.72a.75.75 0 1 0-1.06-1.06L4.72 9.47Zm9.25-4.25L9.72 9.47a.75.75 0 0 0 0 1.06l4.25 4.25a.75.75 0 1 0 1.06-1.06L11.31 10l3.72-3.72a.75.75 0 0 0-1.06-1.06Z"
+                              clip-rule="evenodd"/>
+                    </svg>
+                    Back to Task
+                </a>
                 <div>
                     <x-button.edit wire:click="editTask"/>
                 </div>
             </div>
-            <div class="hidden lg:flex justify-between mb-6">
-                <a href="{{route('publicTask')}}"
-                   class="transition-colors duration-300 relative inline-flex items-center text-lg hover:text-blue-500">
-                    <svg width="22" height="22" viewBox="0 0 22 22" class="mr-2">
-                        <g fill="none" fill-rule="evenodd">
-                            <path stroke="#000" stroke-opacity=".012" stroke-width=".5"
-                                  d="M21 1v20.16H.84V1z">
-                            </path>
-                            <path class="fill-current"
-                                  d="M13.854 7.224l-3.847 3.856 3.847 3.856-1.184 1.184-5.04-5.04 5.04-5.04z">
-                            </path>
-                        </g>
-                    </svg>
-                    Back to Task
-                </a>
-            </div>
 
-            <div class="w-full">
+            <div class="w-full shadow-md shadow-gray-700 rounded-lg overflow-hidden">
                 @if($taskImage)
 
-                    <div class="h-[40rem] md:h-[40rem] overflow-hidden">
+                    <div class="w-full h-[40rem] md:h-[40rem] overflow-hidden ">
                         <div x-data="{
             slides: [
                 @foreach($taskImage as $row)
@@ -43,7 +37,6 @@
                                     imgSrc: '{{URL(\Illuminate\Support\Facades\Storage::url('images/'.$row['image']))}}',
                                     imgAlt: '{{URL(\Illuminate\Support\Facades\Storage::url('images/'.$row['image']))}}',
                                 },
-
                  @endforeach
                                 ],
                                 currentSlideIndex: 1,
@@ -63,7 +56,7 @@
                                         this.currentSlideIndex = 1
                                     }
                                 },
-                            }" class="relative w-full overflow-hidden">
+                            }" class="relative w-full overflow-hidden ">
 
                             <!-- previous button -->
                             <button type="button"
@@ -87,12 +80,12 @@
                             </button>
 
                             <!-- slides -->
-                            <div class="relative h-[40rem] md:h-[40rem] w-full">
-                                <template x-for="(slide, index) in slides">
+                            <div class="relative h-[40rem] md:h-[40rem] w-full overflow-hidden ">
+                                <template x-for="(slide, index) in slides" class="">
                                     <div x-cloak x-show="currentSlideIndex == index + 1" class="absolute inset-0"
                                          x-transition.opacity.duration.300ms>
                                         <img
-                                            class="absolute w-full h-full inset-0 object-cover text-slate-700 dark:text-slate-300"
+                                            class="absolute w-full h-full inset-0 text-slate-700 dark:text-slate-300 "
                                             x-bind:src="slide.imgSrc" x-bind:alt="slide.imgAlt"/>
                                     </div>
                                 </template>
@@ -109,44 +102,65 @@
                 @endif
             </div>
 
-            <div>
-                <div class="flex  items-center gap-1 font-medium">
-                    <div>Created By : {{$taskData->user->name}} | {{$taskData->created_at->diffForHumans()}}</div>
-                    <div>| Allocated To : {{\Aaran\Taskmanager\Models\Task::allocate($taskData->allocated)}}</div>
-                    <div>| Priority To :</div>
-                    <div
-                        class="bg-yellow-200/50 text-yellow-600 px-2 rounded-full py-0.5">{{ \App\Enums\Priority::tryFrom($taskData->priority)->getName() }}</div>
-                    <div>| Status :</div>
-                    <div
-                        class="bg-sky-200/50 text-sky-600 px-2 rounded-full py-0.5">{{ \App\Enums\Status::tryFrom($taskData->status)->getName() }}</div>
+            <div class="flex  items-center font-semibold text-sm font-lex gap-x-5">
+                <div>Created By : <span class="text-red-600">{{$taskData->user->name}}</span></div>
+                <div class="border-l-2 h-5 border-gray-400"></div>
+
+                <div class="text-gray-600">  {{$taskData->created_at->diffForHumans()}}</div>
+                <div class="border-l-2 h-5 border-gray-400"></div>
+                <div> Allocated To : <span
+                        class="text-indigo-600">{{\Aaran\Taskmanager\Models\Task::allocate($taskData->allocated)}}</span>
                 </div>
+                <div class="border-l-2  h-5 border-gray-400"></div>
+
+                <div> Priority To :</div>
+                <div
+                    class="text-xs px-2 rounded-full py-0.5 {{ \App\Enums\Priority::tryFrom($taskData->priority)->getStyle() }}">{{ \App\Enums\Priority::tryFrom($taskData->priority)->getName() }}</div>
+                <div class="border-l-2 h-5 border-gray-400"></div>
+
+                <div> Status :</div>
+                <div
+                    class="text-xs px-2 rounded-full py-0.5 {{ \App\Enums\Status::tryFrom($taskData->status)->getStyle() }}">{{ \App\Enums\Status::tryFrom($taskData->status)->getName() }}</div>
             </div>
 
-            <div class="text-xl text-justify p-4">{!! $taskData->body !!}</div>
-            <div class="border-b-2 border-gray-400">&nbsp;</div>
+            <div class="text-sm text-justify leading-loose ">{!! $taskData->body !!}</div>
+            <div class="border-b-2 border-gray-600">&nbsp;</div>
 
             <!-- Activity ----------------------------------------------------------------------------------------->
 
+            <div class="w-full h-96 overflow-scroll space-y-2 font-lex pr-2">
+                @forelse($list as $index=>$row)
+                    <div class="bg-gray-50 border border-gray-200 space-y-2 rounded-lg">
+                        <div class="flex justify-between items-center gap-x-5 p-5 border-b">
+                            <div class=" flex flex-col items-center gap-x-4">
+                                <div class="flex items-center gap-x-2">
+                                    <div class="w-10 h-10 rounded-full overflow-hidden">
+                                        <img src="{{$row->user->profile_photo_url}}" alt="">
+                                    </div>
+                                    <div class="flex-col flex">
+                                        <div class="text-indigo-600">{{$row->user->name}}</div>
+                                        <div
+                                            class="text-gray-600 text-xs"> {{$row->created_at->diffForHumans()}}  </div>
 
-            <div class="w-full h-96 overflow-scroll p-5 space-y-2">
-                @foreach($list as $index=>$row)
-                    <div class="bg-gray-50 border border-gray-200 p-5 space-y-2 rounded-lg">
-                        <div class="flex justify-between">
-                            <div class="text-indigo-500">By : {{$row->user->name}}
-                                | {{$row->created_at->diffForHumans()}}  </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="flex justify-center items-center gap-4 self-center">
                                 <x-button.edit wire:click="editActivity({{$row->id}})"/>
                                 <x-button.delete wire:click="getDelete({{$row->id}})"/>
                             </div>
                         </div>
-                        <div class="text-justify text-slate-700"> {!! $row->vname !!} </div>
+                        <div
+                            class="text-justify text-slate-700 min-h-20 p-5 text-sm text-gray-600 bg-white w-full"> {!! $row->vname !!} </div>
                     </div>
-                @endforeach
+                    @empty
+                    <div class="flex-col flex justify-start items-center border rounded-md">
+                        <div class="w-full bg-gray-100 p-2 " >No Activities yet</div>
+                        <div class="w-full px-2 py-4">Empty Remarks</div>
+                    </div>
+                @endforelse
             </div>
-
-            {{--            <!--Comments ---------------------------------------------------------------------------------------------->--}}
-
-            <div class="space-y-5 h-[40rem]">
+            <div class="w-full space-y-5">
                 <x-tabs.tab-panel>
                     <x-slot name="tabs">
                         <x-tabs.tab>Activity</x-tabs.tab>
@@ -181,10 +195,12 @@
 
                     </x-slot>
                 </x-tabs.tab-panel>
-                <button wire:click.prevent="getSaveActivity"
-                        class="w-full bg-emerald-500 p-2 rounded-lg border border-gray-400 hover:bg-emerald-600 text-lg text-white font-bold tracking-wider">
-                    Post Activity
-                </button>
+                <div class="w-full flex items-center justify-end ">
+                    <button wire:click.prevent="getSaveActivity"
+                            class="bg-green-600 text-white px-4 py-2 rounded-md">
+                        Post Activity
+                    </button>
+                </div>
             </div>
         </div>
         <x-modal.delete/>
