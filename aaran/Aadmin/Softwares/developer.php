@@ -13,6 +13,7 @@ return [
         Customise::taskManager(),
         Customise::projects(),
         Customise::installations(),
+        Customise::issueManagement(),
     ],
 
 ];

@@ -29,6 +29,10 @@
             {{--                <x-menu.sub.master/>--}}
             {{--            @endif--}}
 
+            @if(Aaran\Aadmin\Src\Customise::hasTaskManager())
+                <x-menu.sub.issue/>
+            @endif
+
 
             @if(Aaran\Aadmin\Src\Customise::hasTaskManager())
                 <x-menu.sub.task/>

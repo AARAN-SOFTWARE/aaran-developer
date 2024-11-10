@@ -89,7 +89,7 @@ class Customise
     }
     #endregion
 
-    #region[Contact]
+    #region[Installation]
     public static function hasInstallation(): bool
     {
         return static::enabled(static::installations());
@@ -98,6 +98,18 @@ class Customise
     public static function installations(): string
     {
         return 'installation';
+    }
+    #endregion
+
+    #region[Issue management]
+    public static function hasIssueManagement(): bool
+    {
+        return static::enabled(static::issueManagement());
+    }
+
+    public static function issueManagement(): string
+    {
+        return 'issueManagement';
     }
     #endregion
 

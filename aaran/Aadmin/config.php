@@ -2,11 +2,9 @@
 
 return [
 
-    'soft_version' => '1.0.0',
+    // software version => software version . sub version . database . git . app code
 
-    'db_version' => '1.0.0',
-
-    'git_version' => '#92',
+    'soft_version' => '1.0.0.31.100',
 
     'current_acyear' => '2024_25',
 

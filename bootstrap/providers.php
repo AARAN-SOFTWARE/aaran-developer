@@ -16,5 +16,6 @@ return [
     Aaran\Taskmanager\Providers\TaskmanagerServiceProvider::class,
 
     Aaran\Installation\Providers\InstallationServiceProvider::class,
+    Aaran\IssueManagement\Providers\IssueServiceProvider::class,
 
 ];
