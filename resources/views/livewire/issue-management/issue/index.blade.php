@@ -75,20 +75,29 @@
                 @foreach($list as $index=>$row)
                     <x-table.row>
 
-                        <x-table.cell-text class="{{App\Enums\Priority::tryFrom($row->priority_id)->getStyle()}}" center>
+                        <x-table.cell-text class="{{App\Enums\Priority::tryFrom($row->priority_id)->getStyle()}}"
+                                           center>
                             {{$row->id}}
                         </x-table.cell-text>
 
-                        <x-table.cell-text left><span class="capitalize">{{$row->vname}}</span></x-table.cell-text>
-
-                        <x-table.cell-text left><span class="capitalize">{!! $row->body !!}</span></x-table.cell-text>
-
-                        <x-table.cell-text center><span class="capitalize">{{$row->module->vname}}</span>
+                        <x-table.cell-text left>
+                            <a href="{{route('issues.activities',[$row->id])}}" class="capitalize">{{$row->vname}}</a>
                         </x-table.cell-text>
 
-                        <x-table.cell-text center><span class="capitalize">{{$row->assignee->name}}</span>
+                        <x-table.cell-text left>
+                            <a href="{{route('issues.activities',[$row->id])}}"
+                               class="capitalize">{!! $row->body !!}</a>
                         </x-table.cell-text>
 
+                        <x-table.cell-text center>
+                            <a href="{{route('issues.activities',[$row->id])}}"
+                               class="capitalize">{{$row->module->vname}}</a>
+                        </x-table.cell-text>
+
+                        <x-table.cell-text center>
+                            <a href="{{route('issues.activities',[$row->id])}}"
+                               class="capitalize">{{$row->assignee->name}}</a>
+                        </x-table.cell-text>
 
 
                         <x-table.cell-text left><span class="capitalize">{{$row->due_date}}</span></x-table.cell-text>
