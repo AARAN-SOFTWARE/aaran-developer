@@ -36,7 +36,7 @@ class Activity extends Component
     public $images = [];
     public $old_images = [];
     public $status_id;
-    public $vdate;
+
     #endregion
 
     #region[Mount]
@@ -208,7 +208,6 @@ class Activity extends Component
             $extraFields = [
                 'issue_id' => $this->issue_id,
                 'status_id' => $this->status_id ?: '1',
-                'vdate' => $this->vdate,
                 'reporter_id' => auth()->id(),
             ];
             $this->common->save($IssueActivity, $extraFields);
@@ -219,7 +218,6 @@ class Activity extends Component
             $extraFields = [
                 'issue_id' => $this->issue_id,
                 'status_id' => $this->status_id,
-                'vdate' => $this->vdate,
                 'reporter_id' => auth()->id(),
             ];
             $this->common->edit($IssueActivity, $extraFields);
@@ -239,7 +237,6 @@ class Activity extends Component
             $this->common->vname = $IssueActivity->vname;
             $this->issue_id = $IssueActivity->issue_id;
             $this->status_id = $IssueActivity->status_id;
-            $this->vdate = Carbon::now()->format('Y-m-d');;
             $this->common->active_id = $IssueActivity->active_id;
             return $IssueActivity;
         }
@@ -254,7 +251,6 @@ class Activity extends Component
         $this->common->vname = '';
         $this->common->active_id = '1';
         $this->status_id = '';
-        $this->vdate = '';
     }
     #endregion
 

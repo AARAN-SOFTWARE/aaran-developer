@@ -101,29 +101,21 @@
 
             <!-- Create Activities ------------------------------------------------------------------------------------>
 
-            <div class="w-full space-y-5">
-                <x-tabs.tab-panel>
-                    <x-slot name="tabs">
-                        <x-tabs.tab>Activity</x-tabs.tab>
-                    </x-slot>
+            <div class="w-full space-y-2">
 
-                    <x-slot name="content">
-                        <x-tabs.content>
-                            <x-input.model-date wire:model="vdate" :label="'Date'"/>
+                <div class="bg-gray-200 p-1 rounded-md">
+                <x-input.textarea type="textarea" wire:model="common.vname"/>
+                </div>
 
-                            <x-input.model-select wire:model="status_id" :label="'Status'">
-                                <option value="">Choose...</option>
-                                @foreach(App\Enums\Status::cases() as $status)
-                                    <option value="{{$status->value}}">{{$status->getName()}}</option>
-                                @endforeach
-                            </x-input.model-select>
+                <div class="w-full flex items-center justify-between ">
 
-                            <x-input.textarea type="textarea" wire:model="common.vname"/>
-                        </x-tabs.content>
-                    </x-slot>
-                </x-tabs.tab-panel>
+                    <x-input.model-select class="w-64" wire:model="status_id" :label="'Status'">
+                        <option value="">Choose...</option>
+                        @foreach(App\Enums\Status::cases() as $status)
+                            <option value="{{$status->value}}">{{$status->getName()}}</option>
+                        @endforeach
+                    </x-input.model-select>
 
-                <div class="w-full flex items-center justify-end ">
                     <button wire:click.prevent="getSaveIssueActivity"
                             class="bg-green-600 text-white px-4 py-2 rounded-md">
                         Post Activity
@@ -131,6 +123,7 @@
                 </div>
             </div>
         </div>
+
         <x-modal.delete/>
 
 
