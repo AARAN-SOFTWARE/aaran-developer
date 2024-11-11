@@ -2,9 +2,14 @@
 
 namespace App\Livewire\IssueManagement\Issue;
 
+use Aaran\Common\Models\Common;
 use Aaran\IssueManagement\Models\Issue;
+use Aaran\IssueManagement\Models\IssueActivity;
 use Aaran\IssueManagement\Models\IssueImage;
 use App\Livewire\Trait\CommonTraitNew;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -15,78 +20,133 @@ class Activity extends Component
 
     use WithFileUploads;
 
-    #region[property]
-
+    #region[Properties]
+    public $issue_id;
+    public $issueData;
+    public $title;
+    public $issueImages;
+    public $body;
+    public $module;
+    public $priority;
+    public $status;
+    public $due_date;
+    public $assignee;
+    public $verified = '';
+    public $verified_on;
     public $images = [];
     public $old_images = [];
-
-    public Issue $issue;
-
+    public $status_id;
+    public $vdate;
     #endregion
 
-
-    #region[getSave]
-    public function mount($id = null)
+    #region[Mount]
+    public function mount($id): void
     {
-        if ($id) {
-          $this->issue =  $this->getObj($id);
-        }
+        $this->issueData = Issue::find($id);
+        $this->issueImages = IssueImage::where('issue_id', $id)->get()->toarray();
+        $this->issue_id = $id;
+        $this->common->active_id = 1;
+        $this->title = $this->issueData->vname;
+        $this->body = $this->issueData->body;
+        $this->module_id = $this->issueData->module_id;
+        $this->module_name = Common::find($this->issueData->module_id)->vname;
+        $this->assignee = $this->issueData->assignee_id;
+        $this->priority = $this->issueData->priority_id;
+        $this->status = $this->issueData->status_id;
+        $this->old_images = IssueImage::where('issue_id', $id)->get();
+        $this->due_date = Carbon::now()->format('Y-m-d');
+        $this->verified_on = Carbon::now()->format('Y-m-d');
     }
     #endregion
 
-    #region[getSave]
-    public function getSave(): void
+    #region[Save]
+    public function getsave()
     {
-        if ($this->common->vid == '') {
+        $this->issueData->vname = $this->title;
+        $this->issueData->body = $this->body;
+        $this->issueData->module_id = $this->module_id;
+        $this->issueData->assignee_id = $this->assignee;
+        $this->issueData->priority_id = $this->priority;
+        $this->issueData->status_id = $this->status;
+        $this->issueData->due_date = $this->due_date;
+        $this->issueData->save();
+        $this->saveIssueImage($this->issue_id);
+        $this->getRoute();
+    }
+    #endregion
 
-            $task = new Issue();
+    #region[module]
+    public $module_id = '';
+    public $module_name = '';
+    public Collection $moduleCollection;
+    public $highlightModule = 0;
+    public $moduleTyped = false;
 
-            $extraFields = [
-                'body' => $this->body,
-                'module_id' => $this->module_id,
-                'assignee_id' => $this->assignee_id,
-                'due_date' => $this->due_date,
-                'priority_id' => $this->priority_id,
-                'status_id' => $this->status_id,
-                'reporter_id' => auth()->id(),
-                'flag' => $this->flag,
-                'verified' => $this->verified,
-                'verified_on' => $this->verified_on,
-            ];
-
-            $this->common->save($task, $extraFields);
-            $this->saveIssueImage($task->id);
-            $this->clearFields();
-
-            $message = "Saved";
-
-        } else {
-
-            $task = Issue::find($this->common->vid);
-
-            $extraFields = [
-                'body' => $this->body,
-                'module_id' => $this->module_id,
-                'assignee_id' => $this->assignee_id,
-                'due_date' => $this->due_date,
-                'priority_id' => $this->priority_id,
-                'status_id' => $this->status_id,
-                'reporter_id' => auth()->id(),
-                'flag' => $this->flag,
-                'verified' => $this->verified,
-                'verified_on' => $this->verified_on,
-            ];
-
-            $this->common->edit($task, $extraFields);
-            $this->saveIssueImage($task->id);
-            $this->clearFields();
-
-            $message = "Updated";
+    public function decrementModule(): void
+    {
+        if ($this->highlightModule === 0) {
+            $this->highlightModule = count($this->moduleCollection) - 1;
+            return;
         }
-        $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
+        $this->highlightModule--;
     }
 
-    public function saveIssueImage($id): void
+    public function incrementModule(): void
+    {
+        if ($this->highlightModule === count($this->moduleCollection) - 1) {
+            $this->highlightModule = 0;
+            return;
+        }
+        $this->highlightModule++;
+    }
+
+    public function setModule($name, $id): void
+    {
+        $this->module_name = $name;
+        $this->module_id = $id;
+        $this->getModuleList();
+    }
+
+    public function enterModule(): void
+    {
+        $obj = $this->moduleCollection[$this->highlightModule] ?? null;
+
+        $this->module_name = '';
+        $this->moduleCollection = Collection::empty();
+        $this->highlightModule = 0;
+
+        $this->module_name = $obj['vname'] ?? '';
+        $this->module_id = $obj['id'] ?? '';
+    }
+
+    public function refreshModule($v): void
+    {
+        $this->module_id = $v['id'];
+        $this->module_name = $v['name'];
+        $this->moduleTyped = false;
+    }
+
+    public function moduleSave($name)
+    {
+        $obj = Common::create([
+            'label_id' => 24, // Assuming label_id for modules is 3
+            'vname' => $name,
+            'active_id' => '1'
+        ]);
+        $v = ['name' => $name, 'id' => $obj->id];
+        $this->refreshModule($v);
+    }
+
+    public function getModuleList(): void
+    {
+        $this->moduleCollection = $this->module_name ?
+            Common::search(trim($this->module_name))->where('label_id', '=', '24')->get() :
+            Common::where('label_id', '=', '24')->orWhere('label_id', '=', '24')->get();
+    }
+#endregion
+
+    #region[SaveIssueImage]
+    public function saveIssueImage($id)
     {
         foreach ($this->old_images as $old_image) {
             $old_image->save();
@@ -103,81 +163,7 @@ class Activity extends Component
     }
     #endregion
 
-    #region[getObj]
-    public function getObj($id)
-    {
-        if ($id) {
-            $obj = Issue::find($id);
-            $this->common->vid = $obj->id;
-            $this->common->vname = $obj->vname;
-            $this->body = $obj->body;
-            $this->module_id = $obj->module_id;
-            $this->assignee_id = $obj->assignee_id;
-            $this->assignee = $obj->assignee->name;
-            $this->due_date = $obj->due_date;
-            $this->priority_id = $obj->priority_id;
-            $this->status_id = $obj->status_id;
-            $this->reporter_id = $obj->reporter_id;
-            $this->reporter = $obj->reporter->name;
-            $this->flag = $obj->flag;
-            $this->verified = $obj->verified;
-            $this->verified_on = $obj->verified_on;
-            $this->common->active_id = $obj->active_id;
-            $this->old_images = IssueImage::where('issue_id', $id)->get();
-            return $obj;
-        }
-        return null;
-    }
-
-    public function getIssueImage($id)
-    {
-        $data = IssueImage::where('task_id', $id)->get();
-        $arrayImage = [];
-        foreach ($data as $key => $value) {
-            $arrayImage[$key]['imgSrc'] = URL(\Illuminate\Support\Facades\Storage::url('images/' . $value->image));
-        }
-        return $arrayImage;
-    }
-    #endregion
-
-    #region[Clear Fields]
-    public function clearFields(): void
-    {
-        $this->common->vid = '';
-        $this->common->vname = '';
-        $this->common->active_id = '1';
-        $this->body = '';
-        $this->module_id = '';
-        $this->assignee_id = '';
-        $this->due_date = '';
-        $this->priority_id = '';
-        $this->status_id = '';
-        $this->reporter_id = '';
-        $this->flag = '';
-        $this->verified = '';
-        $this->verified_on = '';
-        $this->images = [];
-        $this->old_images = [];
-    }
-    #endregion
-
-    #region[image]
-    public function saveImage($image)
-    {
-        if ($image) {
-
-            $filename = $image->getClientOriginalName();
-
-
-            $image->storeAs('/images', $filename, 'public');
-
-            return $filename;
-
-        } else {
-            return 'no image';
-        }
-    }
-
+    #region[Delete Image]
     public function DeleteImage($id)
     {
         if ($id) {
@@ -188,22 +174,109 @@ class Activity extends Component
             $obj->delete();
         }
     }
-
     #endregion
 
+    #region[SaveImage]
+    public function saveImage($image)
+    {
+        if ($image) {
+
+            $filename = $image->getClientOriginalName();
+
+            $image->storeAs('/images', $filename, 'public');
+
+            return $filename;
+
+        } else {
+            return 'no image';
+        }
+    }
+    #endregion
+
+    #region[EditIssue]
+    public function editIssue()
+    {
+        $this->showEditModal = true;
+    }
+    #endregion
+
+    #region[getSave]
+    public function getSaveIssueActivity(): void
+    {
+        if ($this->common->vid == '') {
+            $IssueActivity = new IssueActivity();
+            $extraFields = [
+                'issue_id' => $this->issue_id,
+                'status_id' => $this->status_id ?: '1',
+                'vdate' => $this->vdate,
+                'reporter_id' => auth()->id(),
+            ];
+            $this->common->save($IssueActivity, $extraFields);
+            $this->clearFields();
+            $message = "Saved";
+        } else {
+            $IssueActivity = IssueActivity::find($this->common->vid);
+            $extraFields = [
+                'issue_id' => $this->issue_id,
+                'status_id' => $this->status_id,
+                'vdate' => $this->vdate,
+                'reporter_id' => auth()->id(),
+            ];
+            $this->common->edit($IssueActivity, $extraFields);
+            $this->clearFields();
+            $message = "Updated";
+        }
+        $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
+    }
+    #endregion
+
+    #region[getObj]
+    public function getObj($id)
+    {
+        if ($id) {
+            $IssueActivity = IssueActivity::find($id);
+            $this->common->vid = $IssueActivity->id;
+            $this->common->vname = $IssueActivity->vname;
+            $this->issue_id = $IssueActivity->issue_id;
+            $this->status_id = $IssueActivity->status_id;
+            $this->vdate = Carbon::now()->format('Y-m-d');;
+            $this->common->active_id = $IssueActivity->active_id;
+            return $IssueActivity;
+        }
+        return null;
+    }
+    #endregion
+
+    #region[Clear Fields]
+    public function clearFields(): void
+    {
+        $this->common->vid = '';
+        $this->common->vname = '';
+        $this->common->active_id = '1';
+        $this->status_id = '';
+        $this->vdate = '';
+    }
+    #endregion
+
+    #region[Edit Activity]
+    public function editActivity($id)
+    {
+        $this->clearFields();
+        $this->getObj($id);
+    }
+    #endregion
+
+    #region[Get Route]
     public function getRoute()
     {
-        return route('allTask');
+        return redirect(route('issues.activities', [$this->issue_id]));
     }
 
     public function render()
     {
-        return view('livewire.issue-management.issue.activity')->with([
-            'list' => $this->getListForm->getList(Issue::class, function ($q) {
-                return $q
-                    ->where('reporter_id', auth()->id())
-                    ->orWhere('assignee_id', '=', auth()->id());
-            }),
-        ]);
+        $this->getModuleList();
+        return view('livewire.issue-management.issue.activity')->with
+        (['list' => IssueActivity::all(), 'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),]);
     }
+    #endregion
 }

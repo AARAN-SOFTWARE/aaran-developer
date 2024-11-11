@@ -36,27 +36,29 @@
             <x-slot:table_header name="table_header" class="bg-green-600">
                 <x-table.header-serial width="20%"/>
 
-                <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" left>
+                <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" left
+                                     width="25%">
                     Issue
                 </x-table.header-text>
 
-                <x-table.header-text sortIcon="none">
+
+                <x-table.header-text sortIcon="none"  width="25%">
                     Description
                 </x-table.header-text>
 
-                <x-table.header-text sortIcon="none">
+                <x-table.header-text sortIcon="none" width="8%">
                     Module
                 </x-table.header-text>
 
-                <x-table.header-text sortIcon="none">
+                <x-table.header-text sortIcon="none" width="8%">
                     Assignee To
                 </x-table.header-text>
 
-                <x-table.header-text sortIcon="none">
+                <x-table.header-text sortIcon="none" width="8%">
                     Due date
                 </x-table.header-text>
 
-                <x-table.header-text sortIcon="none">
+                <x-table.header-text sortIcon="none" width="8%">
                     Status
                 </x-table.header-text>
 
@@ -81,12 +83,17 @@
                         </x-table.cell-text>
 
                         <x-table.cell-text left>
-                            <a href="{{route('issues.activities',[$row->id])}}" class="capitalize">{{$row->vname}}</a>
+                            <div class="line-clamp-1">
+                                <a href="{{route('issues.activities',[$row->id])}}"
+                                   class="capitalize">{{$row->vname}}</a>
+                            </div>
                         </x-table.cell-text>
 
                         <x-table.cell-text left>
-                            <a href="{{route('issues.activities',[$row->id])}}"
-                               class="capitalize">{!! $row->body !!}</a>
+                            <div class="line-clamp-1">
+                                <a href="{{route('issues.activities',[$row->id])}}"
+                                   class="capitalize">{!! $row->body !!}</a>
+                            </div>
                         </x-table.cell-text>
 
                         <x-table.cell-text center>
@@ -100,7 +107,7 @@
                         </x-table.cell-text>
 
 
-                        <x-table.cell-text left><span class="capitalize">{{$row->due_date}}</span></x-table.cell-text>
+                        <x-table.cell-text><span class="capitalize">{{ date('d-m-Y',strtotime( $row->due_date))}}</span></x-table.cell-text>
 
                         <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
                             {{App\Enums\Status::tryFrom($row->status_id)->getName()}}
@@ -168,7 +175,7 @@
                     @endforeach
                 </x-input.model-select>
 
-                <x-input.floating wire:model="due_date" :label="'Due Date'"/>
+                <x-input.model-date wire:model="due_date" :label="'Due Date'"/>
 
                 <!-- Image  ----------------------------------------------------------------------------------------------->
 

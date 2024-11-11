@@ -31,6 +31,10 @@ class Issue extends Model
         return $this->belongsTo(User::class);
     }
 
+    public static function allocate($str)
+    {
+        return User::find($str)->name;
+    }
     public function reporter(): BelongsTo
     {
         return $this->belongsTo(User::class);
