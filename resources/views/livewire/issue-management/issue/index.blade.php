@@ -42,7 +42,7 @@
                 </x-table.header-text>
 
 
-                <x-table.header-text sortIcon="none"  width="25%">
+                <x-table.header-text sortIcon="none" width="25%">
                     Description
                 </x-table.header-text>
 
@@ -107,7 +107,8 @@
                         </x-table.cell-text>
 
 
-                        <x-table.cell-text><span class="capitalize">{{ date('d-m-Y',strtotime( $row->due_date))}}</span></x-table.cell-text>
+                        <x-table.cell-text><span class="capitalize">{{ date('d-m-Y',strtotime( $row->due_date))}}</span>
+                        </x-table.cell-text>
 
                         <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
                             {{App\Enums\Status::tryFrom($row->status_id)->getName()}}
@@ -139,7 +140,10 @@
 
                 <x-input.floating wire:model="common.vname" :label="'Title'"/>
 
+                <x-input.model-date wire:model="due_date" :label="'Due Date'"/>
+
                 <x-input.rich-text wire:model="body" :placeholder="'Write the issues'"/>
+
 
             </div>
 
@@ -175,7 +179,6 @@
                     @endforeach
                 </x-input.model-select>
 
-                <x-input.model-date wire:model="due_date" :label="'Due Date'"/>
 
                 <!-- Image  ----------------------------------------------------------------------------------------------->
 
@@ -183,9 +186,9 @@
                     <label for="bg_image"
                            class="w-full text-zinc-500 tracking-wide pb-4 px-2">Image</label>
 
-                    <div class="flex flex-wrap gap-2">
-                        <div class="flex-shrink-0">
-                            <div>
+                    <div class="flex flex-wrap gap-2 w-full">
+                        <div class="flex-shrink-0 w-full">
+                            <div class="overflow-scroll w-full pb-3">
                                 @if($images)
                                     <div class="flex gap-5">
                                         @foreach($images as $image)

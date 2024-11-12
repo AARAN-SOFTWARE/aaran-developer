@@ -272,7 +272,7 @@ class Activity extends Component
     {
         $this->getModuleList();
         return view('livewire.issue-management.issue.activity')->with
-        (['list' => IssueActivity::all(), 'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),]);
+        (['list' => IssueActivity::where('issue_id','=',$this->issue_id)->get(), 'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),]);
     }
     #endregion
 }
