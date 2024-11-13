@@ -1,5 +1,8 @@
 <div>
-    <x-slot name="header">Public Issues</x-slot>
+    <x-slot name="header">All
+
+        Issues
+    </x-slot>
 
     <x-forms.m-panel>
 
@@ -14,9 +17,11 @@
             <x-slot:table_header name="table_header" class="bg-green-600">
                 <x-table.header-serial width="20%"/>
 
-                <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" left width="25%">
+                <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" left
+                                     width="25%">
                     Issue
                 </x-table.header-text>
+
 
                 <x-table.header-text sortIcon="none" width="25%">
                     Description
@@ -27,7 +32,7 @@
                 </x-table.header-text>
 
                 <x-table.header-text sortIcon="none" width="8%">
-                    Assigned To
+                    Assignee To
                 </x-table.header-text>
 
                 <x-table.header-text sortIcon="none" width="8%">
@@ -41,6 +46,7 @@
                 <x-table.header-text sortIcon="none">
                     Reporter
                 </x-table.header-text>
+
 
                 <x-table.header-action/>
             </x-slot:table_header>
@@ -141,7 +147,8 @@
                                         {{ $module->vname }}
                                     </x-dropdown.option>
                                 @empty
-                                    <x-dropdown.create wire:click.prevent="moduleSave('{{$module_name}}')" label="Module" />
+                                    <x-dropdown.create wire:click.prevent="moduleSave('{{$module_name}}')"
+                                                       label="Module"/>
                                 @endforelse
                             @endif
                         </x-dropdown.select>
@@ -216,6 +223,7 @@
                                 @endif
                             </div>
                         </div>
+
                         <div class="relative">
                             <div>
                                 <label for="bg_image"
@@ -237,8 +245,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </x-forms.create>

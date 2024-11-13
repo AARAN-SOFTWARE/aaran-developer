@@ -51,7 +51,7 @@
                 </x-table.header-text>
 
                 <x-table.header-text sortIcon="none" width="8%">
-                    Assignee To
+                    Assigned To
                 </x-table.header-text>
 
                 <x-table.header-text sortIcon="none" width="8%">
@@ -75,6 +75,7 @@
             <x-slot:table_body name="table_body">
 
                 @foreach($list as $index=>$row)
+
                     <x-table.row>
 
                         <x-table.cell-text class="{{App\Enums\Priority::tryFrom($row->priority_id)->getStyle()}}"
@@ -82,7 +83,7 @@
                             {{$row->id}}
                         </x-table.cell-text>
 
-                        <x-table.cell-text left>
+                        <x-table.cell-text left >
                             <div class="line-clamp-1">
                                 <a href="{{route('issues.activities',[$row->id])}}"
                                    class="capitalize">{{$row->vname}}</a>
@@ -151,12 +152,30 @@
 
             <div class="flex flex-col space-y-5 w-full">
 
-                <x-input.model-select wire:model="module_id" :label="'Modules'">
-                    <option value="">Choose...</option>
-                    @foreach(\Aaran\Common\Models\Common::where('label_id','=','24')->get() as $modules)
-                        <option value="{{$modules->id}}">{{$modules->vname}}</option>
-                    @endforeach
-                </x-input.model-select>
+                <x-dropdown.wrapper label="Module" type="moduleTyped">
+                    <div class="relative">
+                        <x-dropdown.input label="Module" id="module_name"
+                                          wire:model.live="module_name"
+                                          wire:keydown.arrow-up="decrementModule"
+                                          wire:keydown.arrow-down="incrementModule"
+                                          wire:keydown.enter="enterModule"/>
+                        <x-dropdown.select>
+                            @if($moduleCollection)
+                                @forelse ($moduleCollection as $i => $module)
+                                    <x-dropdown.option highlight="{{$highlightModule === $i}}"
+                                                       wire:click.prevent="setModule('{{$module->vname}}','{{$module->id}}')">
+                                        {{ $module->vname }}
+                                    </x-dropdown.option>
+                                @empty
+                                    <x-dropdown.create wire:click.prevent="moduleSave('{{$module_name}}')" label="Module" />
+                                @endforelse
+                            @endif
+                        </x-dropdown.select>
+                    </div>
+                </x-dropdown.wrapper>
+                @error('module_name')
+                <span class="text-red-400">{{$message}}</span>
+                @enderror
 
                 <x-input.model-select wire:model="assignee_id" :label="'Allocated'">
                     <option value="">Choose...</option>

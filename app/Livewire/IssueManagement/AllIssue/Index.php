@@ -1,7 +1,6 @@
 <?php
 
-namespace App\Livewire\IssueManagement\MyIssue;
-
+namespace App\Livewire\IssueManagement\AllIssue;
 
 use Aaran\Common\Models\Common;
 use Aaran\IssueManagement\Models\Issue;
@@ -84,7 +83,9 @@ class Index extends Component
         }
         $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
     }
+    #endregion
 
+    #region[Save Image]
     public function saveIssueImage($id): void
     {
         foreach ($this->old_images as $old_image) {
@@ -187,7 +188,6 @@ class Index extends Component
             $obj->delete();
         }
     }
-
     #endregion
 
     #region[module]
@@ -262,19 +262,11 @@ class Index extends Component
 
 #endregion
 
-    public function getRoute()
-    {
-        return route('myIssues');
-    }
-
     public function render()
     {
         $this->getModuleList();
-        return view('livewire.issue-management.my-issue.index')->with([
-            'list' => $this->getListForm->getList(Issue::class, function ($q) {
-                return $q
-                    ->where('assignee_id', '=', auth()->id());
-            }),
+        return view('livewire.issue-management.all-issue.index')->with([
+            'list' => Issue::all(),
         ]);
     }
 }

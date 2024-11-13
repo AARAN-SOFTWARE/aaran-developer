@@ -2,9 +2,11 @@
 
 namespace App\Livewire\IssueManagement\PublicIssue;
 
-use Aaran\Taskmanager\Models\Task;
-use Aaran\Taskmanager\Models\TaskImage;
+use Aaran\Common\Models\Common;
+use Aaran\IssueManagement\Models\Issue;
+use Aaran\IssueManagement\Models\IssueImage;
 use App\Livewire\Trait\CommonTraitNew;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -13,68 +15,87 @@ use Livewire\WithFileUploads;
 class Index extends Component
 {
     use CommonTraitNew;
+
     use WithFileUploads;
 
     #region[property]
     public $body;
-    public $allocated;
-    public $priority;
-    public $status;
+    public $assignee_id;
+    public $due_date;
+    public $priority_id;
+    public $status_id;
+    public $reporter_id;
+    public $flag;
     public $verified;
     public $verified_on;
 
-    public $images=[];
-    public $old_images=[];
+    public $images = [];
+    public $old_images = [];
     #endregion
 
     #region[getSave]
     public function getSave(): void
     {
         if ($this->common->vid == '') {
-            $task = new Task();
+
+            $issue = new Issue();
+
             $extraFields = [
                 'body' => $this->body,
-                'allocated' => $this->allocated,
-                'status' => $this->status,
-                'priority' => $this->priority,
-                'user_id' => auth()->id(),
+                'module_id' => $this->module_id,
+                'assignee_id' => $this->assignee_id,
+                'due_date' => $this->due_date,
+                'priority_id' => $this->priority_id,
+                'status_id' => $this->status_id,
+                'reporter_id' => auth()->id(),
+                'flag' => $this->flag,
                 'verified' => $this->verified,
                 'verified_on' => $this->verified_on,
             ];
-            $this->common->save($task, $extraFields);
-            $this->saveTaskImage($task->id);
+
+            $this->common->save($issue, $extraFields);
+            $this->saveIssueImage($issue->id);
             $this->clearFields();
+
             $message = "Saved";
+
         } else {
-            $task = Task::find($this->common->vid);
+
+            $issue = Issue::find($this->common->vid);
+
             $extraFields = [
                 'body' => $this->body,
-                'allocated' => $this->allocated,
-                'status' => $this->status,
-                'priority' => $this->priority,
-                'user_id' => auth()->id(),
+                'module_id' => $this->module_id,
+                'assignee_id' => $this->assignee_id,
+                'due_date' => $this->due_date,
+                'priority_id' => $this->priority_id,
+                'status_id' => $this->status_id,
+                'reporter_id' => auth()->id(),
+                'flag' => $this->flag,
                 'verified' => $this->verified,
                 'verified_on' => $this->verified_on,
             ];
-            $this->common->edit($task, $extraFields);
-            $this->saveTaskImage($task->id);
+
+            $this->common->edit($issue, $extraFields);
+            $this->saveIssueImage($issue->id);
             $this->clearFields();
+
             $message = "Updated";
         }
         $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
     }
 
-    public function saveTaskImage($id)
+    public function saveIssueImage($id): void
     {
         foreach ($this->old_images as $old_image) {
             $old_image->save();
         }
 
-        if ($this->images!=[]){
-            foreach ($this->images as $image){
-                TaskImage::create([
-                    'task_id'=>$id,
-                    'image'=>$this->saveImage($image),
+        if ($this->images != []) {
+            foreach ($this->images as $image) {
+                IssueImage::create([
+                    'issue_id' => $id,
+                    'image' => $this->saveImage($image),
                 ]);
             }
         }
@@ -85,27 +106,32 @@ class Index extends Component
     public function getObj($id)
     {
         if ($id) {
-            $task = Task::find($id);
-            $this->common->vid = $task->id;
-            $this->common->vname = $task->vname;
-            $this->body = $task->body;
-            $this->status = $task->status;
-            $this->priority = $task->priority;
-            $this->allocated = $task->allocated;
-            $this->verified = $task->verified;
-            $this->verified_on = $task->verified_on;
-            $this->common->active_id = $task->active_id;
-            $this->old_images=TaskImage::where('task_id',$id)->get();
-            return $task;
+            $obj = Issue::find($id);
+            $this->common->vid = $obj->id;
+            $this->common->vname = $obj->vname;
+            $this->body = $obj->body;
+            $this->module_id = $obj->module_id;
+            $this->assignee_id = $obj->assignee_id;
+            $this->due_date = $obj->due_date;
+            $this->priority_id = $obj->priority_id;
+            $this->status_id = $obj->status_id;
+            $this->reporter_id = $obj->reporter_id;
+            $this->flag = $obj->flag;
+            $this->verified = $obj->verified;
+            $this->verified_on = $obj->verified_on;
+            $this->common->active_id = $obj->active_id;
+            $this->old_images = IssueImage::where('issue_id', $id)->get();
+            return $obj;
         }
         return null;
     }
-    public function getTaskImage($id)
+
+    public function getIssueImage($id)
     {
-        $data=TaskImage::where('task_id',$id)->get();
-        $arrayImage=[];
-        foreach ($data as $key=>$value) {
-            $arrayImage[$key]['imgSrc']=URL(\Illuminate\Support\Facades\Storage::url('images/'.$value->image));
+        $data = IssueImage::where('issue_id', $id)->get();
+        $arrayImage = [];
+        foreach ($data as $key => $value) {
+            $arrayImage[$key]['imgSrc'] = URL(\Illuminate\Support\Facades\Storage::url('images/' . $value->image));
         }
         return $arrayImage;
     }
@@ -118,13 +144,18 @@ class Index extends Component
         $this->common->vname = '';
         $this->common->active_id = '1';
         $this->body = '';
-        $this->priority = '';
-        $this->allocated = '';
+        $this->module_id = '';
+        $this->module_name = '';
+        $this->assignee_id = '';
+        $this->due_date = '';
+        $this->priority_id = '';
+        $this->status_id = '';
+        $this->reporter_id = '';
+        $this->flag = '';
         $this->verified = '';
         $this->verified_on = '';
-        $this->status = '';
-        $this->images=[];
-        $this->old_images=[];
+        $this->images = [];
+        $this->old_images = [];
     }
     #endregion
 
@@ -136,7 +167,7 @@ class Index extends Component
             $filename = $image->getClientOriginalName();
 
 
-            $image->storeAs('/images', $filename,'public');
+            $image->storeAs('/images', $filename, 'public');
 
             return $filename;
 
@@ -147,10 +178,10 @@ class Index extends Component
 
     public function DeleteImage($id)
     {
-        if ($id){
-            $obj=TaskImage::find($id);
+        if ($id) {
+            $obj = IssueImage::find($id);
             if (Storage::disk('public')->exists(Storage::path('public/images/' . $obj->image))) {
-                Storage::disk('public')->delete(Storage::path('public/images/' .$obj->image));
+                Storage::disk('public')->delete(Storage::path('public/images/' . $obj->image));
             }
             $obj->delete();
         }
@@ -158,18 +189,88 @@ class Index extends Component
 
     #endregion
 
+    #region[module]
+    public $module_id = '';
+    public $module_name = '';
+    public Collection $moduleCollection;
+    public $highlightModule = 0;
+    public $moduleTyped = false;
+
+    public function decrementModule(): void
+    {
+        if ($this->highlightModule === 0) {
+            $this->highlightModule = count($this->moduleCollection) - 1;
+            return;
+        }
+        $this->highlightModule--;
+    }
+
+    public function incrementModule(): void
+    {
+        if ($this->highlightModule === count($this->moduleCollection) - 1) {
+            $this->highlightModule = 0;
+            return;
+        }
+        $this->highlightModule++;
+    }
+
+    public function setModule($name, $id): void
+    {
+        $this->module_name = $name;
+        $this->module_id = $id;
+        $this->getModuleList();
+    }
+
+    public function enterModule(): void
+    {
+        $obj = $this->moduleCollection[$this->highlightModule] ?? null;
+
+        $this->module_name = '';
+        $this->moduleCollection = Collection::empty();
+        $this->highlightModule = 0;
+
+        $this->module_name = $obj['vname'] ?? '';
+        $this->module_id = $obj['id'] ?? '';
+    }
+
+
+    public function refreshModule($v): void
+    {
+        $this->module_id = $v['id'];
+        $this->module_name = $v['name'];
+        $this->moduleTyped = false;
+    }
+
+    public function moduleSave($name)
+    {
+        $obj = Common::create([
+            'label_id' => 24,
+            'vname' => $name,
+            'active_id' => '1'
+        ]);
+        $v = ['name' => $name, 'id' => $obj->id];
+        $this->refreshModule($v);
+    }
+
+    public function getModuleList(): void
+    {
+        $this->moduleCollection = $this->module_name ?
+            Common::search(trim($this->module_name))->where('label_id', '=', '24')->get() :
+            Common::where('label_id', '=', '24')->orWhere('label_id', '=', '1')->get();
+    }
+
+#endregion
+
     public function getRoute()
     {
-        return route('publicTask');
+        return route('publicIssues');
     }
 
     public function render()
     {
-        return view('livewire.task-manger.public-task.index')->with([
-            'list' => $this->getListForm->getList(Task::class,function ($q){
-                return $q->where('allocated','=','2');
-            }),
-            'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),
+        $this->getModuleList();
+        return view('livewire.issue-management.public-issue.index')->with([
+            'list' => Issue::where('assignee_id','2')->get(),
         ]);
     }
 }

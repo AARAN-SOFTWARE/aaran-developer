@@ -32,7 +32,6 @@ class S102_CommonSeeder extends Seeder
         self::msmeType();
         self::GstApiData();
         self::AddNew();
-        self::Module();
     }
 
     #region[noRecord]
@@ -1104,24 +1103,5 @@ class S102_CommonSeeder extends Seeder
             'desc_1' => '-',
             'active_id' => '1'
         ]);
-    }
-
-    public static function Module()
-    {
-        Common::create([
-            'label_id' => '24',
-            'vname' => 'users',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '24',
-            'vname' => 'contacts',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-
     }
 }

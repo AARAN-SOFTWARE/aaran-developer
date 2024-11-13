@@ -1,5 +1,5 @@
 <div>
-    <x-slot name="header">Task</x-slot>
+    <x-slot name="header">My Issues</x-slot>
 
     <x-forms.m-panel>
 
@@ -7,41 +7,103 @@
 
         <x-forms.top-controls :show-filters="$showFilters"/>
 
-        <div class="w-9/12 mx-auto flex-col flex gap-y-10 py-16">
-            @foreach($list as $index=>$row)
+        <x-table.form>
 
-                <x-cards.cardNew :id="$row->id"
-                                :title="$row->vname"
-                                :description="$row->body"
-                                :status="\App\Enums\Status::tryFrom($row->status)->getName()"
-                                :priority="\App\Enums\Priority::tryFrom($row->priority)->getName()"
-                                 :colorStatus="\App\Enums\Status::tryFrom($row->status)->getStyle()"
-                                 :colorPrior="\App\Enums\Priority::tryFrom($row->priority)->getStyle()"
-                                :allocated="\App\Models\User::getName($row->allocated)"
-                                :createdBy="\App\Models\User::getName($row->user_id)"
-                                :slides="\App\Livewire\TaskManger\Task\Index::getTaskImage($row->id)"
-                                :read-moer="route('task.upsert',[$row->id])"
-                                 :createdAt="$row->created_at->diffForHumans()"
-                                 :updatedAt="$row->updated_at->diffForHumans()"
-                />
+            <!-- Table Header ----------------------------------------------------------------------------------------->
 
-            @endforeach
-        </div>
+            <x-slot:table_header name="table_header" class="bg-green-600">
+                <x-table.header-serial width="20%"/>
 
-{{--        <div class="flex flex-col sm:grid grid-cols-4 w-full gap-10">--}}
-{{--            @foreach($list as $index=>$row)--}}
-{{--                <x-cards.card-3 :id="$row->id"--}}
-{{--                                :title="$row->vname"--}}
-{{--                                :description="$row->body"--}}
-{{--                                :status="\App\Enums\Status::tryFrom($row->status)->getName()"--}}
-{{--                                :priority="\App\Enums\Priority::tryFrom($row->priority)->getName()"--}}
-{{--                                :allocated="\App\Models\User::getName($row->allocated)"--}}
-{{--                                :createdBy="\App\Models\User::getName($row->user_id)"--}}
-{{--                                :slides="\App\Livewire\TaskManger\Task\Index::getTaskImage($row->id)"--}}
-{{--                                :read-moer="route('task.upsert',[$row->id])"--}}
-{{--                />--}}
-{{--            @endforeach--}}
-{{--        </div>--}}
+                <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" left
+                                     width="25%">
+                    Issue
+                </x-table.header-text>
+
+
+                <x-table.header-text sortIcon="none" width="25%">
+                    Description
+                </x-table.header-text>
+
+                <x-table.header-text sortIcon="none" width="8%">
+                    Module
+                </x-table.header-text>
+
+                <x-table.header-text sortIcon="none" width="8%">
+                    Assigned To
+                </x-table.header-text>
+
+                <x-table.header-text sortIcon="none" width="8%">
+                    Due date
+                </x-table.header-text>
+
+                <x-table.header-text sortIcon="none" width="8%">
+                    Status
+                </x-table.header-text>
+
+                <x-table.header-text sortIcon="none">
+                    Reporter
+                </x-table.header-text>
+
+
+                <x-table.header-action/>
+            </x-slot:table_header>
+
+            <!-- Table Body ------------------------------------------------------------------------------------------->
+
+            <x-slot:table_body name="table_body">
+
+                @foreach($list as $index=>$row)
+                    <x-table.row>
+
+                        <x-table.cell-text class="{{App\Enums\Priority::tryFrom($row->priority_id)->getStyle()}}"
+                                           center>
+                            {{$row->id}}
+                        </x-table.cell-text>
+
+                        <x-table.cell-text left>
+                            <div class="line-clamp-1">
+                                <a href="{{route('issues.activities',[$row->id])}}"
+                                   class="capitalize">{{$row->vname}}</a>
+                            </div>
+                        </x-table.cell-text>
+
+                        <x-table.cell-text left>
+                            <div class="line-clamp-1">
+                                <a href="{{route('issues.activities',[$row->id])}}"
+                                   class="capitalize">{!! $row->body !!}</a>
+                            </div>
+                        </x-table.cell-text>
+
+                        <x-table.cell-text center>
+                            <a href="{{route('issues.activities',[$row->id])}}"
+                               class="capitalize">{{$row->module->vname}}</a>
+                        </x-table.cell-text>
+
+                        <x-table.cell-text center>
+                            <a href="{{route('issues.activities',[$row->id])}}"
+                               class="capitalize">{{$row->assignee->name}}</a>
+                        </x-table.cell-text>
+
+
+                        <x-table.cell-text><span class="capitalize">{{ date('d-m-Y',strtotime( $row->due_date))}}</span>
+                        </x-table.cell-text>
+
+                        <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
+                            {{App\Enums\Status::tryFrom($row->status_id)->getName()}}
+                        </x-table.cell-text>
+
+                        <x-table.cell-text center><span class="capitalize">{{$row->reporter->name}}</span>
+                        </x-table.cell-text>
+
+                        <x-table.cell-action id="{{$row->id}}"/>
+                    </x-table.row>
+                @endforeach
+
+            </x-slot:table_body>
+
+        </x-table.form>
+
+
     </x-forms.m-panel>
 
     <x-modal.delete/>
@@ -56,7 +118,10 @@
 
                 <x-input.floating wire:model="common.vname" :label="'Title'"/>
 
-                <x-input.rich-text wire:model="body" :placeholder="'Write the error'"/>
+                <x-input.model-date wire:model="due_date" :label="'Due Date'"/>
+
+                <x-input.rich-text wire:model="body" :placeholder="'Write the issues'"/>
+
 
             </div>
 
@@ -64,27 +129,52 @@
 
             <div class="flex flex-col space-y-5 w-full">
 
-                <x-input.model-select wire:model="allocated" :label="'Allocated'">
+                <x-dropdown.wrapper label="Module" type="moduleTyped">
+                    <div class="relative">
+                        <x-dropdown.input label="Module" id="module_name"
+                                          wire:model.live="module_name"
+                                          wire:keydown.arrow-up="decrementModule"
+                                          wire:keydown.arrow-down="incrementModule"
+                                          wire:keydown.enter="enterModule"/>
+                        <x-dropdown.select>
+                            @if($moduleCollection)
+                                @forelse ($moduleCollection as $i => $module)
+                                    <x-dropdown.option highlight="{{$highlightModule === $i}}"
+                                                       wire:click.prevent="setModule('{{$module->vname}}','{{$module->id}}')">
+                                        {{ $module->vname }}
+                                    </x-dropdown.option>
+                                @empty
+                                    <x-dropdown.create wire:click.prevent="moduleSave('{{$module_name}}')"
+                                                       label="Module"/>
+                                @endforelse
+                            @endif
+                        </x-dropdown.select>
+                    </div>
+                </x-dropdown.wrapper>
+                @error('module_name')
+                <span class="text-red-400">{{$message}}</span>
+                @enderror
+
+                <x-input.model-select wire:model="assignee_id" :label="'Allocated'">
                     <option value="">Choose...</option>
-                    @foreach($users as $user)
+                    @foreach(\App\Models\User::all() as $user)
                         <option value="{{$user->id}}">{{$user->name}}</option>
                     @endforeach
                 </x-input.model-select>
 
-                <x-input.model-select wire:model="priority" :label="'Priority'">
+                <x-input.model-select wire:model="priority_id" :label="'Priority'">
                     <option value="">Choose...</option>
                     @foreach(App\Enums\Priority::cases() as $priority)
                         <option value="{{$priority->value}}">{{$priority->getName()}}</option>
                     @endforeach
                 </x-input.model-select>
 
-                <x-input.model-select wire:model="status" :label="'Status'">
+                <x-input.model-select wire:model="status_id" :label="'Status'">
                     <option value="">Choose...</option>
                     @foreach(App\Enums\Status::cases() as $status)
                         <option value="{{$status->value}}">{{$status->getName()}}</option>
                     @endforeach
                 </x-input.model-select>
-
 
 
                 <!-- Image  ----------------------------------------------------------------------------------------------->
@@ -93,9 +183,9 @@
                     <label for="bg_image"
                            class="w-full text-zinc-500 tracking-wide pb-4 px-2">Image</label>
 
-                    <div class="flex flex-wrap gap-2">
-                        <div class="flex-shrink-0">
-                            <div>
+                    <div class="flex flex-wrap gap-2 w-full">
+                        <div class="flex-shrink-0 w-full">
+                            <div class="overflow-scroll w-full pb-3">
                                 @if($images)
                                     <div class="flex gap-5">
                                         @foreach($images as $image)
@@ -156,5 +246,4 @@
             </div>
         </div>
     </x-forms.create>
-
 </div>
