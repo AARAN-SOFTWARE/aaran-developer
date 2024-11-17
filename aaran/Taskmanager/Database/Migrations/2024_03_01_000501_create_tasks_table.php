@@ -15,10 +15,10 @@ return new class extends Migration {
                 $table->foreignId('module_id')->references('id')->on('commons');
                 $table->string('title');
                 $table->longText('body');
-                $table->string('priority', 3)->nullable();
-                $table->string('status', 3)->nullable();
+                $table->string('priority_id', 3)->nullable();
+                $table->string('status_id', 3)->nullable();
                 $table->string('due_date')->nullable();
-                $table->foreignId('allocated')->references('id')->on('users')->onDelete('cascade');
+                $table->foreignId('allocated_id')->references('id')->on('users')->onDelete('cascade');
                 $table->foreignId('reporter_id')->references('id')->on('users')->onDelete('cascade');
                 $table->string('active_id', 3)->nullable();
                 $table->string('flag')->nullable();
