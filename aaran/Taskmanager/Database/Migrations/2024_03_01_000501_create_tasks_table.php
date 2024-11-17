@@ -11,15 +11,17 @@ return new class extends Migration {
 
             Schema::create('tasks', function (Blueprint $table) {
                 $table->id();
-                $table->string('vname');
+                $table->foreignId('job_id')->references('id')->on('commons');
+                $table->foreignId('module_id')->references('id')->on('commons');
+                $table->string('title');
                 $table->longText('body');
-                $table->foreignId('allocated')->references('id')->on('users')->onDelete('cascade');
                 $table->string('priority', 3)->nullable();
                 $table->string('status', 3)->nullable();
-                $table->string('verified')->nullable();
-                $table->string('verified_on')->nullable();
-                $table->foreignId('user_id')->references('id')->on('users');
+                $table->string('due_date')->nullable();
+                $table->foreignId('allocated')->references('id')->on('users')->onDelete('cascade');
+                $table->foreignId('reporter_id')->references('id')->on('users')->onDelete('cascade');
                 $table->string('active_id', 3)->nullable();
+                $table->string('flag')->nullable();
                 $table->timestamps();
             });
         }
