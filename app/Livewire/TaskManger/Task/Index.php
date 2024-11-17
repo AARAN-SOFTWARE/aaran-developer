@@ -19,7 +19,6 @@ class Index extends Component
 
     #region[property]
     public $job_id;
-    public $title;
     public $body;
     public $priority_id;
     public $status_id;
@@ -40,7 +39,6 @@ class Index extends Component
             $extraFields = [
                 'job_id' => $this->job_id,
                 'module_id' => $this->module_id,
-                'title' => $this->title,
                 'body' => $this->body,
                 'priority_id' => $this->priority_id,
                 'status_id' => $this->status_id,
@@ -58,7 +56,6 @@ class Index extends Component
             $extraFields = [
                 'job_id' => $this->job_id,
                 'module_id' => $this->module_id,
-                'title' => $this->title,
                 'body' => $this->body,
                 'priority_id' => $this->priority_id,
                 'status_id' => $this->status_id,
@@ -99,7 +96,6 @@ class Index extends Component
             $obj = Task::find($id);
             $this->common->vid = $obj->id;
             $this->common->vname = $obj->vname;
-            $this->title = $obj->title;
             $this->body = $obj->body;
             $this->priority_id = $obj->priority_id;
             $this->status_id = $obj->status_id;
@@ -133,7 +129,6 @@ class Index extends Component
         $this->common->active_id = '1';
         $this->job_id = '';
         $this->module_id = '';
-        $this->title = '';
         $this->body = '';
         $this->priority_id = '';
         $this->status_id = '';
@@ -254,6 +249,8 @@ class Index extends Component
 
     public function render()
     {
+        $this->getModuleList();
+
         return view('livewire.task-manger.task.index')->with([
             'list' => $this->getListForm->getList(Task::class, function ($q) {
                 return $q->where('allocated_id', '=', auth()->id());

@@ -13,7 +13,7 @@ return new class extends Migration {
                 $table->id();
                 $table->foreignId('job_id')->references('id')->on('commons');
                 $table->foreignId('module_id')->references('id')->on('commons');
-                $table->string('title');
+                $table->string('vname');
                 $table->longText('body');
                 $table->string('priority_id', 3)->nullable();
                 $table->string('status_id', 3)->nullable();

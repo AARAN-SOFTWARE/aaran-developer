@@ -11,22 +11,6 @@
 
             @foreach($list as $index=>$row)
 
-                {{--                <x-cards.cardNew :id="$row->id"--}}
-                {{--                                 :title="$row->vname"--}}
-                {{--                                 :description="$row->body"--}}
-                {{--                                 :status="\App\Enums\Status::tryFrom($row->status)->getName()"--}}
-                {{--                                 :priority="\App\Enums\Priority::tryFrom($row->priority)->getName()"--}}
-                {{--                                 :colorStatus="\App\Enums\Status::tryFrom($row->status)->getStyle()"--}}
-                {{--                                 :colorPrior="\App\Enums\Priority::tryFrom($row->priority)->getStyle()"--}}
-                {{--                                 :allocated="\App\Models\User::getName($row->allocated)"--}}
-                {{--                                 :createdBy="\App\Models\User::getName($row->user_id)"--}}
-                {{--                                 :slides="\App\Livewire\TaskManger\Task\Index::getTaskImage($row->id)"--}}
-                {{--                                 :read-moer="route('task.upsert',[$row->id])"--}}
-                {{--                                 :createdAt="$row->created_at->diffForHumans()"--}}
-                {{--                                 :updatedAt="$row->updated_at->diffForHumans()"--}}
-                {{--                />--}}
-
-
                 <div class=" flex overflow-hidden border rounded-md font-lex">
                     <div class="w-2/4 h-60 p-3">
                         <div x-data=" {
@@ -117,7 +101,7 @@
                                 </x-dropdown.icon>
                             </div>
                         </div>
-                        <div class="flex items-center justify-between items-center border-l px-5 pb-3">
+                        <div class="flex justify-between items-center border-l px-5 pb-3">
                             <div class="inline-flex items-center gap-x-3">
                                 <div class="flex items-center gap-x-2 font-semibold">
                                     <div
@@ -217,7 +201,7 @@
         <div class="flex flex-row space-x-5 w-full">
             <div class="flex flex-col space-y-5 w-full">
 
-                <x-input.floating wire:model="title" :label="'Title'"/>
+                <x-input.floating wire:model="common.vname" :label="'Title'"/>
 
                 <x-input.rich-text wire:model="body" :placeholder="'Write the error'"/>
 
