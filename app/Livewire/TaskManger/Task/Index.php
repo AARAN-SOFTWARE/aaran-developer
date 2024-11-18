@@ -40,8 +40,8 @@ class Index extends Component
                 'job_id' => $this->job_id,
                 'module_id' => $this->module_id,
                 'body' => $this->body,
-                'priority_id' => $this->priority_id,
-                'status_id' => $this->status_id,
+                'priority_id' => $this->priority_id ?: 1,
+                'status_id' => $this->status_id ?: 1,
                 'due_date' => $this->due_date,
                 'allocated_id' => $this->allocated_id,
                 'reporter_id' => auth()->id(),
@@ -57,8 +57,8 @@ class Index extends Component
                 'job_id' => $this->job_id,
                 'module_id' => $this->module_id,
                 'body' => $this->body,
-                'priority_id' => $this->priority_id,
-                'status_id' => $this->status_id,
+                'priority_id' => $this->priority_id ?: 1,
+                'status_id' => $this->status_id ?: 1,
                 'due_date' => $this->due_date,
                 'allocated_id' => $this->allocated_id,
                 'reporter_id' => auth()->id(),
@@ -132,7 +132,9 @@ class Index extends Component
         $this->common->vname = '';
         $this->common->active_id = '1';
         $this->job_id = '';
+        $this->job_name = '';
         $this->module_id = '';
+        $this->module_name = '';
         $this->body = '';
         $this->priority_id = '';
         $this->status_id = '';

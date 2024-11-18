@@ -1,7 +1,5 @@
 <div>
-    <x-slot name="header">All
-
-        Issues
+    <x-slot name="header">All Issues
     </x-slot>
 
     <x-forms.m-panel>

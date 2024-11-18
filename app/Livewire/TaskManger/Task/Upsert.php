@@ -277,8 +277,8 @@ class Upsert extends Component
                 'cdate' => $this->cdate,
                 'remarks' => $this->remarks,
                 'user_id' => auth()->id(),
-                'verified'=>$this->verified,
-                'verified_on'=>$this->verified_on,
+//                'verified'=>$this->verified,
+//                'verified_on'=>$this->verified_on,
             ];
             $this->common->save($activity, $extraFields);
             $this->clearFields();
@@ -294,8 +294,8 @@ class Upsert extends Component
                 'cdate' => $this->cdate,
                 'remarks' => $this->remarks,
                 'user_id' => auth()->id(),
-                'verified'=>$this->verified,
-                'verified_on'=>$this->verified_on,
+//                'verified'=>$this->verified,
+//                'verified_on'=>$this->verified_on,
             ];
             $this->common->edit($activity, $extraFields);
             $this->clearFields();
@@ -319,8 +319,8 @@ class Upsert extends Component
             $this->end_on = $activity->end_on;
             $this->cdate = $activity->cdate;
             $this->remarks = $activity->remarks;
-            $this->verified = $activity->verified;
-            $this->verified_on = $activity->verified_on;
+//            $this->verified = $activity->verified;
+//            $this->verified_on = $activity->verified_on;
             $this->common->active_id = $activity->active_id;
             return $activity;
         }
@@ -339,7 +339,7 @@ class Upsert extends Component
         $this->start_on = '';
         $this->end_on = '';
         $this->remarks = '';
-        $this->verified = '';
+//        $this->verified = '';
     }
 
     public function editActivity($id)

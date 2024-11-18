@@ -267,12 +267,12 @@
                 </x-input.model-select>
 
 
-                <x-input.model-select wire:model="status_id" :label="'Status'">
-                    <option value="">Choose...</option>
-                    @foreach(App\Enums\Status::cases() as $status)
-                        <option value="{{$status->value}}">{{$status->getName()}}</option>
-                    @endforeach
-                </x-input.model-select>
+{{--                <x-input.model-select wire:model="status_id" :label="'Status'">--}}
+{{--                    <option value="">Choose...</option>--}}
+{{--                    @foreach(App\Enums\Status::cases() as $status)--}}
+{{--                        <option value="{{$status->value}}">{{$status->getName()}}</option>--}}
+{{--                    @endforeach--}}
+{{--                </x-input.model-select>--}}
 
 
                 <!-- Image  ----------------------------------------------------------------------------------------------->

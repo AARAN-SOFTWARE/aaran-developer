@@ -1,5 +1,5 @@
 <div>
-    <x-slot name="header">Task</x-slot>
+    <x-slot name="header">My Issues</x-slot>
     {{--    {{dd($taskData)}}--}}
 
     <!-- Top Control ------------------------------------------------------------------------------------------------>

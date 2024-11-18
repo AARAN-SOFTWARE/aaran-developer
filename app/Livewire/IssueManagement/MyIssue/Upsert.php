@@ -220,6 +220,6 @@ class Upsert extends Component
 
     public function render()
     {
-        return view('livewire.task-manger.task.upsert')->with(['list'=>$this->getList(), 'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),]);
+        return view('livewire.issue-management.my-issue.upsert')->with(['list'=>$this->getList(), 'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),]);
     }
 }
