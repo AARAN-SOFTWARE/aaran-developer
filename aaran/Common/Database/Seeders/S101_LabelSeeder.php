@@ -201,5 +201,14 @@ class S101_LabelSeeder extends Seeder
             'cols' => 1,
             'active_id' => '1'
         ]);
+
+
+        #24
+        Label::create([
+            'id' => 25,
+            'vname' => 'Job',
+            'cols' => 1,
+            'active_id' => '1'
+        ]);
     }
 }

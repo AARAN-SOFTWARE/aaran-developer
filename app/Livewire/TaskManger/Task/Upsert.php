@@ -2,12 +2,14 @@
 
 namespace App\Livewire\TaskManger\Task;
 
+use Aaran\Common\Models\Common;
 use Aaran\Taskmanager\Models\Activities;
 use Aaran\Taskmanager\Models\Reply;
 use Aaran\Taskmanager\Models\Task;
 use Aaran\Taskmanager\Models\TaskImage;
 use App\Livewire\Trait\CommonTraitNew;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -31,7 +33,7 @@ class Upsert extends Component
        public $verified_on;
 
     public $taskTitle;
-    public $body;
+    public $taskBody;
     public $allocated;
     public $priority;
     public $status;
@@ -49,10 +51,14 @@ class Upsert extends Component
         $this->task_id=$id;
         $this->common->active_id=1;
         $this->taskTitle=$this->taskData->vname;
-        $this->body = $this->taskData->body;
-        $this->allocated = $this->taskData->allocated;
-        $this->priority = $this->taskData->priority;
-        $this->status = $this->taskData->status;
+        $this->taskBody = $this->taskData->body;
+        $this->allocated = $this->taskData->allocated_id;
+        $this->priority = $this->taskData->priority_id;
+        $this->status = $this->taskData->status_id;
+        $this->module_id = $this->taskData->module_id;
+        $this->module_name = Common::find($this->taskData->module_id)->vname;
+        $this->job_id = $this->taskData->job_id;
+        $this->job_name = Common::find($this->taskData->job_id)->vname;
         $this->old_images=TaskImage::where('task_id',$id)->get();
         $this->cdate=Carbon::now()->format('Y-m-d');
         $this->verified_on=Carbon::now()->format('Y-m-d');
@@ -61,15 +67,154 @@ class Upsert extends Component
     public function getsave()
     {
         $this->taskData->vname=$this->taskTitle;
-        $this->taskData->body = $this->body;
-        $this->taskData->allocated = $this->allocated;
-        $this->taskData->priority = $this->priority;
-        $this->taskData->status = $this->status;
+        $this->taskData->body = $this->taskBody;
+        $this->taskData->allocated_id = $this->allocated;
+        $this->taskData->priority_id = $this->priority;
+        $this->taskData->status_id = $this->status;
         $this->taskData->save();
         $this->saveTaskImage($this->task_id);
         $this->getRoute();
     }
 
+    #region[module]
+    public $module_id = '';
+    public $module_name = '';
+    public Collection $moduleCollection;
+    public $highlightModule = 0;
+    public $moduleTyped = false;
+
+    public function decrementModule(): void
+    {
+        if ($this->highlightModule === 0) {
+            $this->highlightModule = count($this->moduleCollection) - 1;
+            return;
+        }
+        $this->highlightModule--;
+    }
+
+    public function incrementModule(): void
+    {
+        if ($this->highlightModule === count($this->moduleCollection) - 1) {
+            $this->highlightModule = 0;
+            return;
+        }
+        $this->highlightModule++;
+    }
+
+    public function setModule($name, $id): void
+    {
+        $this->module_name = $name;
+        $this->module_id = $id;
+        $this->getModuleList();
+    }
+
+    public function enterModule(): void
+    {
+        $obj = $this->moduleCollection[$this->highlightModule] ?? null;
+
+        $this->module_name = '';
+        $this->moduleCollection = Collection::empty();
+        $this->highlightModule = 0;
+
+        $this->module_name = $obj['vname'] ?? '';
+        $this->module_id = $obj['id'] ?? '';
+    }
+
+    public function refreshModule($v): void
+    {
+        $this->module_id = $v['id'];
+        $this->module_name = $v['name'];
+        $this->moduleTyped = false;
+    }
+
+    public function moduleSave($name)
+    {
+        $obj = Common::create([
+            'label_id' => 24, // Assuming label_id for modules is 3
+            'vname' => $name,
+            'active_id' => '1'
+        ]);
+        $v = ['name' => $name, 'id' => $obj->id];
+        $this->refreshModule($v);
+    }
+
+    public function getModuleList(): void
+    {
+        $this->moduleCollection = $this->module_name ?
+            Common::search(trim($this->module_name))->where('label_id', '=', '24')->get() :
+            Common::where('label_id', '=', '24')->orWhere('label_id', '=', '24')->get();
+    }
+#endregion
+
+    #region[job]
+    public $job_id = '';
+    public $job_name = '';
+    public Collection $jobCollection;
+    public $highlightJob = 0;
+    public $jobTyped = false;
+
+    public function decrementJob(): void
+    {
+        if ($this->highlightJob === 0) {
+            $this->highlightJob = count($this->jobCollection) - 1;
+            return;
+        }
+        $this->highlightJob--;
+    }
+
+    public function incrementJob(): void
+    {
+        if ($this->highlightJob === count($this->jobCollection) - 1) {
+            $this->highlightJob = 0;
+            return;
+        }
+        $this->highlightJob++;
+    }
+
+    public function setJob($name, $id): void
+    {
+        $this->job_name = $name;
+        $this->job_id = $id;
+        $this->getJobList();
+    }
+
+    public function enterJob(): void
+    {
+        $obj = $this->jobCollection[$this->highlightJob] ?? null;
+
+        $this->job_name = '';
+        $this->jobCollection = Collection::empty();
+        $this->highlightJob = 0;
+
+        $this->job_name = $obj['vname'] ?? '';
+        $this->job_id = $obj['id'] ?? '';
+    }
+
+    public function refreshJob($v): void
+    {
+        $this->job_id = $v['id'];
+        $this->job_name = $v['name'];
+        $this->jobTyped = false;
+    }
+
+    public function jobSave($name)
+    {
+        $obj = Common::create([
+            'label_id' => 25, // Assuming label_id for jobs is 24
+            'vname' => $name,
+            'active_id' => '1'
+        ]);
+        $v = ['name' => $name, 'id' => $obj->id];
+        $this->refreshJob($v);
+    }
+
+    public function getJobList(): void
+    {
+        $this->jobCollection = $this->job_name ?
+            Common::search(trim($this->job_name))->where('label_id', '=', '25')->get() :
+            Common::where('label_id', '=', '25')->orWhere('label_id', '=', '24')->get();
+    }
+#endregion
     public function saveTaskImage($id)
     {
         foreach ($this->old_images as $old_image) {
@@ -117,7 +262,6 @@ class Upsert extends Component
     {
         $this->showEditModal=true;
     }
-
 
     #region[getSave]
     public function getSaveActivity(): void
@@ -215,11 +359,13 @@ class Upsert extends Component
 
     public function getRoute()
     {
-        return redirect(route('task.upsert',[$this->task_id]));
+        return redirect(route('tasks.upsert',[$this->task_id]));
     }
 
     public function render()
     {
+        $this->getJobList();
+        $this->getModuleList();
         return view('livewire.task-manger.task.upsert')->with(['list'=>$this->getList(), 'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),]);
     }
 }

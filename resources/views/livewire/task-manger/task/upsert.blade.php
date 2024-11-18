@@ -12,7 +12,7 @@
                 <div class="text-5xl font-bold tracking-wider capitalize text-gray-700">{{$taskData->vname}}</div>
             </div>
             <div class="hidden lg:flex justify-between">
-                <a href="{{route('publicTask')}}"
+                <a href="{{route('tasks')}}"
                    class=" text-sm text-gray-600 gap-x-3 inline-flex items-center font-semibold hover:underline hover:decoration-blue-600 hover:text-blue-600 transition-all duration-300 ease-in-out">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
                         <path fill-rule="evenodd"
@@ -103,24 +103,24 @@
             </div>
 
             <div class="flex  items-center font-semibold text-sm font-lex gap-x-5">
-                <div>Created By : <span class="text-red-600">{{$taskData->user->name}}</span></div>
+                <div>Created By : <span class="text-red-600">{{$taskData->reporter->name}}</span></div>
                 <div class="border-l-2 h-5 border-gray-400"></div>
 
                 <div class="text-gray-600">  {{$taskData->created_at->diffForHumans()}}</div>
                 <div class="border-l-2 h-5 border-gray-400"></div>
                 <div> Allocated To : <span
-                        class="text-indigo-600">{{\Aaran\Taskmanager\Models\Task::allocate($taskData->allocated)}}</span>
+                        class="text-indigo-600">{{$taskData->allocated->name}}</span>
                 </div>
                 <div class="border-l-2  h-5 border-gray-400"></div>
 
                 <div> Priority To :</div>
                 <div
-                    class="text-xs px-2 rounded-full py-0.5 {{ \App\Enums\Priority::tryFrom($taskData->priority)->getStyle() }}">{{ \App\Enums\Priority::tryFrom($taskData->priority)->getName() }}</div>
+                    class="text-xs px-2 rounded-full py-0.5 {{ \App\Enums\Priority::tryFrom($taskData->priority_id)->getStyle() }}">{{ \App\Enums\Priority::tryFrom($taskData->priority_id)->getName() }}</div>
                 <div class="border-l-2 h-5 border-gray-400"></div>
 
                 <div> Status :</div>
                 <div
-                    class="text-xs px-2 rounded-full py-0.5 {{ \App\Enums\Status::tryFrom($taskData->status)->getStyle() }}">{{ \App\Enums\Status::tryFrom($taskData->status)->getName() }}</div>
+                    class="text-xs px-2 rounded-full py-0.5 {{\App\Enums\Status::tryFrom($taskData->status_id)->getStyle()}}">{{ \App\Enums\Status::tryFrom($taskData->status_id)->getName() }}</div>
             </div>
 
             <div class="text-sm text-justify leading-loose ">{!! $taskData->body !!}</div>
@@ -151,7 +151,7 @@
                             </div>
                         </div>
                         <div
-                            class="text-justify text-slate-700 min-h-20 p-5 text-sm text-gray-600 bg-white w-full"> {!! $row->vname !!} </div>
+                            class="text-justify text-slate-700 min-h-20 p-5 text-sm bg-white w-full"> {!! $row->vname !!} </div>
                     </div>
                     @empty
                     <div class="flex-col flex justify-start items-center border rounded-md">
@@ -211,13 +211,66 @@
 
                     <x-input.floating wire:model="taskTitle" :label="'Title'"/>
 
-                    <x-input.rich-text wire:model="body" :placeholder="'Write the error'"/>
+                    <x-input.rich-text wire:model="taskBody" :placeholder="'Write the error'"/>
 
                 </div>
 
                 <!--Right Side -------------------------------------------------------------------------------------------->
 
                 <div class="flex flex-col space-y-5 w-full">
+
+                    <x-dropdown.wrapper label="Job" type="jobTyped">
+                        <div class="relative">
+                            <x-dropdown.input label="Job" id="job_name"
+                                              wire:model.live="job_name"
+                                              wire:keydown.arrow-up="decrementJob"
+                                              wire:keydown.arrow-down="incrementJob"
+                                              wire:keydown.enter="enterJob"/>
+                            <x-dropdown.select>
+                                @if($jobCollection)
+                                    @forelse ($jobCollection as $i => $job)
+                                        <x-dropdown.option highlight="{{$highlightJob === $i}}"
+                                                           wire:click.prevent="setJob('{{$job->vname}}','{{$job->id}}')">
+                                            {{ $job->vname }}
+                                        </x-dropdown.option>
+                                    @empty
+                                        <x-dropdown.create wire:click.prevent="jobSave('{{$job_name}}')"
+                                                           label="Job"/>
+                                    @endforelse
+                                @endif
+                            </x-dropdown.select>
+                        </div>
+                    </x-dropdown.wrapper>
+                    @error('job_name')
+                    <span class="text-red-400">{{$message}}</span>
+                    @enderror
+
+
+                    <x-dropdown.wrapper label="Module" type="moduleTyped">
+                        <div class="relative">
+                            <x-dropdown.input label="Module" id="module_name"
+                                              wire:model.live="module_name"
+                                              wire:keydown.arrow-up="decrementModule"
+                                              wire:keydown.arrow-down="incrementModule"
+                                              wire:keydown.enter="enterModule"/>
+                            <x-dropdown.select>
+                                @if($moduleCollection)
+                                    @forelse ($moduleCollection as $i => $module)
+                                        <x-dropdown.option highlight="{{$highlightModule === $i}}"
+                                                           wire:click.prevent="setModule('{{$module->vname}}','{{$module->id}}')">
+                                            {{ $module->vname }}
+                                        </x-dropdown.option>
+                                    @empty
+                                        <x-dropdown.create wire:click.prevent="moduleSave('{{$module_name}}')"
+                                                           label="Module"/>
+                                    @endforelse
+                                @endif
+                            </x-dropdown.select>
+                        </div>
+                    </x-dropdown.wrapper>
+                    @error('module_name')
+                    <span class="text-red-400">{{$message}}</span>
+                    @enderror
 
                     <x-input.model-select wire:model="allocated" :label="'Allocated'">
                         <option value="">Choose...</option>

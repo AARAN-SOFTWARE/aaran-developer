@@ -70,6 +70,7 @@
 
                         </div>
                     </div>
+
                     <div class="bg-gray-100 w-full h-60 rounded-r-md gap-y-5">
                         <div class="flex justify-between items-center px-5 pt-3">
                             <div class="w-11/12 line-clamp-1 text-lg uppercase  font-semibold indent-7 ">{{$row->id}}
@@ -119,7 +120,7 @@
                             </div>
                             <div
                                 class="   rounded-full text-sm inline-flex items-center gap-x-2 fill-white px-3 py-1
-                                {{\App\Enums\Priority::tryFrom($row->priority)->getStyle()}}">
+                                {{App\Enums\Priority::tryFrom($row->priority_id)->getStyle()}}">
                                 <svg fill="" width="" height="" viewBox="0 0 1920 1920"
                                      xmlns="http://www.w3.org/2000/svg"
                                      class="w-3.5 h-3.5">
@@ -127,10 +128,11 @@
                                           d="M1687.84 451.764H219.606V282.353c0-31.624 24.847-56.471 56.471-56.471h169.412v56.471c0 31.623 24.847 56.47 56.47 56.47 31.624 0 56.471-24.847 56.471-56.47v-56.471h790.59v56.471c0 31.623 24.85 56.47 56.47 56.47 31.62 0 56.47-24.847 56.47-56.47v-56.471h169.41c31.62 0 56.47 24.847 56.47 56.471v169.411Zm-303 618.036c-4.86-15.6-18.67-26.11-34.38-26.11h-272.01l-84.027-270.853v-.052c-4.919-15.608-18.723-26.118-34.434-26.118-15.661 0-29.515 10.51-34.384 26.17l-84.078 270.853h-272.01c-15.711 0-29.515 10.51-34.384 26.11-4.869 15.61.352 32.64 13.102 42.36l220.107 167.43-84.077 270.9c-4.869 15.66.502 32.69 13.251 42.3 6.325 4.79 13.754 7.2 21.183 7.2s14.858-2.41 21.233-7.25l220.057-167.37L1180 1592.74c12.7 9.67 29.81 9.67 42.51.05 12.75-9.61 18.07-26.64 13.2-42.35l-84.07-270.85 220.15-167.43c12.7-9.72 17.97-26.75 13.05-42.36m246.53-956.859h-169.41v-56.47c0-31.624-24.85-56.471-56.47-56.471-31.62 0-56.47 24.847-56.47 56.47v56.471H558.431v-56.47C558.431 24.847 533.584 0 501.961 0c-31.624 0-56.471 24.847-56.471 56.47v56.471H276.079c-93.742 0-169.412 75.671-169.412 169.412V1920H1800.78V282.353c0-93.741-75.67-169.412-169.41-169.412Z"/>
                                 </svg>
                                 <span class=" font-semibold">
-                                    {{\App\Enums\Priority::tryFrom($row->priority)->getName()}}
+                                    {{App\Enums\Priority::tryFrom($row->priority_id)->getName()}}
                                 </span>
                             </div>
                         </div>
+
                         <div class="bg-white border-t border-l h-40 p-3 space-y-2 flex-col flex justify-between">
                             <div
                                 class="w-9/12 self-start h-[60px] overflow-hidden text-xs  text-gray-700 font-semibold
@@ -146,13 +148,13 @@
                                                   d="M10 2.5c-1.31 0-2.526.386-3.546 1.051a.75.75 0 0 1-.82-1.256A8 8 0 0 1 18 9a22.47 22.47 0 0 1-1.228 7.351.75.75 0 1 1-1.417-.49A20.97 20.97 0 0 0 16.5 9 6.5 6.5 0 0 0 10 2.5ZM4.333 4.416a.75.75 0 0 1 .218 1.038A6.466 6.466 0 0 0 3.5 9a7.966 7.966 0 0 1-1.293 4.362.75.75 0 0 1-1.257-.819A6.466 6.466 0 0 0 2 9c0-1.61.476-3.11 1.295-4.365a.75.75 0 0 1 1.038-.219ZM10 6.12a3 3 0 0 0-3.001 3.041 11.455 11.455 0 0 1-2.697 7.24.75.75 0 0 1-1.148-.965A9.957 9.957 0 0 0 5.5 9c0-.028.002-.055.004-.082a4.5 4.5 0 0 1 8.996.084V9.15l-.005.297a.75.75 0 1 1-1.5-.034c.003-.11.004-.219.005-.328a3 3 0 0 0-3-2.965Zm0 2.13a.75.75 0 0 1 .75.75c0 3.51-1.187 6.745-3.181 9.323a.75.75 0 1 1-1.186-.918A13.687 13.687 0 0 0 9.25 9a.75.75 0 0 1 .75-.75Zm3.529 3.698a.75.75 0 0 1 .584.885 18.883 18.883 0 0 1-2.257 5.84.75.75 0 1 1-1.29-.764 17.386 17.386 0 0 0 2.078-5.377.75.75 0 0 1 .885-.584Z"
                                                   clip-rule="evenodd"/>
                                         </svg>
-                                        <span class="text-sm">{{\App\Models\User::getName($row->allocated)}}</span>
+                                        <span class="text-sm">{{$row->allocated->name}}</span>
                                         <div
                                             class="text-gray-600 text-xs px-2">{{  $row->updated_at->diffForHumans() }}</div>
                                     </div>
                                 </div>
                                 <div class=" left-4 w-full flex justify-between items-center self-end  ">
-                                    <a href="{{route('task.upsert',[$row->id])}}" type="button"
+                                    <a href="{{route('tasks.upsert',[$row->id])}}" type="button"
                                        class="bg-blue-600 p-1 text-white rounded-md px-3 py-1 text-xs hover:bg-blue-500 transition-all duration-300 ease-in-out inline-flex items-center gap-x-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
                                              class="size-3">
@@ -162,8 +164,8 @@
 
                                         <span>Read More ...</span></a>
                                     <div
-                                        class="text-xs px-3 py-1 rounded-full text-center {{\App\Enums\Status::tryFrom($row->status)->getStyle()}}">
-                                        {{\App\Enums\Status::tryFrom($row->status)->getName()}}
+                                        class="text-xs px-3 py-1 rounded-full text-center {{\App\Enums\Status::tryFrom($row->status_id)->getStyle()}}">
+                                        {{\App\Enums\Status::tryFrom($row->status_id)->getName()}}
                                     </div>
 
                                 </div>
@@ -175,20 +177,6 @@
             @endforeach
         </div>
 
-        {{--        <div class="flex flex-col sm:grid grid-cols-4 w-full gap-10">--}}
-        {{--            @foreach($list as $index=>$row)--}}
-        {{--                <x-cards.card-3 :id="$row->id"--}}
-        {{--                                :title="$row->vname"--}}
-        {{--                                :description="$row->body"--}}
-        {{--                                :status="\App\Enums\Status::tryFrom($row->status)->getName()"--}}
-        {{--                                :priority="\App\Enums\Priority::tryFrom($row->priority)->getName()"--}}
-        {{--                                :allocated="\App\Models\User::getName($row->allocated)"--}}
-        {{--                                :createdBy="\App\Models\User::getName($row->user_id)"--}}
-        {{--                                :slides="\App\Livewire\TaskManger\Task\Index::getTaskImage($row->id)"--}}
-        {{--                                :read-moer="route('task.upsert',[$row->id])"--}}
-        {{--                />--}}
-        {{--            @endforeach--}}
-        {{--        </div>--}}
     </x-forms.m-panel>
 
     <x-modal.delete/>
@@ -205,15 +193,37 @@
 
                 <x-input.rich-text wire:model="body" :placeholder="'Write the error'"/>
 
-
-                <x-input.floating wire:model="job_id" :label="'Job'"/>
-
-
             </div>
 
             <!--Right Side -------------------------------------------------------------------------------------------->
 
             <div class="flex flex-col space-y-5 w-full">
+
+                <x-dropdown.wrapper label="Job" type="jobTyped">
+                    <div class="relative">
+                        <x-dropdown.input label="Job" id="job_name"
+                                          wire:model.live="job_name"
+                                          wire:keydown.arrow-up="decrementJob"
+                                          wire:keydown.arrow-down="incrementJob"
+                                          wire:keydown.enter="enterJob"/>
+                        <x-dropdown.select>
+                            @if($jobCollection)
+                                @forelse ($jobCollection as $i => $job)
+                                    <x-dropdown.option highlight="{{$highlightJob === $i}}"
+                                                       wire:click.prevent="setJob('{{$job->vname}}','{{$job->id}}')">
+                                        {{ $job->vname }}
+                                    </x-dropdown.option>
+                                @empty
+                                    <x-dropdown.create wire:click.prevent="jobSave('{{$job_name}}')"
+                                                       label="Job"/>
+                                @endforelse
+                            @endif
+                        </x-dropdown.select>
+                    </div>
+                </x-dropdown.wrapper>
+                @error('job_name')
+                <span class="text-red-400">{{$message}}</span>
+                @enderror
 
 
                 <x-dropdown.wrapper label="Module" type="moduleTyped">
@@ -255,6 +265,7 @@
                         <option value="{{$priority->value}}">{{$priority->getName()}}</option>
                     @endforeach
                 </x-input.model-select>
+
 
                 <x-input.model-select wire:model="status_id" :label="'Status'">
                     <option value="">Choose...</option>
