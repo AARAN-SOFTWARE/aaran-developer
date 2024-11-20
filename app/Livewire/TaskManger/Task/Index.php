@@ -29,7 +29,16 @@ class Index extends Component
 
     public $images = [];
     public $old_images = [];
+    public $filter = '';
     #endregion
+
+    public function mount($id=null)
+    {
+        if ($id != null) {
+            $this->filter = $id;
+//            $this->job_id = Common::find($id);
+        }
+    }
 
     #region[getSave]
     public function getSave(): void
@@ -325,6 +334,8 @@ class Index extends Component
         return route('Task');
     }
 
+
+
     public function render()
     {
         $this->getModuleList();
@@ -332,7 +343,16 @@ class Index extends Component
 
         return view('livewire.task-manger.task.index')->with([
             'list' => $this->getListForm->getList(Task::class, function ($q) {
-                return $q->where('allocated_id', '=', auth()->id());
+                if ($this->filter == 2){
+                    return $q->where('allocated_id', '=', auth()->id());
+                }elseif ($this->filter == 3){
+                    return $q->where('allocated_id', '=', 2);
+                }elseif ($this->filter == 4){
+                    return null;
+                }else{
+                    return $q->where('reporter_id', '=', auth()->id());
+                }
+
             }),
             'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),
         ]);
