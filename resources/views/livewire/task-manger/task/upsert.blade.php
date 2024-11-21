@@ -102,6 +102,8 @@
                 @endif
             </div>
 
+            <!--User Data ------------------------------------------------------------------------------------------------>
+
             <div class="flex  items-center font-semibold text-sm font-lex gap-x-5">
                 <div>Created By : <span class="text-red-600">{{$taskData->reporter->name}}</span></div>
                 <div class="border-l-2 h-5 border-gray-400"></div>
@@ -153,13 +155,15 @@
                         <div
                             class="text-justify text-slate-700 min-h-20 p-5 text-sm bg-white w-full"> {!! $row->vname !!} </div>
                     </div>
-                    @empty
+                @empty
                     <div class="flex-col flex justify-start items-center border rounded-md">
-                        <div class="w-full bg-gray-100 p-2 " >No Activities yet</div>
+                        <div class="w-full bg-gray-100 p-2 ">No Activities yet</div>
                         <div class="w-full px-2 py-4">Empty Remarks</div>
                     </div>
                 @endforelse
             </div>
+
+            <!-- Create Activity -------------------------------------------------------------------------------------->
             <div class="w-full space-y-5">
                 <x-tabs.tab-panel>
                     <x-slot name="tabs">
@@ -192,6 +196,7 @@
 
                     </x-slot>
                 </x-tabs.tab-panel>
+
                 <div class="w-full flex items-center justify-end ">
                     <button wire:click.prevent="getSaveActivity"
                             class="bg-green-600 text-white px-4 py-2 rounded-md">
@@ -201,6 +206,8 @@
             </div>
         </div>
         <x-modal.delete/>
+
+        <!-- Edit Model ----------------------------------------------------------------------------------------------->
 
         <x-forms.create :id="$task_id" :max-width="'6xl'">
             <div class="flex flex-row space-x-5 w-full">
@@ -212,7 +219,7 @@
 
                 </div>
 
-                <!--Right Side -------------------------------------------------------------------------------------------->
+                <!--Right Side ---------------------------------------------------------------------------------------->
 
                 <div class="flex flex-col space-y-5 w-full">
 
@@ -334,6 +341,7 @@
                                     @endif
                                 </div>
                             </div>
+
                             <div class="relative">
                                 <div>
                                     <label for="bg_image"

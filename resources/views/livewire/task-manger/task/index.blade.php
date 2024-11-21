@@ -1,5 +1,15 @@
 <div>
-    <x-slot name="header">Task</x-slot>
+    <x-slot name="header">
+        @if($filter==2)
+            My Task
+        @elseif($filter==3)
+            Open Task
+        @elseif($filter==4)
+            Admin
+        @else
+            Task
+        @endif
+    </x-slot>
 
     <x-forms.m-panel>
 
@@ -31,7 +41,7 @@
             },
         }" class="relative w-full rounded-md">
 
-                            <!-- Previous button -->
+                            <!-- Previous button ---------------------------------------------------------------------->
 
                             <button type="button"
                                     class="absolute left-1 top-28 z-20 flex rounded-full  items-center justify-center
@@ -45,6 +55,8 @@
                                 </svg>
                             </button>
 
+                            <!-- Next button -------------------------------------------------------------------------->
+
                             <button type="button"
                                     class="absolute right-1 top-28 z-20 flex rounded-full items-center justify-center
                     bg-white/40 hover:bg-white/90"
@@ -56,8 +68,8 @@
                                 </svg>
                             </button>
 
-                            <!-- Next button -->
-                            <!-- Slides -->
+                            <!-- Slides ------------------------------------------------------------------------------->
+
                             <div class="relative h-full w-full rounded-md">
                                 <template x-for="(slide, index) in slides">
                                     <div x-cloak x-show="currentSlideIndex == index + 1" class=" inset-0 w-full h-full "
@@ -71,8 +83,10 @@
                         </div>
                     </div>
 
+                    <!-- Top Panel ------------------------------------------------------------------------------------>
+
                     <div class="bg-gray-100 w-full h-60 rounded-r-md gap-y-5">
-                        <div class="flex justify-between items-center px-5 pt-3">
+                        <div class="flex justify-between items-center pt-3">
                             <div class="w-11/12 line-clamp-1 text-lg uppercase  font-semibold indent-7 ">{{$row->id}}
                                 . {!!  $row->vname !!}</div>
                             <div class="w-1/12 flex justify-end">
@@ -88,7 +102,6 @@
                                             <span>Edit</span>
                                         </button>
 
-
                                         <button wire:click="getDelete({{$row->id}})"
                                                 class="w-full text-xs inline-flex items-center gap-x-2 text-gray-700 hover:bg-red-100 p-1 hover:text-red-600">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -102,24 +115,23 @@
                                 </x-dropdown.icon>
                             </div>
                         </div>
+
                         <div class="flex justify-between items-center border-l px-5 pb-3">
                             <div class="inline-flex items-center gap-x-3">
                                 <div class="flex items-center gap-x-2 font-semibold">
                                     <div
-                                        class="rounded-full bg-white overflow-hidden w-5 h-5 flex justify-center items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                             class="size-3 fill-gray-700">
-                                            <path
-                                                d="M10 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.465 14.493a1.23 1.23 0 0 0 .41 1.412A9.957 9.957 0 0 0 10 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 0 0-13.074.003Z"/>
-                                        </svg>
+                                        class="rounded-full bg-white overflow-hidden w-6 h-6 flex justify-center items-center border border-blue-400">
+                                        <span> <img src="{{$row->reporter->profile_photo_url}}" alt=""></span>
                                     </div>
-                                    <div class="text-xs">{{\App\Models\User::getName($row->user_id)}}</div>
+                                    <div class="text-xs">{{$row->reporter->name}}</div>
                                 </div>
                                 <div class="text-xs text-gray-600 px-4">{{$row->created_at->diffForHumans()}} ...
                                 </div>
                             </div>
+
+
                             <div
-                                class="   rounded-full text-sm inline-flex items-center gap-x-2 fill-white px-3 py-1
+                                class="rounded-full text-sm inline-flex items-center gap-x-2 fill-white px-3 py-1
                                 {{App\Enums\Priority::tryFrom($row->priority_id)->getStyle()}}">
                                 <svg fill="" width="" height="" viewBox="0 0 1920 1920"
                                      xmlns="http://www.w3.org/2000/svg"
@@ -127,11 +139,13 @@
                                     <path fill-rule="evenodd"
                                           d="M1687.84 451.764H219.606V282.353c0-31.624 24.847-56.471 56.471-56.471h169.412v56.471c0 31.623 24.847 56.47 56.47 56.47 31.624 0 56.471-24.847 56.471-56.47v-56.471h790.59v56.471c0 31.623 24.85 56.47 56.47 56.47 31.62 0 56.47-24.847 56.47-56.47v-56.471h169.41c31.62 0 56.47 24.847 56.47 56.471v169.411Zm-303 618.036c-4.86-15.6-18.67-26.11-34.38-26.11h-272.01l-84.027-270.853v-.052c-4.919-15.608-18.723-26.118-34.434-26.118-15.661 0-29.515 10.51-34.384 26.17l-84.078 270.853h-272.01c-15.711 0-29.515 10.51-34.384 26.11-4.869 15.61.352 32.64 13.102 42.36l220.107 167.43-84.077 270.9c-4.869 15.66.502 32.69 13.251 42.3 6.325 4.79 13.754 7.2 21.183 7.2s14.858-2.41 21.233-7.25l220.057-167.37L1180 1592.74c12.7 9.67 29.81 9.67 42.51.05 12.75-9.61 18.07-26.64 13.2-42.35l-84.07-270.85 220.15-167.43c12.7-9.72 17.97-26.75 13.05-42.36m246.53-956.859h-169.41v-56.47c0-31.624-24.85-56.471-56.47-56.471-31.62 0-56.47 24.847-56.47 56.47v56.471H558.431v-56.47C558.431 24.847 533.584 0 501.961 0c-31.624 0-56.471 24.847-56.471 56.47v56.471H276.079c-93.742 0-169.412 75.671-169.412 169.412V1920H1800.78V282.353c0-93.741-75.67-169.412-169.41-169.412Z"/>
                                 </svg>
-                                <span class=" font-semibold">
+                                <span class="font-semibold">
                                     {{App\Enums\Priority::tryFrom($row->priority_id)->getName()}}
                                 </span>
                             </div>
                         </div>
+
+                        <!-- Description ------------------------------------------------------------------------------>
 
                         <div class="bg-white border-t border-l h-40 p-3 space-y-2 flex-col flex justify-between">
                             <div
@@ -150,7 +164,14 @@
                                         </svg>
                                         <span class="text-sm">{{$row->allocated->name}}</span>
                                         <div
-                                            class="text-gray-600 text-xs px-2">{{  $row->updated_at->diffForHumans() }}</div>
+                                            class="text-gray-600 text-xs px-2">
+                                            <span class="text-blue-500">Edited :</span>
+                                            {{  $row->updated_at->diffForHumans() }}</div>
+                                    </div>
+                                    <div class="text-xs space-x-3 capitalize">
+                                        <span>{{  \Aaran\Taskmanager\Models\Task::common($row->job_id) }}</span>
+                                        <span>|</span>
+                                        <span>{{  \Aaran\Taskmanager\Models\Task::common($row->module_id) }}</span>
                                     </div>
                                 </div>
                                 <div class=" left-4 w-full flex justify-between items-center self-end  ">
@@ -167,7 +188,6 @@
                                         class="text-xs px-3 py-1 rounded-full text-center {{\App\Enums\Status::tryFrom($row->status_id)->getStyle()}}">
                                         {{\App\Enums\Status::tryFrom($row->status_id)->getName()}}
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -267,12 +287,12 @@
                 </x-input.model-select>
 
 
-{{--                <x-input.model-select wire:model="status_id" :label="'Status'">--}}
-{{--                    <option value="">Choose...</option>--}}
-{{--                    @foreach(App\Enums\Status::cases() as $status)--}}
-{{--                        <option value="{{$status->value}}">{{$status->getName()}}</option>--}}
-{{--                    @endforeach--}}
-{{--                </x-input.model-select>--}}
+                {{--                <x-input.model-select wire:model="status_id" :label="'Status'">--}}
+                {{--                    <option value="">Choose...</option>--}}
+                {{--                    @foreach(App\Enums\Status::cases() as $status)--}}
+                {{--                        <option value="{{$status->value}}">{{$status->getName()}}</option>--}}
+                {{--                    @endforeach--}}
+                {{--                </x-input.model-select>--}}
 
 
                 <!-- Image  ----------------------------------------------------------------------------------------------->
