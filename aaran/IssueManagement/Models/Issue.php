@@ -31,7 +31,7 @@ class Issue extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static function allocate($str)
+    public static function allocated($str)
     {
         return User::find($str)->name;
     }
