@@ -18,7 +18,6 @@ class Index extends Component
     use WithFileUploads;
 
     #region[property]
-    public $job_id;
     public $body;
     public $priority_id;
     public $status_id;
@@ -185,6 +184,78 @@ class Index extends Component
 
     #endregion
 
+    #region[job]
+    public $job_id = '';
+    public $job_name = '';
+    public Collection $jobCollection;
+    public $highlightJob = 0;
+    public $jobTyped = false;
+
+    public function decrementJob(): void
+    {
+        if ($this->highlightJob === 0) {
+            $this->highlightJob = count($this->jobCollection) - 1;
+            return;
+        }
+        $this->highlightJob--;
+    }
+
+    public function incrementJob(): void
+    {
+        if ($this->highlightJob === count($this->jobCollection) - 1) {
+            $this->highlightJob = 0;
+            return;
+        }
+        $this->highlightJob++;
+    }
+
+    public function setJob($name, $id): void
+    {
+        $this->job_name = $name;
+        $this->job_id = $id;
+        $this->getJobList();
+    }
+
+    public function enterJob(): void
+    {
+        $obj = $this->jobCollection[$this->highlightJob] ?? null;
+
+        $this->job_name = '';
+        $this->jobCollection = Collection::empty();
+        $this->highlightJob = 0;
+
+        $this->job_name = $obj['vname'] ?? '';
+        $this->job_id = $obj['id'] ?? '';
+    }
+
+
+    public function refreshJob($v): void
+    {
+        $this->job_id = $v['id'];
+        $this->job_name = $v['name'];
+        $this->jobTyped = false;
+    }
+
+    public function jobSave($name)
+    {
+        $obj = Common::create([
+            'label_id' => 25,
+            'vname' => $name,
+            'active_id' => '1'
+        ]);
+        $v = ['name' => $name, 'id' => $obj->id];
+        $this->refreshJob($v);
+    }
+
+    public function getJobList(): void
+    {
+        $this->jobCollection = $this->job_name ?
+            Common::search(trim($this->job_name))->where('label_id', '=', '25')->get() :
+            Common::where('label_id', '=', '25')->orWhere('label_id', '=', '1')->get();
+    }
+
+#endregion
+
     #region[module]
     public $module_id = '';
     public $module_name = '';
@@ -253,78 +324,6 @@ class Index extends Component
         $this->moduleCollection = $this->module_name ?
             Common::search(trim($this->module_name))->where('label_id', '=', '24')->get() :
             Common::where('label_id', '=', '24')->orWhere('label_id', '=', '1')->get();
-    }
-
-#endregion
-
-    #region[job]
-//    public $job_id = '';
-    public $job_name = '';
-    public Collection $jobCollection;
-    public $highlightJob = 0;
-    public $jobTyped = false;
-
-    public function decrementJob(): void
-    {
-        if ($this->highlightJob === 0) {
-            $this->highlightJob = count($this->jobCollection) - 1;
-            return;
-        }
-        $this->highlightJob--;
-    }
-
-    public function incrementJob(): void
-    {
-        if ($this->highlightJob === count($this->jobCollection) - 1) {
-            $this->highlightJob = 0;
-            return;
-        }
-        $this->highlightJob++;
-    }
-
-    public function setJob($name, $id): void
-    {
-        $this->job_name = $name;
-        $this->job_id = $id;
-        $this->getJobList();
-    }
-
-    public function enterJob(): void
-    {
-        $obj = $this->jobCollection[$this->highlightJob] ?? null;
-
-        $this->job_name = '';
-        $this->jobCollection = Collection::empty();
-        $this->highlightJob = 0;
-
-        $this->job_name = $obj['vname'] ?? '';
-        $this->job_id = $obj['id'] ?? '';
-    }
-
-
-    public function refreshJob($v): void
-    {
-        $this->job_id = $v['id'];
-        $this->job_name = $v['name'];
-        $this->jobTyped = false;
-    }
-
-    public function jobSave($name)
-    {
-        $obj = Common::create([
-            'label_id' => 25,
-            'vname' => $name,
-            'active_id' => '1'
-        ]);
-        $v = ['name' => $name, 'id' => $obj->id];
-        $this->refreshJob($v);
-    }
-
-    public function getJobList(): void
-    {
-        $this->jobCollection = $this->job_name ?
-            Common::search(trim($this->job_name))->where('label_id', '=', '25')->get() :
-            Common::where('label_id', '=', '25')->orWhere('label_id', '=', '1')->get();
     }
 
 #endregion
