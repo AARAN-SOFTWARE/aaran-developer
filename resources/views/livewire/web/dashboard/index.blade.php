@@ -19,9 +19,9 @@
                                 clip-rule="evenodd"/>
                         </svg>
 
-                            <span class="font-semibold text-lg font-roboto">Issues</span>
+                            <span class="font-semibold text-lg font-roboto">My Issues</span>
                         </span>
-                    <a href="{{ route('issues') }}"
+                    <a href="{{ route('myIssues') }}"
                        class="inline-flex items-center gap-1 text-gray-500 font-semibold hover:bg-cyan-50 hover:text-cyan-600 px-2 py-1 rounded-md transition-colors duration-300 ease-out">
                         <span class="text-xs ">View All</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -32,20 +32,81 @@
                         </svg>
                     </a>
                 </div>
+
                 <div class="flex-col flex px-5 h-[24] overflow-y-auto gap-y-5">
-                    @forelse($issues as $issue)
+                    @forelse($myIssues as $myIssue)
 
                         <div
                             class="w-full h-auto  flex gap-x-2 bg-gray-50 cursor-pointer hover:bg-slate-150 rounded-md animate__animated
                             wow animate__backInRight"
                             data-wow-duration="3s">
 
-                            <div class="h-24 w-32">
-                                <img src="{{ \Illuminate\Support\Facades\Storage::url('/images/'.$issue->image) }}"
-                                     class="w-full h-20" alt="">
+                            <div class="w-1/4 h-20 p-3">
+                                <div x-data=" {
+                                 slides: [
+                                @foreach (\App\Livewire\Web\Dashboard\Index::getIssueImage($myIssue->id) as $slide)
+                                    {
+                                        imgSrc: '{{ $slide['imgSrc'] }}',
+                                        imgAlt: '{{ $slide['imgSrc'] }}',
+                                    },
+                                @endforeach
+                            ],
+                            currentSlideIndex: 1,
+                            previous() {
+                                this.currentSlideIndex = this.currentSlideIndex > 1 ? this.currentSlideIndex - 1 : this.slides.length;
+                            },
+                            next() {
+                                this.currentSlideIndex = this.currentSlideIndex < this.slides.length ? this.currentSlideIndex + 1 : 1;
+                            },
+                        }" class="relative w-full rounded-md">
+
+                                    <!-- Previous button ---------------------------------------------------------------------->
+
+                                    <button type="button"
+                                            class="absolute left-1 top-8 z-20 flex rounded-full  items-center justify-center
+                    bg-white/40 hover:bg-white/90"
+                                            aria-label="previous slide" x-on:click="previous()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                             stroke="currentColor"
+                                             fill="none"
+                                             stroke-width="3" class="size-4 pr-0.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M15.75 19.5 8.25 12l7.5-7.5"/>
+                                        </svg>
+                                    </button>
+
+                                    <!-- Next button -------------------------------------------------------------------------->
+
+                                    <button type="button"
+                                            class="absolute right-1 top-8 z-20 flex rounded-full items-center justify-center
+                    bg-white/40 hover:bg-white/90"
+                                            aria-label="previous slide" x-on:click="next()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                             stroke="currentColor"
+                                             fill="none"
+                                             stroke-width="3" class="size-4 pl-0.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                  d="M8.25 4.5l7.5 7.5-7.5 7.5"/>
+                                        </svg>
+                                    </button>
+
+                                    <!-- Slides ------------------------------------------------------------------------------->
+
+                                    <div class="relative h-full w-full rounded-md">
+                                        <template x-for="(slide, index) in slides">
+                                            <div x-cloak x-show="currentSlideIndex == index + 1"
+                                                 class=" inset-0 w-full h-full "
+                                                 x-transition.opacity.duration.300ms>
+                                                <img class="absolute w-full h-20 inset-0 text-slate-700 rounded-l-md "
+                                                     x-bind:src="slide.imgSrc" x-bind:alt="slide.imgAlt"/>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                </div>
                             </div>
 
-                            <div class="w-4/6 flex-col flex py-1 ">
+                            <a href="{{ route('issues.activities', [$myIssue->id]) }}" class="w-4/6 flex-col flex py-1">
                                 <div class="h-1/4 inline-flex items-center gap-x-2">
                                     <span>
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
@@ -55,17 +116,17 @@
                                               clip-rule="evenodd"/>
                                         </svg>
                                     </span>
-                                    <span class="text-xs text-gray-600">By {{$issue->reporter->name}}</span>
+                                    <span class="text-xs text-gray-600">By {{$myIssue->reporter->name}}</span>
                                 </div>
 
                                 <div class="3/4 flex-col flex justify-start items-start ">
                                     <div
-                                        class="text-md font-semibold">{{\Illuminate\Support\Str::words($issue->vname, 10)}}</div>
+                                        class="text-md font-semibold">{{\Illuminate\Support\Str::words($myIssue->vname, 10)}}</div>
                                     <div class="text-xs line-clamp-1">
-                                        {!! $issue->body !!}
+                                        {!! $myIssue->body !!}
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     @empty
                         <div>No Issues</div>
@@ -284,4 +345,6 @@
 
 
     </div>
+
+</div>
 

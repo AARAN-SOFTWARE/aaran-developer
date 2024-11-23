@@ -25,10 +25,16 @@ class Index extends Component
     public $issues;
     public $myTasks;
     public $openTasks;
+    public $myIssues;
 
     public function getIssue()
     {
         $this->issues = Issue::latest()->get();
+    }
+
+    public function getmyIssue()
+    {
+        $this->myIssues = Issue::latest()->where('assignee_id','=','2')->get();
     }
 
     public function getIssueImage($id)
@@ -74,6 +80,7 @@ class Index extends Component
         $this->getBlog();
         $this->getTask();
         $this->getopenTask();
+        $this->getmyIssue();
 
         return view('livewire.web.dashboard.index');
     }
