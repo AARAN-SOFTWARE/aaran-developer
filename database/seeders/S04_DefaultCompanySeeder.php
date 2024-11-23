@@ -12,7 +12,7 @@ class S04_DefaultCompanySeeder extends Seeder
         DefaultCompany::create([
             'company_id' => '1',
             'tenant_id'=>'1',
-            'acyear' => '116',
+            'acyear' => '102',
         ]);
     }
 }
