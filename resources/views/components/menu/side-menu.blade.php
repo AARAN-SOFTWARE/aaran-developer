@@ -40,6 +40,8 @@
 
             @if(Aaran\Aadmin\Src\Customise::hasTaskManager())
                 <x-menu.sub.task/>
+                <x-menu.sub.crm/>
+
             @endif
 
             @if(Aaran\Aadmin\Src\Customise::hasInstallation())
