@@ -239,7 +239,7 @@ class Index extends Component
     public function jobSave($name)
     {
         $obj = Common::create([
-            'label_id' => 25,
+            'label_id' => 20,
             'vname' => $name,
             'active_id' => '1'
         ]);
@@ -250,8 +250,8 @@ class Index extends Component
     public function getJobList(): void
     {
         $this->jobCollection = $this->job_name ?
-            Common::search(trim($this->job_name))->where('label_id', '=', '25')->get() :
-            Common::where('label_id', '=', '25')->orWhere('label_id', '=', '1')->get();
+            Common::search(trim($this->job_name))->where('label_id', '=', '20')->get() :
+            Common::where('label_id', '=', '20')->orWhere('label_id', '=', '1')->get();
     }
 
 #endregion
@@ -311,7 +311,7 @@ class Index extends Component
     public function moduleSave($name)
     {
         $obj = Common::create([
-            'label_id' => 24,
+            'label_id' => 19,
             'vname' => $name,
             'active_id' => '1'
         ]);
@@ -322,8 +322,8 @@ class Index extends Component
     public function getModuleList(): void
     {
         $this->moduleCollection = $this->module_name ?
-            Common::search(trim($this->module_name))->where('label_id', '=', '24')->get() :
-            Common::where('label_id', '=', '24')->orWhere('label_id', '=', '1')->get();
+            Common::search(trim($this->module_name))->where('label_id', '=', '19')->get() :
+            Common::where('label_id', '=', '19')->orWhere('label_id', '=', '1')->get();
     }
 
 #endregion

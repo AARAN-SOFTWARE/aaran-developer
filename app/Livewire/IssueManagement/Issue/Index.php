@@ -252,7 +252,7 @@ class Index extends Component
     public function moduleSave($name)
     {
         $obj = Common::create([
-            'label_id' => 24,
+            'label_id' => 19,
             'vname' => $name,
             'active_id' => '1'
         ]);
@@ -263,8 +263,8 @@ class Index extends Component
     public function getModuleList(): void
     {
         $this->moduleCollection = $this->module_name ?
-            Common::search(trim($this->module_name))->where('label_id', '=', '24')->get() :
-            Common::where('label_id', '=', '24')->orWhere('label_id', '=', '1')->get();
+            Common::search(trim($this->module_name))->where('label_id', '=', '19')->get() :
+            Common::where('label_id', '=', '19')->orWhere('label_id', '=', '1')->get();
     }
 
 #endregion

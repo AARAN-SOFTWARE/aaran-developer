@@ -19,6 +19,7 @@ class Upsert extends Component
 {
     use CommonTraitNew;
     use WithFileUploads;
+
     public $taskData;
     public $taskImage;
     #region[property]
@@ -29,28 +30,29 @@ class Upsert extends Component
     public $end_on;
     public $cdate;
     public $task_id;
-    public  $verified = '';
-       public $verified_on;
+    public $verified = '';
+    public $verified_on;
 
     public $taskTitle;
     public $taskBody;
     public $allocated;
     public $priority;
     public $status;
-    public $images=[];
-    public $old_images=[];
+    public $images = [];
+    public $old_images = [];
 
 
     #endregion
 
+    #region[property]
     public function mount($id)
     {
-        $this->taskData=Task::find($id);
+        $this->taskData = Task::find($id);
 //        dd($this->taskData);
         $this->taskImage = TaskImage::where('task_id', $id)->get()->toarray();
-        $this->task_id=$id;
-        $this->common->active_id=1;
-        $this->taskTitle=$this->taskData->vname;
+        $this->task_id = $id;
+        $this->common->active_id = 1;
+        $this->taskTitle = $this->taskData->vname;
         $this->taskBody = $this->taskData->body;
         $this->allocated = $this->taskData->allocated_id;
         $this->priority = $this->taskData->priority_id;
@@ -59,14 +61,15 @@ class Upsert extends Component
         $this->module_name = Common::find($this->taskData->module_id)->vname;
         $this->job_id = $this->taskData->job_id;
         $this->job_name = Common::find($this->taskData->job_id)->vname;
-        $this->old_images=TaskImage::where('task_id',$id)->get();
-        $this->cdate=Carbon::now()->format('Y-m-d');
-        $this->verified_on=Carbon::now()->format('Y-m-d');
+        $this->old_images = TaskImage::where('task_id', $id)->get();
+        $this->cdate = Carbon::now()->format('Y-m-d');
+        $this->verified_on = Carbon::now()->format('Y-m-d');
     }
 
+    #region[property]
     public function getsave()
     {
-        $this->taskData->vname=$this->taskTitle;
+        $this->taskData->vname = $this->taskTitle;
         $this->taskData->body = $this->taskBody;
         $this->taskData->allocated_id = $this->allocated;
         $this->taskData->priority_id = $this->priority;
@@ -130,7 +133,7 @@ class Upsert extends Component
     public function moduleSave($name)
     {
         $obj = Common::create([
-            'label_id' => 24, // Assuming label_id for modules is 3
+            'label_id' => 19, // Assuming label_id for modules is 3
             'vname' => $name,
             'active_id' => '1'
         ]);
@@ -141,8 +144,8 @@ class Upsert extends Component
     public function getModuleList(): void
     {
         $this->moduleCollection = $this->module_name ?
-            Common::search(trim($this->module_name))->where('label_id', '=', '24')->get() :
-            Common::where('label_id', '=', '24')->orWhere('label_id', '=', '24')->get();
+            Common::search(trim($this->module_name))->where('label_id', '=', '19')->get() :
+            Common::where('label_id', '=', '19')->orWhere('label_id', '=', '1')->get();
     }
 #endregion
 
@@ -200,7 +203,7 @@ class Upsert extends Component
     public function jobSave($name)
     {
         $obj = Common::create([
-            'label_id' => 25, // Assuming label_id for jobs is 24
+            'label_id' => 20, // Assuming label_id for jobs is 24
             'vname' => $name,
             'active_id' => '1'
         ]);
@@ -211,21 +214,24 @@ class Upsert extends Component
     public function getJobList(): void
     {
         $this->jobCollection = $this->job_name ?
-            Common::search(trim($this->job_name))->where('label_id', '=', '25')->get() :
-            Common::where('label_id', '=', '25')->orWhere('label_id', '=', '24')->get();
+            Common::search(trim($this->job_name))->where('label_id', '=', '20')->get() :
+            Common::where('label_id', '=', '20')->orWhere('label_id', '=', '1')->get();
     }
+
 #endregion
+
+    #region[Image]
     public function saveTaskImage($id)
     {
         foreach ($this->old_images as $old_image) {
             $old_image->save();
         }
 
-        if ($this->images!=[]){
-            foreach ($this->images as $image){
+        if ($this->images != []) {
+            foreach ($this->images as $image) {
                 TaskImage::create([
-                    'task_id'=>$id,
-                    'image'=>$this->saveImage($image),
+                    'task_id' => $id,
+                    'image' => $this->saveImage($image),
                 ]);
             }
         }
@@ -233,10 +239,10 @@ class Upsert extends Component
 
     public function DeleteImage($id)
     {
-        if ($id){
-            $obj=TaskImage::find($id);
+        if ($id) {
+            $obj = TaskImage::find($id);
             if (Storage::disk('public')->exists(Storage::path('public/images/' . $obj->image))) {
-                Storage::disk('public')->delete(Storage::path('public/images/' .$obj->image));
+                Storage::disk('public')->delete(Storage::path('public/images/' . $obj->image));
             }
             $obj->delete();
         }
@@ -249,7 +255,7 @@ class Upsert extends Component
             $filename = $image->getClientOriginalName();
 
 
-            $image->storeAs('/images', $filename,'public');
+            $image->storeAs('/images', $filename, 'public');
 
             return $filename;
 
@@ -258,9 +264,11 @@ class Upsert extends Component
         }
     }
 
+    #endregion
+
     public function editTask()
     {
-        $this->showEditModal=true;
+        $this->showEditModal = true;
     }
 
     #region[getSave]
@@ -277,8 +285,7 @@ class Upsert extends Component
                 'cdate' => $this->cdate,
                 'remarks' => $this->remarks,
                 'user_id' => auth()->id(),
-//                'verified'=>$this->verified,
-//                'verified_on'=>$this->verified_on,
+
             ];
             $this->common->save($activity, $extraFields);
             $this->clearFields();
@@ -294,8 +301,6 @@ class Upsert extends Component
                 'cdate' => $this->cdate,
                 'remarks' => $this->remarks,
                 'user_id' => auth()->id(),
-//                'verified'=>$this->verified,
-//                'verified_on'=>$this->verified_on,
             ];
             $this->common->edit($activity, $extraFields);
             $this->clearFields();
@@ -319,8 +324,6 @@ class Upsert extends Component
             $this->end_on = $activity->end_on;
             $this->cdate = $activity->cdate;
             $this->remarks = $activity->remarks;
-//            $this->verified = $activity->verified;
-//            $this->verified_on = $activity->verified_on;
             $this->common->active_id = $activity->active_id;
             return $activity;
         }
@@ -339,33 +342,38 @@ class Upsert extends Component
         $this->start_on = '';
         $this->end_on = '';
         $this->remarks = '';
-//        $this->verified = '';
     }
+
+    #endregion
 
     public function editActivity($id)
     {
         $this->clearFields();
         $this->getObj($id);
     }
-    #endregion
 
+
+    #region[Get List]
     public function getList()
     {
         return Activities::select('activities.*')
-            ->where('task_id',$this->taskData->id)
-            ->orderBy('id','asc')
+            ->where('task_id', $this->taskData->id)
+            ->orderBy('id', 'asc')
             ->paginate($this->getListForm->perPage);
     }
+    #endregion
 
+    #region[Route]
     public function getRoute()
     {
-        return redirect(route('tasks.upsert',[$this->task_id]));
+        return redirect(route('tasks.upsert', [$this->task_id]));
     }
 
     public function render()
     {
         $this->getJobList();
         $this->getModuleList();
-        return view('livewire.task-manger.task.upsert')->with(['list'=>$this->getList(), 'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),]);
+        return view('livewire.task-manger.task.upsert')->with(['list' => $this->getList(), 'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),]);
     }
+    #endregion
 }

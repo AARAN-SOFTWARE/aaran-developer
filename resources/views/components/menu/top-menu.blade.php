@@ -29,7 +29,7 @@ shadow-md print:hidden">
 
         <div class="w-5/12 flex sm:flex-row flex-col sm:justify-end justify-evenly items-center space-y-1">
             <div class="flex max-w-max justify-center items-center">
-                <livewire:default-company.index/>
+{{--                <livewire:default-company.index/> --}}
             </div>
 
             {{-- login menu--}}

@@ -359,7 +359,7 @@ class Index extends Component
     public function msmeTypeSave($name)
     {
         $obj = Common::create([
-            'label_id' => 23,
+            'label_id' => 18,
             'vname' => $name,
             'active_id' => '1'
         ]);
@@ -371,8 +371,8 @@ class Index extends Component
     public function getMsmeTypeList(): void
     {
         $this->msmeTypeCollection = !empty($this->msme_type_name) ?
-            Common::search(trim($this->msme_type_name))->where('label_id', '=', '23')->get() :
-            Common::where('label_id', '=', '23')->orWhere('label_id', '=', '1')->get();
+            Common::search(trim($this->msme_type_name))->where('label_id', '=', '18')->get() :
+            Common::where('label_id', '=', '18')->orWhere('label_id', '=', '1')->get();
     }
 #endregion
 

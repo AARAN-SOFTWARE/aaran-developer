@@ -14,24 +14,18 @@ class S102_CommonSeeder extends Seeder
         self::state();
         self::pinCode();
         self::country();
-        self::hsncode();
-        self::colour();
-        self::size();
+        self::softwareType();
+        self::plan();
+        self::service();
         self::bank();
-        self::ledger();
         self::receiptType();
-        self::productType();
-        self::units();
         self::gstPercent();
-        self::salesType();
+        self::blog();
         self::transaction();
         self::mode();
         self::accyear();
-        self::Transport();
         self::contactType();
         self::msmeType();
-        self::GstApiData();
-        self::AddNew();
     }
 
     #region[noRecord]
@@ -486,67 +480,26 @@ class S102_CommonSeeder extends Seeder
     }
     #endregion
 
-    #region[Hsncode]
-    private static function hsncode(): void
+    #region[Software Type]
+    private static function softwareType(): void
     {
         Common::create([
             'label_id' => '6',
-            'vname' => '61099090',
-            'desc' => 'T-shirts, singlets and other vests, knitted or crocheted -of other textile materials : other.',
+            'vname' => 'Billing Software',
+            'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
             'label_id' => '6',
-            'vname' => '61091000',
-            'desc' => 'T-shirts, singlets and other vests, knitted or crocheted - of cotton.',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-    }
-    #endregion
-
-    #region[colour]
-    private static function colour(): void
-    {
-        Common::create([
-            'label_id' => '7',
-            'vname' => 'Red',
+            'vname' => 'Portfolio Software',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '7',
-            'vname' => 'Pink',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '7',
-            'vname' => 'Black',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '7',
-            'vname' => 'Navy',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '7',
-            'vname' => 'White',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '7',
-            'vname' => 'Orange',
+            'label_id' => '6',
+            'vname' => 'Business Software',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
@@ -554,47 +507,67 @@ class S102_CommonSeeder extends Seeder
     }
     #endregion
 
-    #region[size]
-    private static function size(): void
+    #region[plan]
+    private static function plan(): void
+    {
+        Common::create([
+            'label_id' => '7',
+            'vname' => 'Basic',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        Common::create([
+            'label_id' => '7',
+            'vname' => 'Balanced',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        Common::create([
+            'label_id' => '7',
+            'vname' => 'Advanced',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        Common::create([
+            'label_id' => '7',
+            'vname' => 'Pro',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+    }
+    #endregion
+
+    #region[service]
+    private static function service(): void
     {
         Common::create([
             'label_id' => '8',
-            'vname' => 'S',
+            'vname' => 'Software',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
             'label_id' => '8',
-            'vname' => 'M',
+            'vname' => 'Accounting',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
             'label_id' => '8',
-            'vname' => 'L',
+            'vname' => 'GST Billing',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
             'label_id' => '8',
-            'vname' => 'XL',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '8',
-            'vname' => '2XL',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '8',
-            'vname' => 'AllSize',
+            'vname' => 'All',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
@@ -650,87 +623,53 @@ class S102_CommonSeeder extends Seeder
     }
     #endregion
 
-    #region[ledger]
-    private static function ledger(): void
-    {
-        Common::create([
-            'label_id' => '10',
-            'vname' => 'Auto Charges',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '10',
-            'vname' => 'Loading & Unloading Charges',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '10',
-            'vname' => 'Courier Charges',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '10',
-            'vname' => 'Discount',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-    }
-    #endregion
-
     #region[receipt type]
     private static function receiptType(): void
     {
         Common::create([
-            'label_id' => '14',
+            'label_id' => '11',
             'vname' => 'Cash',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '14',
+            'label_id' => '11',
             'vname' => 'Cheque',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '14',
+            'label_id' => '11',
             'vname' => 'RTGS',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '14',
+            'label_id' => '11',
             'vname' => 'NEFT',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '14',
+            'label_id' => '11',
             'vname' => 'IMPS',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '14',
+            'label_id' => '11',
             'vname' => 'PhonePe',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '14',
+            'label_id' => '11',
             'vname' => 'GPay',
             'desc' => '-',
             'desc_1' => '-',
@@ -740,100 +679,39 @@ class S102_CommonSeeder extends Seeder
     }
     #endregion
 
-    #region[Product Type]
-    private static function productType(): void
-    {
-        Common::create([
-            'label_id' => '15',
-            'vname' => 'Goods',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '15',
-            'vname' => 'Service',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-    }
-    #endregion
-
-    #region[Units]
-    private static function units(): void
-    {
-        Common::create([
-            'label_id' => '16',
-            'vname' => 'Kgs',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '16',
-            'vname' => 'Mts',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '16',
-            'vname' => 'Pcs',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '16',
-            'vname' => 'Nos',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '16',
-            'vname' => 'Lts',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-    }
-    #endregion
-
     #region[gstPercent]
     private static function gstPercent(): void
     {
         Common::create([
-            'label_id' => '17',
+            'label_id' => '12',
             'vname' => '0',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '17',
+            'label_id' => '12',
             'vname' => '5',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '17',
+            'label_id' => '12',
             'vname' => '12',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '17',
+            'label_id' => '12',
             'vname' => '18',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '17',
+            'label_id' => '12',
             'vname' => '24',
             'desc' => '-',
             'desc_1' => '-',
@@ -842,32 +720,32 @@ class S102_CommonSeeder extends Seeder
     }
     #endregion
 
-    #region[SalesType]
-    private static function salesType(): void
+    #region[Blog]
+    private static function Blog(): void
     {
         Common::create([
-            'label_id' => '18',
+            'label_id' => '13',
             'vname' => 'Invoice',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '18',
+            'label_id' => '13',
             'vname' => 'Billing',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '18',
+            'label_id' => '13',
             'vname' => 'Sales',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '18',
+            'label_id' => '13',
             'vname' => 'GST',
             'desc' => '-',
             'desc_1' => '-',
@@ -880,14 +758,14 @@ class S102_CommonSeeder extends Seeder
     private static function transaction(): void
     {
         Common::create([
-            'label_id' => '19',
+            'label_id' => '14',
             'vname' => 'Cash Book',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '19',
+            'label_id' => '14',
             'vname' => 'Bank Book',
             'desc' => '-',
             'desc_1' => '-',
@@ -901,14 +779,14 @@ class S102_CommonSeeder extends Seeder
     private static function mode(): void
     {
         Common::create([
-            'label_id' => '20',
+            'label_id' => '15',
             'vname' => 'Payment',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '20',
+            'label_id' => '15',
             'vname' => 'Receipt',
             'desc' => '-',
             'desc_1' => '-',
@@ -921,86 +799,73 @@ class S102_CommonSeeder extends Seeder
     private static function accyear(): void
     {
         Common::create([
-            'label_id' => '21',
+            'label_id' => '16',
             'vname' => '2020_2021',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '21',
+            'label_id' => '16',
             'vname' => '2021_2022',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '21',
+            'label_id' => '16',
             'vname' => '2022_2023',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '21',
+            'label_id' => '16',
             'vname' => '2023_2024',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '21',
+            'label_id' => '16',
             'vname' => '2024_2025',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '21',
+            'label_id' => '16',
             'vname' => '2025_2026',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '21',
+            'label_id' => '16',
             'vname' => '2026_2027',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '21',
+            'label_id' => '16',
             'vname' => '2027_2028',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '21',
+            'label_id' => '16',
             'vname' => '2028_2029',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '21',
+            'label_id' => '16',
             'vname' => '2029_2030',
             'desc' => '-',
             'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-    }
-    #endregion
-
-    #region[Transport]
-    private static function Transport(): void
-    {
-        Common::create([
-            'label_id' => '11',
-            'vname' => 'XYZ EXPORTS',
-            'desc' => '12AWGPV7107B1Z1',
-            'desc_1' => 'DOC01',
             'active_id' => '1'
         ]);
     }
@@ -1010,14 +875,14 @@ class S102_CommonSeeder extends Seeder
     private static function contactType(): void
     {
         Common::create([
-            'label_id' => '22',
+            'label_id' => '17',
             'vname' => 'Creditor',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '22',
+            'label_id' => '17',
             'vname' => 'Debtor',
             'desc' => '-',
             'desc_1' => '-',
@@ -1030,21 +895,21 @@ class S102_CommonSeeder extends Seeder
     private static function msmeType(): void
     {
         Common::create([
-            'label_id' => '23',
+            'label_id' => '18',
             'vname' => 'Micro',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '23',
+            'label_id' => '18',
             'vname' => 'Small',
             'desc' => '-',
             'desc_1' => '-',
             'active_id' => '1'
         ]);
         Common::create([
-            'label_id' => '23',
+            'label_id' => '18',
             'vname' => 'Medium',
             'desc' => '-',
             'desc_1' => '-',
@@ -1052,56 +917,5 @@ class S102_CommonSeeder extends Seeder
         ]);
     }
     #endregion
-    #region[GstApiData]
-    private static function GstApiData(): void
-    {
-        Common::create([
-            'label_id' => '2',
-            'vname' => 'GANDHINAGAR',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '4',
-            'vname' => '560001',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '6',
-            'vname' => '1001',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-    }
 
-    #endregion
-
-    public static function AddNew()
-    {
-        Common::create([
-            'label_id' => '21',
-            'vname' => '2017_2018',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '21',
-            'vname' => '2018_2019',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-        Common::create([
-            'label_id' => '21',
-            'vname' => '2019_2020',
-            'desc' => '-',
-            'desc_1' => '-',
-            'active_id' => '1'
-        ]);
-    }
 }
