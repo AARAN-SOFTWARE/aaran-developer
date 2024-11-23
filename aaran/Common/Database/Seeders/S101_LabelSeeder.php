@@ -202,11 +202,42 @@ class S101_LabelSeeder extends Seeder
             'active_id' => '1'
         ]);
 
-
-        #24
+        #25
         Label::create([
             'id' => 25,
             'vname' => 'Job',
+            'cols' => 1,
+            'active_id' => '1'
+        ]);
+
+        #26
+        Label::create([
+            'id' => 26,
+            'vname' => 'Software Type',
+            'cols' => 1,
+            'active_id' => '1'
+        ]);
+
+        #27
+        Label::create([
+            'id' => 27,
+            'vname' => 'Plan',
+            'cols' => 1,
+            'active_id' => '1'
+        ]);
+
+        #28
+        Label::create([
+            'id' => 28,
+            'vname' => 'Service',
+            'cols' => 1,
+            'active_id' => '1'
+        ]);
+
+        #29
+        Label::create([
+            'id' => 29,
+            'vname' => 'Staff',
             'cols' => 1,
             'active_id' => '1'
         ]);

@@ -32,6 +32,9 @@ class S102_CommonSeeder extends Seeder
         self::msmeType();
         self::GstApiData();
         self::AddNew();
+        self::softwareType();
+        self::plan();
+        self::service();
     }
 
     #region[noRecord]
@@ -1104,4 +1107,101 @@ class S102_CommonSeeder extends Seeder
             'active_id' => '1'
         ]);
     }
+
+    #region[Software Type]
+    private static function softwareType(): void
+    {
+        Common::create([
+            'label_id' => '26',
+            'vname' => 'Billing Software',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        Common::create([
+            'label_id' => '26',
+            'vname' => 'Portfolio Software',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        Common::create([
+            'label_id' => '26',
+            'vname' => 'Business Software',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+    }
+
+    #endregion
+
+    #region[plan]
+    private static function plan(): void
+    {
+        Common::create([
+            'label_id' => '27',
+            'vname' => 'Basic',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        Common::create([
+            'label_id' => '27',
+            'vname' => 'Balanced',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        Common::create([
+            'label_id' => '27',
+            'vname' => 'Advanced',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        Common::create([
+            'label_id' => '27',
+            'vname' => 'Pro',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+    }
+
+    #endregion
+
+    #region[service]
+    private static function service(): void
+    {
+        Common::create([
+            'label_id' => '28',
+            'vname' => 'Software',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        Common::create([
+            'label_id' => '28',
+            'vname' => 'Accounting',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        Common::create([
+            'label_id' => '28',
+            'vname' => 'GST Billing',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        Common::create([
+            'label_id' => '28',
+            'vname' => 'All',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+    }
+    #endregion
 }
