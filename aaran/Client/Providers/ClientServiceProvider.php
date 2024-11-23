@@ -11,7 +11,7 @@ class ClientServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
         $this->mergeConfigFrom(__DIR__ . '/../config.php','client');
 
-        $this->app->register(ClientRouteServiceProvider::class);
+        $this->app->register(ClientServiceProvider::class);
     }
 
 }

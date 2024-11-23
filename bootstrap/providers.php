@@ -18,5 +18,6 @@ return [
 
     Aaran\Installation\Providers\InstallationServiceProvider::class,
     Aaran\IssueManagement\Providers\IssueServiceProvider::class,
+    Aaran\Crm\Providers\CrmServiceProvider::class,
 
 ];
