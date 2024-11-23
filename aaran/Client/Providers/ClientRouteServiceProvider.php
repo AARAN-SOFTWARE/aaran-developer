@@ -1,6 +1,6 @@
 <?php
 
-namespace Aaran\Common\Providers;
+namespace Aaran\Client\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
