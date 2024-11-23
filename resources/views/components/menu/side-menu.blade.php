@@ -25,9 +25,13 @@
         <ul class="flex flex-col py-6 space-y-1"
             x-data="{selected:null}">
 
-            {{--            @if(Aaran\Aadmin\Src\Customise::hasMaster())--}}
-            {{--                <x-menu.sub.master/>--}}
-            {{--            @endif--}}
+            @if(Aaran\Aadmin\Src\Customise::hasCommon())
+                <x-menu.sub.common/>
+            @endif
+
+            @if(Aaran\Aadmin\Src\Customise::hasMaster())
+                <x-menu.sub.master/>
+            @endif
 
             @if(Aaran\Aadmin\Src\Customise::hasTaskManager())
                 <x-menu.sub.issue/>
