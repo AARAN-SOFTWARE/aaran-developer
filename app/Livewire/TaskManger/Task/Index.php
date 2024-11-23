@@ -333,8 +333,6 @@ class Index extends Component
         return route('Task');
     }
 
-
-
     public function render()
     {
         $this->getModuleList();

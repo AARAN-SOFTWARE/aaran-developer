@@ -1,5 +1,15 @@
 <div>
-    <x-slot name="header">Issues</x-slot>
+    <x-slot name="header">
+        @if($filter==2)
+            My Issues
+        @elseif($filter==3)
+            Open Issues
+        @elseif($filter==4)
+            Admin
+        @else
+            Issues
+        @endif
+    </x-slot>
 
     <x-forms.m-panel>
 
@@ -40,7 +50,6 @@
                                      width="25%">
                     Issue
                 </x-table.header-text>
-
 
                 <x-table.header-text sortIcon="none" width="25%">
                     Description

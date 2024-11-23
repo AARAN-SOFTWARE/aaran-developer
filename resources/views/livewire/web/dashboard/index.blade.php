@@ -57,6 +57,7 @@
                                     </span>
                                     <span class="text-xs text-gray-600">By {{$issue->reporter->name}}</span>
                                 </div>
+
                                 <div class="3/4 flex-col flex justify-start items-start ">
                                     <div
                                         class="text-md font-semibold">{{\Illuminate\Support\Str::words($issue->vname, 10)}}</div>
@@ -76,6 +77,7 @@
 
         </div>
 
+        <!-- My Task & Open Task -------------------------------------------------------------------------------------->
 
         <div class="bg-[#F8F8FF] gap-10 flex sm:flex-row flex-col tracking-wider rounded-lg">
 
@@ -282,5 +284,4 @@
 
 
     </div>
-</div>
 

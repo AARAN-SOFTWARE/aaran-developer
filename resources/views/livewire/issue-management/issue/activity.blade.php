@@ -26,7 +26,7 @@
                 <div class="border-l-2 h-5 border-gray-300"></div>
 
                 <div> Allocated To : <span
-                        class="text-indigo-600">{{\Aaran\IssueManagement\Models\Issue::allocate($issueData->assignee_id)}}</span>
+                        class="text-indigo-600">{{\Aaran\IssueManagement\Models\Issue::allocated($issueData->assignee_id)}}</span>
                 </div>
 
                 <div> Priority To :</div>

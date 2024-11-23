@@ -7,7 +7,7 @@
     <x-forms.m-panel>
         <div class="max-w-7xl mx-auto p-10 space-y-8 font-lex">
 
-            <div class="inline-flex items-center space-x-2 font-merri">
+            <div class="inline-flex 1space-x-2 font-merri">
                 <div class="text-5xl text-gray-700">{{$taskData->id}}.</div>
                 <div class="text-5xl font-bold tracking-wider capitalize text-gray-700">{{$taskData->vname}}</div>
             </div>
@@ -164,6 +164,7 @@
             </div>
 
             <!-- Create Activity -------------------------------------------------------------------------------------->
+
             <div class="w-full space-y-5">
                 <x-tabs.tab-panel>
                     <x-slot name="tabs">
@@ -215,14 +216,6 @@
 
                     <x-input.floating wire:model="taskTitle" :label="'Title'"/>
 
-                    <x-input.rich-text wire:model="taskBody" :placeholder="'Write the error'"/>
-
-                </div>
-
-                <!--Right Side ---------------------------------------------------------------------------------------->
-
-                <div class="flex flex-col space-y-5 w-full">
-
                     <x-dropdown.wrapper label="Job" type="jobTyped">
                         <div class="relative">
                             <x-dropdown.input label="Job" id="job_name"
@@ -248,6 +241,15 @@
                     @error('job_name')
                     <span class="text-red-400">{{$message}}</span>
                     @enderror
+
+                    <x-input.rich-text wire:model="taskBody" :placeholder="'Write the error'"/>
+
+
+                </div>
+
+                <!--Right Side ---------------------------------------------------------------------------------------->
+
+                <div class="flex flex-col space-y-5 w-full">
 
 
                     <x-dropdown.wrapper label="Module" type="moduleTyped">
@@ -304,9 +306,9 @@
                         <label for="bg_image"
                                class="w-full text-zinc-500 tracking-wide pb-4 px-2">Image</label>
 
-                        <div class="flex flex-wrap gap-2">
-                            <div class="flex-shrink-0">
-                                <div>
+                        <div class="flex flex-wrap gap-2 w-full">
+                            <div class="flex-shrink-0 w-full">
+                                <div class="overflow-scroll w-full pb-3">
                                     @if($images)
                                         <div class="flex gap-5">
                                             @foreach($images as $image)

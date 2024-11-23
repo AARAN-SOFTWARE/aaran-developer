@@ -211,14 +211,6 @@
 
                 <x-input.floating wire:model="common.vname" :label="'Title'"/>
 
-                <x-input.rich-text wire:model="body" :placeholder="'Write the error'"/>
-
-            </div>
-
-            <!--Right Side -------------------------------------------------------------------------------------------->
-
-            <div class="flex flex-col space-y-5 w-full">
-
                 <x-dropdown.wrapper label="Job" type="jobTyped">
                     <div class="relative">
                         <x-dropdown.input label="Job" id="job_name"
@@ -245,6 +237,13 @@
                 <span class="text-red-400">{{$message}}</span>
                 @enderror
 
+                <x-input.rich-text wire:model="body" :placeholder="'Write the error'"/>
+
+            </div>
+
+            <!--Right Side -------------------------------------------------------------------------------------------->
+
+            <div class="flex flex-col space-y-5 w-full">
 
                 <x-dropdown.wrapper label="Module" type="moduleTyped">
                     <div class="relative">
