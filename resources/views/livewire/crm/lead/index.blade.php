@@ -38,7 +38,7 @@
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
 
                         <x-table.cell-text>
-                            {{$row->vname}}
+                            <a href="{{route('followups', $row->id)}}">{{$row->vname}}</a>
                         </x-table.cell-text>
 
                         <x-table.cell-text>
