@@ -1,10 +1,10 @@
 <?php
 
-namespace Aaran\Client\Database\Seeders;
+namespace Aaran\Crm\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class PaymentSeeder extends Seeder
+class LeadSeeder extends Seeder
 {
     /**
      * Run the database seeds.
