@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('action');
             $table->string('status_id');
             $table->string('priority_id');
+            $table->string('active_id', 3);
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('soft_reqs');
+        Schema::dropIfExists('follow_ups');
     }
 };
