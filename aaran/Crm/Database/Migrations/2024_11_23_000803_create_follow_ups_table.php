@@ -4,20 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('leads', function (Blueprint $table) {
+        Schema::create('follow_ups', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('enquiry_id')->references('id')->on('enquiries')->onDelete('cascade');
+            $table->foreignId('lead_id')->references('id')->on('leads')->onDelete('cascade');
             $table->string('vname');
-            $table->string('body');
+            $table->longText('body');
+            $table->string('action');
             $table->string('status_id');
-            $table->foreignId('assignee_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('active_id', 3);
+            $table->string('priority_id');
             $table->timestamps();
         });
     }
