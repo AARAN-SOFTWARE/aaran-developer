@@ -105,7 +105,7 @@ class Index extends Component
 //        $this->getContactList();
         return view('livewire.crm.follow-up.index')->with([
             'list' => $this->getListForm->getList(FollowUp::class, function ($query) {
-                return $query->orderBy('id', 'asc');
+                return $query->orderBy('id', 'asc')->where('lead_id', $this->lead_id);
             }),
         ]);
     }

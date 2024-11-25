@@ -101,7 +101,7 @@ class Index extends Component
     public function getBlogcategoryList(): void
     {
         $this->blogcategoryCollection = $this->blogcategory_name ?
-            Common::search(trim($this->blogcategory_name))->where('label_id', '=', '18')->get() :
+            Common::search(trim($this->blogcategory_name))->where('label_id', '=', '18')->get():
             Common::where('label_id', '=', '18')->get();
     }
 
