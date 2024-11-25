@@ -39,10 +39,15 @@
                             </span>
                         </x-table.cell-text>
 
-                        <x-table.cell-text>{{$row->vname}}</x-table.cell-text>
+                        <x-table.cell-text><a href="{{route('leads',[$row->id])}}">{{$row->vname}}</a></x-table.cell-text>
 
-                        <x-table.cell-text>{!!  \Illuminate\Support\Str::words($row->body,10) !!}</x-table.cell-text>
+                        <x-table.cell-text>
+                            <a href="{{route('leads',[$row->id])}}" class="line-clamp-1">
+                            {!!  \Illuminate\Support\Str::words($row->body,14) !!}
+                            </a></x-table.cell-text>
 
+
+{{--                        <x-table.cell-text>{{$row->status_id}}</x-table.cell-text>--}}
                         <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
                             {{App\Enums\Status::tryFrom($row->status_id)->getName()}}
                         </x-table.cell-text>

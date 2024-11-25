@@ -16,7 +16,7 @@ class Index extends Component
 
     #region[Properties]
     public string $body = '';
-    public mixed $status_id = '';
+    public mixed $status_id;
     #endregion
 
     #region[getSave]
@@ -28,7 +28,7 @@ class Index extends Component
                 $extraFields = [
                     'contact_id' => $this->contact_id,
                     'body' => $this->body,
-                    'status_id' => $this->status_id,
+                    'status_id' => $this->status_id?:1,
                 ];
                 $this->common->save($obj, $extraFields);
                 $this->clearFields();
@@ -38,7 +38,7 @@ class Index extends Component
                 $extraFields = [
                     'contact_id' => $this->contact_id,
                     'body' => $this->body,
-                    'status_id' => $this->status_id,
+                    'status_id' => $this->status_id?:1,
                 ];
                 $this->common->edit($obj, $extraFields);
                 $this->clearFields();

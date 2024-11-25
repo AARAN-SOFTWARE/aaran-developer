@@ -42,7 +42,9 @@
                         </x-table.cell-text>
 
                         <x-table.cell-text>
+                            <div class="line-clamp-1">
                             {!! $row->body !!}
+                            </div>
                         </x-table.cell-text>
 
                         <x-table.cell-text>

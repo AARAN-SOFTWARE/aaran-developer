@@ -13,17 +13,17 @@ class Index extends Component
 
     #region[property]
     public $body;
-    public mixed $status_id ;
+    public mixed $status_id;
     public $assignee_id;
     public $enquiry_id;
-    public $enquiry_id_data;
+    public $enquiry_data;
 
     #endregion
 
     public function mount($id)
     {
-       $this->enquiry_id = $id;
-//       $this->enquiry_id_data = Enquiry::find($id);
+        $this->enquiry_id = $id;
+        $this->enquiry_data = Enquiry::find($id);
 
     }
 
@@ -37,8 +37,8 @@ class Index extends Component
             $extraFields = [
                 'enquiry_id' => $this->enquiry_id,
                 'body' => $this->body,
-                'status_id' => $this->status_id?:1,
-                'assignee_id' => $this->assignee_id,
+                'status_id' => $this->status_id ?: 1,
+                'assignee_id' => $this->assignee_id ?: 1,
                 'user_id' => auth()->id(),
             ];
 
@@ -53,8 +53,8 @@ class Index extends Component
             $extraFields = [
                 'enquiry_id' => $this->enquiry_id,
                 'body' => $this->body,
-                'status_id' => $this->status_id?:1,
-                'assignee_id' => $this->assignee_id,
+                'status_id' => $this->status_id ?: 1,
+                'assignee_id' => $this->assignee_id ?: 1,
                 'user_id' => auth()->id(),
             ];
 
@@ -93,11 +93,14 @@ class Index extends Component
         $this->status_id = '';
 
     }
+
     #endregion
     public function render()
     {
         return view('livewire.crm.lead.index')->with([
-            'list' => $this->getListForm->getList(Lead::class),
+            'list' => $this->getListForm->getList(Lead::class, function ($query) {
+                return $query->where('enquiry_id', $this->enquiry_id);
+            })
         ]);
     }
 }
