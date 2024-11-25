@@ -13,17 +13,17 @@ class Index extends Component
 
     #region[property]
     public $body;
-    public $status_id;
+    public mixed $status_id ;
     public $assignee_id;
     public $enquiry_id;
     public $enquiry_id_data;
 
     #endregion
 
-    public function mount($id=null)
+    public function mount($id)
     {
        $this->enquiry_id = $id;
-       $this->enquiry_id_data = Enquiry::find($id);
+//       $this->enquiry_id_data = Enquiry::find($id);
 
     }
 
@@ -37,7 +37,7 @@ class Index extends Component
             $extraFields = [
                 'enquiry_id' => $this->enquiry_id,
                 'body' => $this->body,
-                'status_id' => $this->status_id,
+                'status_id' => $this->status_id?:1,
                 'assignee_id' => $this->assignee_id,
                 'user_id' => auth()->id(),
             ];
@@ -53,7 +53,7 @@ class Index extends Component
             $extraFields = [
                 'enquiry_id' => $this->enquiry_id,
                 'body' => $this->body,
-                'status_id' => $this->status_id,
+                'status_id' => $this->status_id?:1,
                 'assignee_id' => $this->assignee_id,
                 'user_id' => auth()->id(),
             ];

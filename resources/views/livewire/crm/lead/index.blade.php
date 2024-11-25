@@ -22,6 +22,7 @@
                 <x-table.header-serial></x-table.header-serial>
                 <x-table.header-text sort-icon="none">Title</x-table.header-text>
                 <x-table.header-text sort-icon="none">Description</x-table.header-text>
+                <x-table.header-text sort-icon="none">Assigned To</x-table.header-text>
                 <x-table.header-text sort-icon="none">Status</x-table.header-text>
                 <x-table.header-action/>
 
@@ -40,10 +41,18 @@
                             {{$row->vname}}
                         </x-table.cell-text>
 
-                        <x-table.cell-text>{!! $row->body!!}</x-table.cell-text>
+                        <x-table.cell-text>
+                            {!! $row->body !!}
+                        </x-table.cell-text>
 
-                        <x-table.cell-text>class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
-                            {{App\Enums\Status::tryFrom($row->status_id)->getName()}}</x-table.cell-text>
+                        <x-table.cell-text>
+                            {{$row->assignee->name}}
+                        </x-table.cell-text>
+
+                        <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
+                            {{App\Enums\Status::tryFrom($row->status_id)->getName()}}
+                        </x-table.cell-text>
+
 
                         <x-table.cell-action id="{{$row->id}}"/>
                     </x-table.row>
@@ -62,7 +71,7 @@
 
                 <x-input.floating wire:model="common.vname" :label="'Leads'"/>
 
-                <x-input.rich-text :placeholder="'body'" wire:model="Description"/>
+                <x-input.rich-text :placeholder="'body'" wire:model="body"/>
 
                 <x-input.model-select wire:model="status_id" :label="'Status'">
                     <option value="">Choose...</option>

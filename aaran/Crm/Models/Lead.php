@@ -2,8 +2,10 @@
 
 namespace Aaran\Crm\Models;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Lead extends Model
 {
@@ -18,5 +20,14 @@ class Lead extends Model
             : static::where('vname', 'like', '%' . $searches . '%');
     }
 
+    public function user():BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function assignee(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
 }
