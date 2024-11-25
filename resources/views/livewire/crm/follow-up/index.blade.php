@@ -21,7 +21,6 @@
 
             <x-slot:table_header name="table_header" class="bg-green-600">
                 <x-table.header-serial width="20%"/>
-
                 <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" left>
                     Level
                 </x-table.header-text>
@@ -44,35 +43,22 @@
             <!-- Table Body ------------------------------------------------------------------------------------------->
 
             <x-slot:table_body name="table_body">
-
                 @foreach($list as $index=>$row)
                     <x-table.row>
-
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
-
                         <x-table.cell-text left><span class="capitalize">{{$row->vname}}</span></x-table.cell-text>
                         <x-table.cell-text left><span class="capitalize">{!!  $row->body !!}</span></x-table.cell-text>
                         <x-table.cell-text left><span class="capitalize">{{$row->action}}</span></x-table.cell-text>
-
                         <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
                             {{App\Enums\Status::tryFrom($row->status_id)->getName()}}
                         </x-table.cell-text>
                         <x-table.cell-text class="{{App\Enums\Priority::tryFrom($row->priority_id)->getStyle()}}" center>
                             {{App\Enums\Priority::tryFrom($row->priority_id)->getName()}}
                         </x-table.cell-text>
-{{--                        <x-table.cell-text>--}}
-{{--                            {{$row->status_id}}--}}
-{{--                        </x-table.cell-text>--}}
-{{--                        <x-table.cell-text>--}}
-{{--                            {{$row->priority_id}}--}}
-{{--                        </x-table.cell-text>--}}
-
                         <x-table.cell-action id="{{$row->id}}"/>
                     </x-table.row>
                 @endforeach
-
             </x-slot:table_body>
-
         </x-table.form>
 
         <x-modal.delete/>
