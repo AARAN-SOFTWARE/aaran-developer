@@ -78,7 +78,6 @@ class Index extends Component
     }
     #endregion
 
-
     #region[Contact]
     #[validate]
     public $contact_name = '';
@@ -143,8 +142,6 @@ class Index extends Component
     }
 
     #endregion
-
-
 
     #region[Render]
     public function getRoute()

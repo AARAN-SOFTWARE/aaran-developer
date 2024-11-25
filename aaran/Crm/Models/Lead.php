@@ -7,6 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lead extends Model
 {
-    /** @use HasFactory<\Aaran\Crm\Database\Factories\LeadFactory> */
+
     use HasFactory;
+
+    protected $guarded = [];
+
+    public static function search(string $searches)
+    {
+        return empty($searches) ? static::query()
+            : static::where('vname', 'like', '%' . $searches . '%');
+    }
+
+
 }

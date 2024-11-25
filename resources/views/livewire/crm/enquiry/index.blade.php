@@ -32,7 +32,12 @@
 
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
 
-                        <x-table.cell-text left><span class="capitalize">{{$row->contact->vname}}</span></x-table.cell-text>
+                        <x-table.cell-text left>
+                            <span class="capitalize">
+                                <a href="{{route('leads',[$row->id])}}">
+                                    {{$row->contact->vname}}</a>
+                            </span>
+                        </x-table.cell-text>
 
                         <x-table.cell-text>{{$row->vname}}</x-table.cell-text>
 
