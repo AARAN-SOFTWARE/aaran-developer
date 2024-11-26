@@ -35,6 +35,7 @@ class S102_CommonSeeder extends Seeder
         self::softwareType();
         self::plan();
         self::service();
+        self::action();
     }
 
     #region[noRecord]
