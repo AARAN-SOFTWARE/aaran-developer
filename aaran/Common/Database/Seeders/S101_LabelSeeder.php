@@ -241,5 +241,12 @@ class S101_LabelSeeder extends Seeder
             'cols' => 1,
             'active_id' => '1'
         ]);
+
+        Label::create([
+            'id'=> 30,
+            'vname' => 'Action',
+            'cols' => 1,
+            'active_id' => '1'
+        ]);
     }
 }

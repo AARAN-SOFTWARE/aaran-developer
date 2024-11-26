@@ -68,6 +68,35 @@
         <!--Create Form ----------------------------------------------------------------------------------------------->
         <x-forms.create :id="$common->vid">
             <div class="flex flex-col  gap-3">
+{{--            <div>--}}
+{{--                <x-dropdown.wrapper label=Action" type="actionTyped">--}}
+{{--                    <div class="relative">--}}
+{{--                        <x-dropdown.input label="Action" id="action_name"--}}
+{{--                                          wire:model.live="action_name"--}}
+{{--                                          wire:keydown.arrow-up="decrementAction"--}}
+{{--                                          wire:keydown.arrow-down="incrementAction"--}}
+{{--                                          wire:keydown.enter="enterAction"/>--}}
+{{--                        <x-dropdown.select>--}}
+{{--                            @if($actionCollection)--}}
+{{--                                @forelse ($actionCollection as $i => $action)--}}
+{{--                                    <x-dropdown.option highlight="{{$highlightAction === $i}}"--}}
+{{--                                                       wire:click.prevent="setAction('{{$action->vname}}','{{$action->id}}')">--}}
+{{--                                        {{ $action->vname }}--}}
+{{--                                    </x-dropdown.option>--}}
+{{--                                @empty--}}
+{{--                                    <x-dropdown.create wire:click.prevent="actionSave('{{$action_name}}')"--}}
+{{--                                                       label="Action"/>--}}
+{{--                                @endforelse--}}
+{{--                            @endif--}}
+{{--                        </x-dropdown.select>--}}
+{{--                    </div>--}}
+{{--                </x-dropdown.wrapper>--}}
+{{--            </div>--}}
+{{--                @error('action_name')--}}
+{{--                <span class="text-red-400">{{$message}}</span>--}}
+{{--                @enderror--}}
+
+
                 <x-input.floating wire:model.live="common.vname" label="Name"/>
                 @error('common.vname')
                 <span class="text-red-400">{{$message}}</span>

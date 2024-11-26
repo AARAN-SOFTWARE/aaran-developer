@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('lead_id')->references('id')->on('leads')->onDelete('cascade');
             $table->string('vname');
             $table->longText('body');
-            $table->string('action');
+            $table->foreignId('action_id')->references('id')->on('commons')->onDelete('cascade');
             $table->string('status_id');
             $table->string('priority_id');
             $table->string('active_id', 3);
