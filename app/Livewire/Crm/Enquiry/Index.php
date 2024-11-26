@@ -151,11 +151,9 @@ class Index extends Component
     public function enterContact(): void
     {
         $obj = $this->contactCollection[$this->highlightContact] ?? null;
-
         $this->contact_name = '';
         $this->contactCollection = Collection::empty();
         $this->highlightContact = 0;
-
         $this->contact_name = $obj['vname'] ?? '';
         $this->contact_id = $obj['id'] ?? '';
     }

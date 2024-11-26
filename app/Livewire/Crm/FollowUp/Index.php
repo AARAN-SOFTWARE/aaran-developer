@@ -6,10 +6,10 @@ use Aaran\Common\Models\Common;
 use Aaran\Crm\Models\FollowUp;
 use Livewire\Component;
 use App\Livewire\Trait\CommonTraitNew;
-use Illuminate\Database\Eloquent\Collection;
+
+//use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\Validate;
-
-
 
 
 class Index extends Component
@@ -20,9 +20,10 @@ class Index extends Component
     #region[Properties]
     public $lead_id;
     public $body;
-    public $action;
+//    public $action;
     public mixed $status_id;
     public mixed $priority_id;
+
     #endregion
 
     public function mount($id)
@@ -40,8 +41,8 @@ class Index extends Component
                     'lead_id' => $this->lead_id,
                     'body' => $this->body,
                     'action_id' => $this->action_id,
-                    'status_id' => $this->status_id?:1,
-                    'priority_id' => $this->priority_id?:1,
+                    'status_id' => $this->status_id ?: 1,
+                    'priority_id' => $this->priority_id ?: 1,
                 ];
                 $this->common->save($followup, $extraFields);
                 $this->clearFields();
@@ -52,8 +53,8 @@ class Index extends Component
                     'lead_id' => $this->lead_id,
                     'body' => $this->body,
                     'action_id' => $this->action_id,
-                    'status_id' => $this->status_id?:1,
-                    'priority_id' => $this->priority_id?:1,
+                    'status_id' => $this->status_id ?: 1,
+                    'priority_id' => $this->priority_id ?: 1,
                 ];
                 $this->common->edit($followup, $extraFields);
                 $this->clearFields();
@@ -73,6 +74,7 @@ class Index extends Component
             $this->common->vname = $obj->vname;
             $this->body = $obj->body;
             $this->action_id = $obj->action_id;
+            $this->action_name = Common::find($obj->action_id)->vname;
             $this->status_id = $obj->status_id;
             $this->priority_id = $obj->priority_id;
             $this->common->active_id = $obj->active_id;
@@ -90,6 +92,7 @@ class Index extends Component
         $this->common->active_id = '1';
         $this->body = '';
         $this->action_id = '';
+        $this->action_name = '';
         $this->status_id = '';
         $this->priority_id = '';
     }
@@ -99,7 +102,7 @@ class Index extends Component
     #region[action]
     public $action_id = '';
     public $action_name = '';
-    public \Illuminate\Support\Collection $actionCollection;
+    public Collection $actionCollection;
     public $highlightAction = 0;
     public $actionTyped = false;
 
@@ -140,7 +143,6 @@ class Index extends Component
         $this->action_id = $obj['id'] ?? '';
     }
 
-
     public function refreshAction($v): void
     {
         $this->action_id = $v['id'];
@@ -165,8 +167,8 @@ class Index extends Component
             Common::search(trim($this->action_name))->where('label_id', '=', '30')->get() :
             Common::where('label_id', '=', '30')->orWhere('label_id', '=', '1')->get();
     }
-
 #endregion
+
 
     #region[Render]
     public function getRoute()
@@ -176,7 +178,7 @@ class Index extends Component
 
     public function render()
     {
-//        $this->getContactList();
+        $this->getActionList();
         return view('livewire.crm.follow-up.index')->with([
             'list' => $this->getListForm->getList(FollowUp::class, function ($query) {
                 return $query->orderBy('id', 'asc')->where('lead_id', $this->lead_id);
@@ -184,8 +186,5 @@ class Index extends Component
         ]);
     }
 
-//    public function render()
-//    {
-//        return view('livewire.crm.follow-ups.index');
-//    }
+
 }

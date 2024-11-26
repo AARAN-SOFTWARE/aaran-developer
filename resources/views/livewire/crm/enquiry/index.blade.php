@@ -12,14 +12,12 @@
 
             <x-slot:table_header name="table_header" class="bg-green-600">
                 <x-table.header-serial width="20%"/>
-
                 <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" left>
                     Contact
                 </x-table.header-text>
                 <x-table.header-text sortIcon="none">Title</x-table.header-text>
                 <x-table.header-text sortIcon="none">Enquiry</x-table.header-text>
                 <x-table.header-text sortIcon="none">Status</x-table.header-text>
-
                 <x-table.header-action/>
             </x-slot:table_header>
 
