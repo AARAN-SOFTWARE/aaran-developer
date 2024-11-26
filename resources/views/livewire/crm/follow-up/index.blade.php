@@ -40,7 +40,7 @@
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
                         <x-table.cell-text left><span class="capitalize">{{$row->vname}}</span></x-table.cell-text>
                         <x-table.cell-text left><span class="capitalize">{!!  $row->body !!}</span></x-table.cell-text>
-                        <x-table.cell-text left><span class="capitalize">{{$row->action}}</span></x-table.cell-text>
+                        <x-table.cell-text left><span class="capitalize">{{$row->action->vname}}</span></x-table.cell-text>
                         <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
                             {{App\Enums\Status::tryFrom($row->status_id)->getName()}}
                         </x-table.cell-text>

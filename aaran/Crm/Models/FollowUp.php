@@ -23,14 +23,14 @@ class FollowUp extends Model
     }
 
 
-    public function lead():BelongsTo
+    public function lead(): BelongsTo
     {
         return $this->belongsTo(Lead::class);
     }
 
 
-    public function action():BelongsTo
+    public function action(): BelongsTo
     {
-        return $this->belongsTo(Common::class);
+        return $this->belongsTo(Common::class, 'action_id');
     }
 }
