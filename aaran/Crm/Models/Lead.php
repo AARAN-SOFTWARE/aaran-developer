@@ -2,6 +2,7 @@
 
 namespace Aaran\Crm\Models;
 
+use Aaran\Common\Models\Common;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,7 +28,12 @@ class Lead extends Model
 
     public function assignee(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'assignee_id');
+    }
+
+    public function softwareType(): BelongsTo
+    {
+        return $this->belongsTo(Common::class,'softwareType_id');
     }
 
 }

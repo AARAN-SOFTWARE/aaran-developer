@@ -17,18 +17,49 @@ class Index extends Component
     #region[Properties]
     public string $body = '';
     public mixed $status_id;
+
+    #endregion
+
+    #region[Validation]
+    public function rules(): array
+    {
+        return [
+            'common.vname' => 'required|min:3',
+            'body' => 'required|min:5',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'common.vname.required' => ' :attribute is required.',
+            'body.required' => ' :attribute is required.',
+
+        ];
+    }
+
+    public function validationAttributes()
+    {
+        return [
+            'common.vname' => 'Title',
+            'body' => 'Description',
+        ];
+    }
     #endregion
 
     #region[getSave]
-    public function getSave(): void
+    public
+    function getSave(): void
     {
+        $this->validate($this->rules());
+
         if ($this->common->vname != '') {
             if ($this->common->vid == '') {
                 $obj = new Enquiry();
                 $extraFields = [
                     'contact_id' => $this->contact_id,
                     'body' => $this->body,
-                    'status_id' => $this->status_id?:1,
+                    'status_id' => $this->status_id ?: 1,
                 ];
                 $this->common->save($obj, $extraFields);
                 $this->clearFields();
@@ -38,7 +69,7 @@ class Index extends Component
                 $extraFields = [
                     'contact_id' => $this->contact_id,
                     'body' => $this->body,
-                    'status_id' => $this->status_id?:1,
+                    'status_id' => $this->status_id ?: 1,
                 ];
                 $this->common->edit($obj, $extraFields);
                 $this->clearFields();
@@ -47,10 +78,12 @@ class Index extends Component
             $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
         }
     }
-    #endregion
+
+#endregion
 
     #region[getObj]
-    public function getObj($id)
+    public
+    function getObj($id)
     {
         if ($id) {
             $Common = Enquiry::find($id);
@@ -64,10 +97,12 @@ class Index extends Component
         }
         return null;
     }
-    #endregion
+
+#endregion
 
     #region[Clear Fields]
-    public function clearFields(): void
+    public
+    function clearFields(): void
     {
         $this->common->vid = '';
         $this->common->vname = '';
@@ -76,10 +111,12 @@ class Index extends Component
         $this->body = '';
         $this->status_id = '';
     }
-    #endregion
+
+#endregion
 
     #region[Contact]
-    #[validate]
+    #[
+        validate]
     public $contact_name = '';
     public $contact_id = '';
     public Collection $contactCollection;

@@ -39,15 +39,16 @@
                             </span>
                         </x-table.cell-text>
 
-                        <x-table.cell-text><a href="{{route('leads',[$row->id])}}">{{$row->vname}}</a></x-table.cell-text>
+                        <x-table.cell-text><a href="{{route('leads',[$row->id])}}">{{$row->vname}}</a>
+                        </x-table.cell-text>
 
                         <x-table.cell-text>
                             <a href="{{route('leads',[$row->id])}}" class="line-clamp-1">
-                            {!!  \Illuminate\Support\Str::words($row->body,14) !!}
+                                {!!  \Illuminate\Support\Str::words($row->body,14) !!}
                             </a></x-table.cell-text>
 
 
-{{--                        <x-table.cell-text>{{$row->status_id}}</x-table.cell-text>--}}
+                        {{--                        <x-table.cell-text>{{$row->status_id}}</x-table.cell-text>--}}
                         <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
                             {{App\Enums\Status::tryFrom($row->status_id)->getName()}}
                         </x-table.cell-text>
@@ -96,9 +97,23 @@
                 @error('contact_name')
                 <span class="text-red-400">{{$message}}</span>@enderror
 
-                <x-input.floating wire:model="common.vname" :label="'Title'"/>
+                <div>
+                    <x-input.floating wire:model="common.vname" :label="'Title'"/>
+                    @error('common.vname')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
 
-                <x-input.rich-text wire:model="body" :placeholder="'Write the issues'"/>
+                <div>
+                    <x-input.rich-text wire:model="body" :placeholder="'Write Your Enquiries'"/>
+                    @error('body')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
 
                 <x-input.model-select wire:model="status_id" :label="'Status'">
                     <option value="">Choose...</option>
