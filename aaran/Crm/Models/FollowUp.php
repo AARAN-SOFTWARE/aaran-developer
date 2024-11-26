@@ -2,6 +2,7 @@
 
 namespace Aaran\Crm\Models;
 
+use Aaran\Common\Models\Common;
 use Aaran\Crm\Database\Factories\EnquiryFactory;
 use Aaran\Master\Models\Lead;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,5 +30,9 @@ class FollowUp extends Model
     protected static function newFactory(): EnquiryFactory
     {
         return new FollowUpFactory();
+    }
+    public function action():BelongsTo
+    {
+        return $this->belongsTo(Common::class);
     }
 }

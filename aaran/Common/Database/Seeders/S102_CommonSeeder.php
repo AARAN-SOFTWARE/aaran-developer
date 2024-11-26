@@ -1203,5 +1203,24 @@ class S102_CommonSeeder extends Seeder
             'active_id' => '1'
         ]);
     }
+
+    private static function action(): void
+    {
+        Common::create([
+            'label_id' => '30',
+            'vname' => 'Installation',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+
+        Common::create([
+            'label_id' => '30',
+            'vname' => 'Quotation',
+            'desc' => '-',
+            'desc_1' => '-',
+            'active_id' => '1'
+        ]);
+        }
     #endregion
 }
