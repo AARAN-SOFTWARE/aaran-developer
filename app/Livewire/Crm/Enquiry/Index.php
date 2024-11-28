@@ -62,6 +62,9 @@ class Index extends Component
                     'status_id' => $this->status_id ?: 1,
                 ];
                 $this->common->save($obj, $extraFields);
+
+                $this->common->logEntry('enquiry','create',$this->common->vname.' has been created');
+
                 $this->clearFields();
                 $message = "Saved";
             } else {
@@ -72,6 +75,9 @@ class Index extends Component
                     'status_id' => $this->status_id ?: 1,
                 ];
                 $this->common->edit($obj, $extraFields);
+
+                $this->common->logEntry('enquiry','updated',$this->common->vname.' has been update');
+
                 $this->clearFields();
                 $message = "Updated";
             }

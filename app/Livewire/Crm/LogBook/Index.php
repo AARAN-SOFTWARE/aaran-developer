@@ -21,7 +21,7 @@ class Index extends Component
     public function rules(): array
     {
         return [
-            'common.vname' => 'required|min:3',
+            'common.vname' => 'required',
         ];
     }
 
