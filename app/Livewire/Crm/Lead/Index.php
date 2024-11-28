@@ -205,7 +205,6 @@ class Index extends Component
 
 #endregion
 
-    #endregion
 
     #region[Render]
     public function render()
