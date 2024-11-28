@@ -76,7 +76,7 @@ class Index extends Component
                 ];
                 $this->common->edit($obj, $extraFields);
 
-                $this->common->logEntry('enquiry','updated',$this->common->vname.' has been update');
+                $this->common->logEntry('enquiry','update',$this->common->vname.' has been updated');
 
                 $this->clearFields();
                 $message = "Updated";

@@ -63,6 +63,22 @@ class Index extends Component
     }
     #endregion
 
+    #region[getObj]
+    public function getObj($id)
+    {
+        if ($id) {
+            $obj = Logbook::find($id);
+            $this->common->vid = $obj->id;
+            $this->common->vname = $obj->vname;
+            $this->action = $obj->body;
+            $this->description = $obj->action_id;
+            $this->common->active_id = $obj->active_id;
+            return $obj;
+        }
+        return null;
+    }
+    #endregion
+
     #region[Clear Fields]
     public function clearFields(): void
     {

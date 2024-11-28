@@ -77,6 +77,7 @@ class Index extends Component
             ];
 
             $this->common->save($lead, $extraFields);
+            $this->common->logEntry('lead','create',$this->common->vname.' has been created');
             $this->clearFields();
             $message = "Saved";
 
@@ -94,6 +95,7 @@ class Index extends Component
             ];
 
             $this->common->edit($lead, $extraFields);
+            $this->common->logEntry('lead','update',$this->common->vname.' has been updated');
             $this->clearFields();
             $message = "Updated";
         }

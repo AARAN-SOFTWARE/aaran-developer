@@ -80,7 +80,6 @@ class CommonForm extends Form
                 'active_id' => '1',
             ]);
         }
-
     }
 
 }
