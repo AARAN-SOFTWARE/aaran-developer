@@ -15,7 +15,30 @@
 
         <!--Top Controls ---------------------------------------------------------------------------------------------->
 
-        <x-forms.top-controls :show-filters="$showFilters"/>
+        <div class="flex sm:flex-row sm:justify-between sm:items-center flex-col gap-6 py-4 print:hidden">
+            <div class="w-2/4 flex items-center space-x-2">
+
+                <x-input.search-bar wire:model.live="getListForm.searches"
+                                    wire:keydown.escape="$set('getListForm.searches', '')" label="Search"/>
+                <x-input.toggle-filter :show-filters="$showFilters"/>
+            </div>
+
+            <div class="w-80 ">
+                <x-input.model-select wire:model.live="jobFilter" :label="'Year'">
+                    <option value="">Select Job</option>
+                    @foreach($jobCollection as $job)
+                        <option value="{{ $job->id }}">{{ $job->vname }}</option>
+                    @endforeach
+                </x-input.model-select>
+            </div>
+
+            <div class="flex sm:justify-center justify-between">
+                <x-forms.per-page/>
+                <div class="self-end">
+                    <x-button.new-x wire:click="create"/>
+                </div>
+            </div>
+        </div>
 
         <div class="w-9/12 mx-auto flex-col flex gap-y-10 py-16">
 
@@ -163,6 +186,7 @@
                                                   clip-rule="evenodd"/>
                                         </svg>
                                         <span class="text-sm">{{$row->allocated->name}}</span>
+
                                         <div
                                             class="text-gray-600 text-xs px-2">
                                             <span class="text-blue-500">Edited :</span>
@@ -174,6 +198,7 @@
                                         <span>{{  \Aaran\Taskmanager\Models\Task::common($row->module_id) }}</span>
                                     </div>
                                 </div>
+
                                 <div class=" left-4 w-full flex justify-between items-center self-end  ">
                                     <a href="{{route('tasks.upsert',[$row->id])}}" type="button"
                                        class="bg-blue-600 p-1 text-white rounded-md px-3 py-1 text-xs hover:bg-blue-500 transition-all duration-300 ease-in-out inline-flex items-center gap-x-2">

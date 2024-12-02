@@ -21,6 +21,7 @@ class Upsert extends Component
     use WithFileUploads;
     public $taskData;
     public $taskImage;
+
     #region[property]
     public $remarks;
     public $estimated;
@@ -39,8 +40,7 @@ class Upsert extends Component
     public $status;
     public $images=[];
     public $old_images=[];
-
-
+    public $status_id;
     #endregion
 
     public function mount($id)
@@ -276,9 +276,8 @@ class Upsert extends Component
                 'end_on' => $this->end_on,
                 'cdate' => $this->cdate,
                 'remarks' => $this->remarks,
+                'status_id' => $this->status_id ?: '1',
                 'user_id' => auth()->id(),
-//                'verified'=>$this->verified,
-//                'verified_on'=>$this->verified_on,
             ];
             $this->common->save($activity, $extraFields);
             $this->clearFields();
@@ -293,9 +292,8 @@ class Upsert extends Component
                 'end_on' => $this->end_on,
                 'cdate' => $this->cdate,
                 'remarks' => $this->remarks,
+                'status_id' => $this->status_id ?: '1',
                 'user_id' => auth()->id(),
-//                'verified'=>$this->verified,
-//                'verified_on'=>$this->verified_on,
             ];
             $this->common->edit($activity, $extraFields);
             $this->clearFields();
@@ -319,8 +317,7 @@ class Upsert extends Component
             $this->end_on = $activity->end_on;
             $this->cdate = $activity->cdate;
             $this->remarks = $activity->remarks;
-//            $this->verified = $activity->verified;
-//            $this->verified_on = $activity->verified_on;
+            $this->status_id = $activity->status_id;
             $this->common->active_id = $activity->active_id;
             return $activity;
         }
@@ -339,7 +336,7 @@ class Upsert extends Component
         $this->start_on = '';
         $this->end_on = '';
         $this->remarks = '';
-//        $this->verified = '';
+        $this->status_id = '';
     }
 
     public function editActivity($id)

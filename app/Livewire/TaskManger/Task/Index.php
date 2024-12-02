@@ -18,6 +18,7 @@ class Index extends Component
     use WithFileUploads;
 
     #region[property]
+
     public $body;
     public $priority_id;
     public $status_id;
@@ -29,13 +30,14 @@ class Index extends Component
     public $images = [];
     public $old_images = [];
     public $filter = '';
+    public $jobFilter =[];
+
     #endregion
 
     public function mount($id=null)
     {
         if ($id != null) {
             $this->filter = $id;
-//            $this->job_id = Common::find($id);
         }
     }
 
@@ -340,18 +342,29 @@ class Index extends Component
 
         return view('livewire.task-manger.task.index')->with([
             'list' => $this->getListForm->getList(Task::class, function ($q) {
-                if ($this->filter == 2){
-                    return $q->where('allocated_id', '=', auth()->id());
-                }elseif ($this->filter == 3){
-                    return $q->where('allocated_id', '=', 2);
-                }elseif ($this->filter == 4){
-                    return null;
-                }else{
-                    return $q->where('reporter_id', '=', auth()->id());
+
+                if ($this->filter == 2) {
+                    $q->where('allocated_id', '=', auth()->id());
+
+                } elseif ($this->filter == 3) {
+                    $q->where('allocated_id', '=', 2);
+
+                } elseif ($this->filter == 4) {
+
+                } else {
+                    $q->where('reporter_id', '=', auth()->id());
                 }
 
+                if ($this->jobFilter) {
+                    $q->where(function ($query) {
+                        return $query->where('job_id', '=', $this->jobFilter);
+                    });
+                }
+                return $q;
             }),
             'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),
         ]);
     }
+
+
 }

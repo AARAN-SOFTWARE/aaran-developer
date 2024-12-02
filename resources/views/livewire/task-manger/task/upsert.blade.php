@@ -130,21 +130,24 @@
 
             <!-- Activity ----------------------------------------------------------------------------------------->
 
-            <div class="w-full h-96 overflow-scroll space-y-2 font-lex pr-2">
+            <div class="w-full space-y-4 font-lex pr-2">
                 @forelse($list as $index=>$row)
-                    <div class="bg-gray-50 border border-gray-200 space-y-2 rounded-lg">
-                        <div class="flex justify-between items-center gap-x-5 p-5 border-b">
+                    <div class=" border border-gray-200  rounded-lg">
+                        <div class="flex justify-between items-center gap-x-5 p-3 border-b bg-gray-50 space-y-4">
                             <div class=" flex flex-col items-center gap-x-4">
                                 <div class="flex items-center gap-x-2">
-                                    <div class="w-10 h-10 rounded-full overflow-hidden">
+                                    <div class="w-8 h-8 rounded-full overflow-hidden">
                                         <img src="{{$row->user->profile_photo_url}}" alt="">
                                     </div>
-                                    <div class="flex-col flex">
+                                    <div class="flex-col flex text-sm">
                                         <div class="text-indigo-600">{{$row->user->name}}</div>
                                         <div
                                             class="text-gray-600 text-xs"> {{$row->created_at->diffForHumans()}}  </div>
 
                                     </div>
+                                    <div
+                                        class="text-xs px-3 py-1 rounded-full mb-3 mx-4 {{ \App\Enums\Status::tryFrom($row->status_id)->getStyle() }}">
+                                        {{ \App\Enums\Status::tryFrom($row->status_id)->getName() }}</div>
                                 </div>
                             </div>
                             <div class="flex justify-center items-center gap-4 self-center">
@@ -153,7 +156,7 @@
                             </div>
                         </div>
                         <div
-                            class="text-justify text-slate-700 min-h-20 p-5 text-sm bg-white w-full"> {!! $row->vname !!} </div>
+                            class="text-justify text-slate-700 p-3 text-sm bg-white ml-8"> {!! $row->vname !!} </div>
                     </div>
                 @empty
                     <div class="flex-col flex justify-start items-center border rounded-md">
@@ -198,12 +201,26 @@
                     </x-slot>
                 </x-tabs.tab-panel>
 
-                <div class="w-full flex items-center justify-end ">
-                    <button wire:click.prevent="getSaveActivity"
-                            class="bg-green-600 text-white px-4 py-2 rounded-md">
-                        Post Activity
-                    </button>
+                <div class="w-full items-center justify-between">
+                    <div class="w-3/12">
+                        <x-input.model-select wire:model="status_id" :label="'Status'">
+                            <option value="">Choose...</option>
+                            @foreach(App\Enums\Status::cases() as $status)
+                                <option value="{{$status->value}}">{{$status->getName()}}</option>
+                            @endforeach
+                        </x-input.model-select>
+                    </div>
+
+                    <div class="w-full flex items-center justify-end ">
+                        <button wire:click.prevent="getSaveActivity"
+                                class="bg-green-600 text-white px-4 py-2 rounded-md">
+                            Post Activity
+                        </button>
+                    </div>
+
                 </div>
+
+
             </div>
         </div>
         <x-modal.delete/>

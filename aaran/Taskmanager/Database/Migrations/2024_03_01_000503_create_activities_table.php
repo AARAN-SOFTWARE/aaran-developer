@@ -19,6 +19,7 @@ return new class extends Migration {
                 $table->string('start_on')->nullable();
                 $table->string('end_on')->nullable();
                 $table->text('remarks')->nullable();
+                $table->foreignId('status_id')->references('id')->on('commons');
                 $table->string('active_id', 3)->nullable();
                 $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
                 $table->timestamps();
