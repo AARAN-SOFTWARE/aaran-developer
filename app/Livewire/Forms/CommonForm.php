@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Forms;
 
+use Aaran\Crm\Models\Logbook;
 use Livewire\Attributes\Rule;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
@@ -11,7 +12,7 @@ class CommonForm extends Form
     #[Validate]
     public $vname = '';
     public bool $active_id = false;
-    public $vid='';
+    public $vid = '';
 
     public function rules(): array
     {
@@ -53,7 +54,6 @@ class CommonForm extends Form
 
     public function edit($model, $extraFields = [])
     {
-
         $model->vname = $this->vname;
         $model->active_id = $this->active_id;
 
@@ -69,5 +69,17 @@ class CommonForm extends Form
     }
 
 
+    public function logEntry($vname, $action = null, $desc = null): void
+    {
+        if (!empty($vname)) {
+            Logbook::create([
+                'vname' => $vname,
+                'action' => $action,
+                'description' => $desc,
+                'user_id' => auth()->id(),
+                'active_id' => '1',
+            ]);
+        }
+    }
 
 }

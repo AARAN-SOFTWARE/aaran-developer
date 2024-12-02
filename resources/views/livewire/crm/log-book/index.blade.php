@@ -15,6 +15,7 @@
                 <x-table.header-text sort-icon="none">Model</x-table.header-text>
                 <x-table.header-text sort-icon="none">Action</x-table.header-text>
                 <x-table.header-text sort-icon="none">Description</x-table.header-text>
+                <x-table.header-text sort-icon="none">User</x-table.header-text>
                 <x-table.header-action/>
 
             </x-slot:table_header>
@@ -44,14 +45,22 @@
                             </div>
                         </x-table.cell-text>
 
-                        <x-table.cell-action id="{{$row->id}}"/>
+                        <x-table.cell-text>
+                            {{$row->user->name}}
+                        </x-table.cell-text>
+
+                        <td class=" print:hidden ">
+                            <div class="flex justify-center items-center gap-4 self-center">
+                                <x-button.delete  wire:click="getDelete({{$row->id}})"/>
+                            </div>
+                        </td>
                     </x-table.row>
                 @endforeach
 
             </x-slot:table_body>
 
         </x-table.form>
-{{--        <x-modal.delete/>--}}
+        <x-modal.delete/>
 
 
         <!-- Create  -------------------------------------------------------------------------------------------------->

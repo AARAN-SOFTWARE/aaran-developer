@@ -45,6 +45,7 @@ class Index extends Component
                     'priority_id' => $this->priority_id ?: 1,
                 ];
                 $this->common->save($followup, $extraFields);
+                $this->common->logEntry('followUp','create',$this->common->vname.' has been created');
                 $this->clearFields();
                 $message = "Saved";
             } else {
@@ -57,6 +58,7 @@ class Index extends Component
                     'priority_id' => $this->priority_id ?: 1,
                 ];
                 $this->common->edit($followup, $extraFields);
+                $this->common->logEntry('followUp','update',$this->common->vname.' has been updated');
                 $this->clearFields();
                 $message = "Updated";
             }
