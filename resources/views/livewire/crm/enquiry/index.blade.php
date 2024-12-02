@@ -68,13 +68,14 @@
             <div class="flex flex-col  gap-3">
 
                 <!-- Party Name --------------------------------------------------------------------------------------->
+
                 <x-dropdown.wrapper label="Party Name" type="contactTyped">
                     <div class="relative ">
                         <x-dropdown.input label="Party Name" id="contact_name"
-                                          wire:model.live="contact_name"
+                                          wire:model.live.debounce="contact_name"
                                           wire:keydown.arrow-up="decrementContact"
                                           wire:keydown.arrow-down="incrementContact"
-                                          wire:keydown.enter="enterContact"/>
+                                          wire:keydown.enter="enterContact" />
                         @error('contact_id')
                         <span class="text-red-500">{{'The Party Name is Required.'}}</span>
                         @enderror
@@ -86,7 +87,7 @@
                                         {{ $contact->vname }}
                                     </x-dropdown.option>
                                 @empty
-                                    <x-dropdown.new href="{{route('contacts.upsert',['0'])}}" label="Party"/>
+                                    @livewire('controls.model.contact-model',[$contact_name])
                                 @endforelse
                             @endif
                         </x-dropdown.select>
@@ -94,6 +95,8 @@
                 </x-dropdown.wrapper>
                 @error('contact_name')
                 <span class="text-red-400">{{$message}}</span>@enderror
+
+
 
                 <div>
                     <x-input.floating wire:model="common.vname" :label="'Title'"/>
