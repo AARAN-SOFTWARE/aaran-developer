@@ -242,6 +242,7 @@ class S101_LabelSeeder extends Seeder
             'active_id' => '1'
         ]);
 
+        #30
         Label::create([
             'id'=> 30,
             'vname' => 'Action',
