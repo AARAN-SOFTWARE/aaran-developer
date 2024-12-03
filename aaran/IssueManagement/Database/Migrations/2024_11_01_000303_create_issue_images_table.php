@@ -12,7 +12,7 @@ return new class extends Migration {
 
             Schema::create('issue_images', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('issue_id')->references('id')->on('issues');
+                $table->foreignId('issue_id')->references('id')->on('issues')->onDelete('cascade');
                 $table->longText('image');
             });
         }

@@ -12,7 +12,7 @@ return new class extends Migration {
 
             Schema::create('issue_activities', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('issue_id')->references('id')->on('issues');
+                $table->foreignId('issue_id')->references('id')->on('issues')->onDelete('cascade');
                 $table->longText('vname');
                 $table->foreignId('reporter_id')->references('id')->on('users');
                 $table->foreignId('status_id')->references('id')->on('commons');

@@ -5,22 +5,39 @@
     <!-- Top Control ------------------------------------------------------------------------------------------------>
 
     <x-forms.m-panel>
-        <div class="max-w-7xl mx-auto p-10 space-y-8 font-lex">
+        <div class="max-w-7xl mx-auto space-y-5 font-lex ">
 
             <div class="inline-flex 1space-x-2 font-merri">
                 <div class="text-5xl text-gray-700">{{$taskData->id}}.</div>
                 <div class="text-5xl font-bold tracking-wider capitalize text-gray-700">{{$taskData->vname}}</div>
             </div>
+
+
             <div class="hidden lg:flex justify-between">
-                <a href="{{route('tasks')}}"
-                   class=" text-sm text-gray-600 gap-x-3 inline-flex items-center font-semibold hover:underline hover:decoration-blue-600 hover:text-blue-600 transition-all duration-300 ease-in-out">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
-                        <path fill-rule="evenodd"
-                              d="M4.72 9.47a.75.75 0 0 0 0 1.06l4.25 4.25a.75.75 0 1 0 1.06-1.06L6.31 10l3.72-3.72a.75.75 0 1 0-1.06-1.06L4.72 9.47Zm9.25-4.25L9.72 9.47a.75.75 0 0 0 0 1.06l4.25 4.25a.75.75 0 1 0 1.06-1.06L11.31 10l3.72-3.72a.75.75 0 0 0-1.06-1.06Z"
-                              clip-rule="evenodd"/>
-                    </svg>
-                    Back to Task
-                </a>
+                <div class="flex flex-row my-1 gap-5">
+                    <a href="{{route('tasks')}}"
+                       class="text-sm text-gray-600 gap-x-3 inline-flex items-center font-semibold hover:underline hover:decoration-blue-600 hover:text-blue-600 transition-all duration-300 ease-in-out">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-5">
+                            <path fill-rule="evenodd"
+                                  d="M4.72 9.47a.75.75 0 0 0 0 1.06l4.25 4.25a.75.75 0 1 0 1.06-1.06L6.31 10l3.72-3.72a.75.75 0 1 0-1.06-1.06L4.72 9.47Zm9.25-4.25L9.72 9.47a.75.75 0 0 0 0 1.06l4.25 4.25a.75.75 0 1 0 1.06-1.06L11.31 10l3.72-3.72a.75.75 0 0 0-1.06-1.06Z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                        Back to Task
+                    </a>
+                    <div class="flex flex-row gap-2 text-md capitalize">
+                        <div
+                            class="text-gray-600 my-0.5">Job :
+                            <span class="text-blue-500">{{\Aaran\Taskmanager\Models\Task::common($taskData->job_id)}}</span> &nbsp;|
+                        </div>
+
+                        <div
+                            class="text-gray-600 my-0.5">
+                            Module :
+                            <span class="text-blue-500">{{\Aaran\Taskmanager\Models\Task::common($taskData->module_id) }}</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div>
                     <x-button.edit wire:click="editTask"/>
                 </div>
@@ -132,31 +149,35 @@
 
             <div class="w-full space-y-4 font-lex pr-2">
                 @forelse($list as $index=>$row)
-                    <div class=" border border-gray-200  rounded-lg">
-                        <div class="flex justify-between items-center gap-x-5 p-3 border-b bg-gray-50 space-y-4">
-                            <div class=" flex flex-col items-center gap-x-4">
-                                <div class="flex items-center gap-x-2">
-                                    <div class="w-8 h-8 rounded-full overflow-hidden">
-                                        <img src="{{$row->user->profile_photo_url}}" alt="">
-                                    </div>
-                                    <div class="flex-col flex text-sm">
-                                        <div class="text-indigo-600">{{$row->user->name}}</div>
-                                        <div
-                                            class="text-gray-600 text-xs"> {{$row->created_at->diffForHumans()}}  </div>
-
-                                    </div>
+                    <div class=" border border-gray-200 rounded-lg">
+                        <div class="flex justify-between items-center p-3 border-b bg-gray-50 ">
+                            <div class="flex flex-col items-center">
+                                <div class="flex justify-center gap-x-2">
                                     <div
-                                        class="text-xs px-3 py-1 rounded-full mb-3 mx-4 {{ \App\Enums\Status::tryFrom($row->status_id)->getStyle() }}">
+                                        class="text-xs px-2 py-1 rounded-full mx-1 {{ \App\Enums\Status::tryFrom($row->status_id)->getStyle() }}">
                                         {{ \App\Enums\Status::tryFrom($row->status_id)->getName() }}</div>
+
+
+                                    <div class="flex-row flex text-sm space-x-2 mt-0.5">
+                                        <div class="text-indigo-600">{{$row->user->name}}</div> &nbsp;&nbsp;|
+                                        <div
+                                            class="text-gray-600 text-xs my-0.5"> {{$row->created_at->diffForHumans()}}  </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="flex justify-center items-center gap-4 self-center">
+                            <div class="flex justify-center items-center gap-3 self-center">
                                 <x-button.edit wire:click="editActivity({{$row->id}})"/>
                                 <x-button.delete wire:click="getDelete({{$row->id}})"/>
                             </div>
                         </div>
-                        <div
-                            class="text-justify text-slate-700 p-3 text-sm bg-white ml-8"> {!! $row->vname !!} </div>
+
+                        <div class="flex flex-row p-3 text-justify ml-8 gap-x-3">
+                            <div class="w-6 h-6 rounded-full overflow-hidden">
+                                <img src="{{$row->user->profile_photo_url}}" alt="">
+                            </div>
+                            <div
+                                class="text-slate-700 text-sm bg-white capitalize"> {!! $row->vname !!} </div>
+                        </div>
                     </div>
                 @empty
                     <div class="flex-col flex justify-start items-center border rounded-md">
@@ -168,38 +189,51 @@
 
             <!-- Create Activity -------------------------------------------------------------------------------------->
 
-            <div class="w-full space-y-5">
-                <x-tabs.tab-panel>
-                    <x-slot name="tabs">
-                        <x-tabs.tab>Activity</x-tabs.tab>
-                        <x-tabs.tab>Duration</x-tabs.tab>
-                        <x-tabs.tab>Remarks</x-tabs.tab>
-                    </x-slot>
+            <div class="w-full space-y-5 pt-8">
+                <span class="my-2">Activity</span>
 
-                    <x-slot name="content">
-                        <x-tabs.content>
-                            <x-input.model-date wire:model="cdate" :label="'Date'"/>
+                <div class="bg-gray-200 p-1 rounded-md">
+                    <x-input.textarea :label="'comments'" type="textarea" wire:model="common.vname"/>
+                </div>
 
-                            <x-input.rich-text wire:model="common.vname" :placeholder="'Write your comments'"/>
-                        </x-tabs.content>
+                <div class="w-full flex justify-between gap-4">
+                    <x-input.floating wire:model="start_on" :label="'Start_On'" type="date"/>
 
-                        <x-tabs.content>
-                            <x-input.floating wire:model="estimated" :label="'Estimate'"/>
+                    <x-input.floating wire:model="end_on" :label="'End_On'" type="date"/>
+                </div>
 
-                            <x-input.floating wire:model="duration" :label="'Duration'"/>
 
-                            <x-input.floating wire:model="start_on" :label="'Start_On'" type="date"/>
+                {{--                <x-tabs.tab-panel>--}}
+                {{--                    <x-slot name="tabs">--}}
+                {{--                        <x-tabs.tab>Activity</x-tabs.tab>--}}
+                {{--                        <x-tabs.tab>Duration</x-tabs.tab>--}}
+                {{--                        <x-tabs.tab>Remarks</x-tabs.tab>--}}
+                {{--                    </x-slot>--}}
 
-                            <x-input.floating wire:model="end_on" :label="'End_On'" type="date"/>
-                        </x-tabs.content>
+                {{--                    <x-slot name="content">--}}
+                {{--                        <x-tabs.content>--}}
+                {{--                            <x-input.model-date wire:model="cdate" :label="'Date'"/>--}}
 
-                        <x-tabs.content>
+                {{--                            <x-input.rich-text wire:model="common.vname" :placeholder="'Write your comments'"/>--}}
 
-                            <x-input.rich-text wire:model="remarks" :placeholder="'Write your remarks'"/>
-                        </x-tabs.content>
+                {{--                          --}}
+                {{--                        </x-tabs.content>--}}
 
-                    </x-slot>
-                </x-tabs.tab-panel>
+                {{--                        <x-tabs.content>--}}
+                {{--                            <x-input.floating wire:model="estimated" :label="'Estimate'"/>--}}
+
+                {{--                            <x-input.floating wire:model="duration" :label="'Duration'"/>--}}
+
+                {{--                          --}}
+                {{--                        </x-tabs.content>--}}
+
+                {{--                        <x-tabs.content>--}}
+
+                {{--                            <x-input.rich-text wire:model="remarks" :placeholder="'Write your remarks'"/>--}}
+                {{--                        </x-tabs.content>--}}
+
+                {{--                    </x-slot>--}}
+                {{--                </x-tabs.tab-panel>--}}
 
                 <div class="w-full items-center justify-between">
                     <div class="w-3/12">
@@ -219,7 +253,6 @@
                     </div>
 
                 </div>
-
 
             </div>
         </div>

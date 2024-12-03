@@ -171,11 +171,13 @@
                         <!-- Description ------------------------------------------------------------------------------>
 
                         <div class="bg-white border-t border-l h-40 p-3 space-y-2 flex-col flex justify-between">
+
                             <div
                                 class="w-9/12 self-start h-[60px] overflow-hidden text-xs  text-gray-700 font-semibold
                                 line-clamp-3 leading-relaxed flex-col justify-start items-center">
                                 {!! $row->body !!}
                             </div>
+
                             <div class="space-y-2">
                                 <div class=" flex justify-between items-center ">
                                     <div class="inline-flex items-center gap-x-2 text-red-600 font-semibold ">
@@ -234,7 +236,14 @@
         <div class="flex flex-row space-x-5 w-full">
             <div class="flex flex-col space-y-5 w-full">
 
-                <x-input.floating wire:model="common.vname" :label="'Title'"/>
+                <div>
+                    <x-input.floating wire:model="common.vname" :label="'Title'"/>
+                    @error('common.vname')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
 
                 <x-dropdown.wrapper label="Job" type="jobTyped">
                     <div class="relative">
@@ -258,11 +267,20 @@
                         </x-dropdown.select>
                     </div>
                 </x-dropdown.wrapper>
-                @error('job_name')
-                <span class="text-red-400">{{$message}}</span>
+                @error('job_id')
+                <div class="text-xs text-red-500 ">
+                    {{$message}}
+                </div>
                 @enderror
 
-                <x-input.rich-text wire:model="body" :placeholder="'Write the error'"/>
+                <div>
+                    <x-input.rich-text wire:model="body" :placeholder="'Write the error'"/>
+                    @error('body')
+                    <div class="text-xs text-red-500 mt-2">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
 
             </div>
 
@@ -292,16 +310,25 @@
                         </x-dropdown.select>
                     </div>
                 </x-dropdown.wrapper>
-                @error('module_name')
-                <span class="text-red-400">{{$message}}</span>
+                @error('module_id')
+                <div class="text-xs text-red-500">
+                    {{$message}}
+                </div>
                 @enderror
 
-                <x-input.model-select wire:model="allocated_id" :label="'Allocated'">
-                    <option value="">Choose...</option>
-                    @foreach($users as $user)
-                        <option value="{{$user->id}}">{{$user->name}}</option>
-                    @endforeach
-                </x-input.model-select>
+                <div>
+                    <x-input.model-select wire:model="allocated_id" :label="'Allocated'">
+                        <option value="">Choose...</option>
+                        @foreach($users as $user)
+                            <option value="{{$user->id}}">{{$user->name}}</option>
+                        @endforeach
+                    </x-input.model-select>
+                    @error('allocated_id')
+                    <div class="text-xs text-red-500 my-2">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
 
                 <x-input.model-select wire:model="priority_id" :label="'Priority'">
                     <option value="">Choose...</option>
@@ -309,15 +336,6 @@
                         <option value="{{$priority->value}}">{{$priority->getName()}}</option>
                     @endforeach
                 </x-input.model-select>
-
-
-                {{--                <x-input.model-select wire:model="status_id" :label="'Status'">--}}
-                {{--                    <option value="">Choose...</option>--}}
-                {{--                    @foreach(App\Enums\Status::cases() as $status)--}}
-                {{--                        <option value="{{$status->value}}">{{$status->getName()}}</option>--}}
-                {{--                    @endforeach--}}
-                {{--                </x-input.model-select>--}}
-
 
                 <!-- Image  ----------------------------------------------------------------------------------------------->
 

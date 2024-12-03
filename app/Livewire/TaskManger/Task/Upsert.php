@@ -270,12 +270,12 @@ class Upsert extends Component
             $activity = new Activities();
             $extraFields = [
                 'task_id' => $this->task_id,
-                'estimated' => $this->estimated,
-                'duration' => $this->duration,
+//                'estimated' => $this->estimated,
+//                'duration' => $this->duration,
                 'start_on' => $this->start_on,
                 'end_on' => $this->end_on,
-                'cdate' => $this->cdate,
-                'remarks' => $this->remarks,
+//                'cdate' => $this->cdate,
+//                'remarks' => $this->remarks,
                 'status_id' => $this->status_id ?: '1',
                 'user_id' => auth()->id(),
             ];
@@ -286,12 +286,12 @@ class Upsert extends Component
             $activity = Activities::find($this->common->vid);
             $extraFields = [
                 'task_id' => $this->task_id,
-                'estimated' => $this->estimated,
-                'duration' => $this->duration,
+//                'estimated' => $this->estimated,
+//                'duration' => $this->duration,
                 'start_on' => $this->start_on,
                 'end_on' => $this->end_on,
-                'cdate' => $this->cdate,
-                'remarks' => $this->remarks,
+//                'cdate' => $this->cdate,
+//                'remarks' => $this->remarks,
                 'status_id' => $this->status_id ?: '1',
                 'user_id' => auth()->id(),
             ];
@@ -311,12 +311,12 @@ class Upsert extends Component
             $this->common->vid = $activity->id;
             $this->common->vname = $activity->vname;
             $this->task_id = $activity->task_id;
-            $this->estimated = $activity->estimated;
-            $this->duration = $activity->duration;
+//            $this->estimated = $activity->estimated;
+//            $this->duration = $activity->duration;
             $this->start_on = $activity->start_on;
             $this->end_on = $activity->end_on;
-            $this->cdate = $activity->cdate;
-            $this->remarks = $activity->remarks;
+//            $this->cdate = $activity->cdate;
+//            $this->remarks = $activity->remarks;
             $this->status_id = $activity->status_id;
             $this->common->active_id = $activity->active_id;
             return $activity;
@@ -331,11 +331,11 @@ class Upsert extends Component
         $this->common->vid = '';
         $this->common->vname = '';
         $this->common->active_id = '1';
-        $this->estimated = '';
-        $this->duration = '';
+//        $this->estimated = '';
+//        $this->duration = '';
         $this->start_on = '';
         $this->end_on = '';
-        $this->remarks = '';
+//        $this->remarks = '';
         $this->status_id = '';
     }
 

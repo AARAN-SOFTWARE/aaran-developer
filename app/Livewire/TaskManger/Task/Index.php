@@ -30,11 +30,47 @@ class Index extends Component
     public $images = [];
     public $old_images = [];
     public $filter = '';
-    public $jobFilter =[];
+    public $jobFilter = [];
 
     #endregion
 
-    public function mount($id=null)
+    #region[Validation]
+    public function rules(): array
+    {
+        return [
+            'common.vname' => 'required',
+            'body' => 'required',
+            'job_id' => 'required',
+            'module_id' => 'required',
+            'allocated_id' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'common.vname.required' => 'The :attribute required',
+            'body' => 'Write :attribute ',
+            'job_id' => 'Mention The :attribute',
+            'module_id' => 'Define The :attribute',
+            'allocated_id' => 'Allocate The :attribute',
+        ];
+    }
+
+    public function validationAttributes()
+    {
+        return [
+            'common.vname' => 'Title',
+            'body' => 'Something',
+            'job_id' => 'Job',
+            'module_id' => 'Module',
+            'allocated_id' => 'Assignee',
+        ];
+    }
+
+    #endregion
+
+    public function mount($id = null)
     {
         if ($id != null) {
             $this->filter = $id;
@@ -44,6 +80,8 @@ class Index extends Component
     #region[getSave]
     public function getSave(): void
     {
+        $this->validate($this->rules());
+
         if ($this->common->vid == '') {
             $task = new Task();
             $extraFields = [
@@ -82,7 +120,7 @@ class Index extends Component
         $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
     }
 
-    public function saveTaskImage($id)
+    public function saveTaskImage($id): void
     {
         foreach ($this->old_images as $old_image) {
             $old_image->save();
@@ -330,15 +368,17 @@ class Index extends Component
 
 #endregion
 
+    #region[Render]
     public function getRoute()
     {
-        return route('Task');
+        return redirect(route('tasks'));
     }
 
     public function render()
     {
         $this->getModuleList();
         $this->getJobList();
+
 
         return view('livewire.task-manger.task.index')->with([
             'list' => $this->getListForm->getList(Task::class, function ($q) {
@@ -365,6 +405,6 @@ class Index extends Component
             'users' => DB::table('users')->where('users.tenant_id', session()->get('tenant_id'))->get(),
         ]);
     }
-
+    #endregion
 
 }
