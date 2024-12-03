@@ -24,8 +24,8 @@
             <!-- Table Body ------------------------------------------------------------------------------------------->
 
             <x-slot:table_body name="table_body">
+                @foreach($enquiries as $index=>$row)
 
-                @foreach($list as $index=>$row)
                     <x-table.row>
 
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
@@ -50,8 +50,18 @@
                         <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
                             {{App\Enums\Status::tryFrom($row->status_id)->getName()}}
                         </x-table.cell-text>
+                      <td>
+                          <div class="flex justify-center items-center sm:gap-4 gap-2 px-1 self-center">
+                              <a href="{{route('enquiries.upsert',[$row->id])}}" class="pt-1">
+                                  <x-button.edit/>
+                              </a>
+                              <x-button.delete wire:click="getDelete({{$row->id}})"/>
 
-                        <x-table.cell-action id="{{$row->id}}"/>
+                          </div>
+                      </td>
+
+
+
                     </x-table.row>
                 @endforeach
 
@@ -61,69 +71,9 @@
 
         <x-modal.delete/>
 
-        <div class="pt-5">{{ $list->links() }}</div>
-
-        <!--Create Form ----------------------------------------------------------------------------------------------->
-        <x-forms.create :id="$common->vid">
-            <div class="flex flex-col  gap-3">
-
-                <!-- Party Name --------------------------------------------------------------------------------------->
-
-                <x-dropdown.wrapper label="Party Name" type="contactTyped">
-                    <div class="relative ">
-                        <x-dropdown.input label="Party Name" id="contact_name"
-                                          wire:model.live.debounce="contact_name"
-                                          wire:keydown.arrow-up="decrementContact"
-                                          wire:keydown.arrow-down="incrementContact"
-                                          wire:keydown.enter="enterContact" />
-                        @error('contact_id')
-                        <span class="text-red-500">{{'The Party Name is Required.'}}</span>
-                        @enderror
-                        <x-dropdown.select>
-                            @if($contactCollection)
-                                @forelse ($contactCollection as $i => $contact)
-                                    <x-dropdown.option highlight="{{$highlightContact === $i  }}"
-                                                       wire:click.prevent="setContact('{{$contact->vname}}','{{$contact->id}}')">
-                                        {{ $contact->vname }}
-                                    </x-dropdown.option>
-                                @empty
-                                    @livewire('controls.model.contact-model',[$contact_name])
-                                @endforelse
-                            @endif
-                        </x-dropdown.select>
-                    </div>
-                </x-dropdown.wrapper>
-                @error('contact_name')
-                <span class="text-red-400">{{$message}}</span>@enderror
+        <div class="pt-5">{{ $enquiries->links() }}</div>
 
 
-
-                <div>
-                    <x-input.floating wire:model="common.vname" :label="'Title'"/>
-                    @error('common.vname')
-                    <div class="text-xs text-red-500">
-                        {{$message}}
-                    </div>
-                    @enderror
-                </div>
-
-                <div>
-                    <x-input.rich-text wire:model="body" :placeholder="'Write Your Enquiries'"/>
-                    @error('body')
-                    <div class="text-xs text-red-500">
-                        {{$message}}
-                    </div>
-                    @enderror
-                </div>
-
-                <x-input.model-select wire:model="status_id" :label="'Status'">
-                    <option value="">Choose...</option>
-                    @foreach(App\Enums\Status::cases() as $status)
-                        <option value="{{$status->value}}">{{$status->getName()}}</option>
-                    @endforeach
-                </x-input.model-select>
-
-            </div>
-        </x-forms.create>
     </x-forms.m-panel>
+
 </div>
