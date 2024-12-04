@@ -24,7 +24,7 @@
             </div>
 
             <div class="w-80 ">
-                <x-input.model-select wire:model.live="jobFilter" :label="'Year'">
+                <x-input.model-select wire:model.live="jobFilter" :label="'Job'">
                     <option value="">Select Job</option>
                     @foreach($jobCollection as $job)
                         <option value="{{ $job->id }}">{{ $job->vname }}</option>
