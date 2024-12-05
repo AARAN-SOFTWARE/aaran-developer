@@ -12,6 +12,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->string('vname'); //title
+
+            //
+            $table->string('mobile');
+            $table->string('whatsapp')->nullable();;
+            $table->string('email')->nullable();
+            //
+
             $table->string('body');
             $table->string('status_id',3)->nullable();
             $table->string('active_id',3)->nullable();

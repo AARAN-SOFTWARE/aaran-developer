@@ -19,6 +19,12 @@ class Upsert extends Component
     public mixed $status_id;
     public $enq;
 
+    //
+    public $mobile;
+    public $whatsapp;
+    public $email;
+    //
+
     #endregion
 
     #region[Validation]
@@ -27,6 +33,9 @@ class Upsert extends Component
         return [
             'common.vname' => 'required|min:3',
             'body' => 'required|min:5',
+            //
+            'mobile' => 'required|min:10',
+            //
         ];
     }
 
@@ -35,6 +44,9 @@ class Upsert extends Component
         return [
             'common.vname.required' => ' :attribute is required.',
             'body.required' => ' :attribute is required.',
+            //
+            'mobile.required' => ' :attribute is required.',
+            //
 
         ];
     }
@@ -47,6 +59,11 @@ class Upsert extends Component
             $this->common->vname = $obj->vname;
             $this->contact_id = $obj->contact_id;
             $this->contact_name = $obj->contact->vname;
+            //
+            $this->mobile = $obj->mobile;
+            $this->whatsapp = $obj->whatsapp;
+            $this->email = $obj->email;
+            //
             $this->body = $obj->body;
             $this->status_id = $obj->status_id;
             $this->common->active_id =$obj->active_id;
@@ -74,7 +91,12 @@ class Upsert extends Component
                 $extraFields = [
                     'contact_id' => $this->contact_id,
                     'body' => $this->body,
-                    'status_id' => $this->status_id ?: 1,
+//                    'status_id' => $this->status_id ?: 1,
+                    //
+                    'mobile' => $this->mobile,
+                    'whatsapp' => $this->whatsapp,
+                    'email' => $this->email,
+                    //
                     'active_id' => 1
                 ];
                 $this->common->save($obj, $extraFields);
@@ -86,6 +108,11 @@ class Upsert extends Component
                     'contact_id' => $this->contact_id,
                     'body' => $this->body,
                     'status_id' => $this->status_id ?: 1,
+                    //
+                    'mobile' => $this->mobile,
+                    'whatsapp' => $this->whatsapp,
+                    'email' =>$this->email,
+                    //
                 ];
                 $this->common->edit($obj, $extraFields);
                 $this->clearFields();
@@ -110,6 +137,11 @@ class Upsert extends Component
             $this->common->active_id = $Common->active_id;
             $this->contact_id = $Common->contact_id;
             $this->contact_name = $Common->contact_name;
+            //
+            $this->mobile = $Common->mobile;
+            $this->whatsapp = $Common->whatsapp;
+            $this->email = $Common->email;
+            //
             $this->body = $Common->body;
             $this->status_id = $Common->status_id;
             return $Common;
@@ -128,6 +160,11 @@ class Upsert extends Component
         $this->common->active_id = '1';
         $this->contact_id = '';
         $this->contact_name = '';
+        //
+        $this->mobile = '';
+        $this->whatsapp = '';
+        $this->email = '';
+        //
         $this->body = '';
         $this->status_id = '';
     }
