@@ -10,8 +10,13 @@ return new class extends Migration
     {
         Schema::create('enquiries', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contact_id')->references('id')->on('contacts')->onDelete('cascade');
-            $table->string('vname'); //title
+            $table->foreignId('contact_id')->constrained('contacts')->nullable();
+            $table->string('contact_person')->nullable();
+            $table->string('vname');  //title
+            $table->string('whatsapp')->nullable();;
+            $table->string('email')->nullable();
+            //
+
             $table->string('body');
             $table->string('status_id',3)->nullable();
             $table->string('active_id',3)->nullable();

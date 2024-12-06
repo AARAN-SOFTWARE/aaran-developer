@@ -13,33 +13,48 @@
             <x-slot:table_header name="table_header" class="bg-green-600">
                 <x-table.header-serial width="20%"/>
                 <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" left>
-                    Contact
+                    Name
                 </x-table.header-text>
-                <x-table.header-text sortIcon="none">Title</x-table.header-text>
+{{--                <x-table.header-text sortIcon="none">Title</x-table.header-text>--}}
+                {{----}}
+                <x-table.header-text sortIcon="none">Mobile Number</x-table.header-text>
+                <x-table.header-text sortIcon="none">Whatsapp</x-table.header-text>
+                <x-table.header-text sortIcon="none">Email</x-table.header-text>
+                {{----}}
                 <x-table.header-text sortIcon="none">Enquiry</x-table.header-text>
-                <x-table.header-text sortIcon="none">Status</x-table.header-text>
+{{--                <x-table.header-text sortIcon="none">Status</x-table.header-text>--}}
                 <x-table.header-action/>
             </x-slot:table_header>
 
             <!-- Table Body ------------------------------------------------------------------------------------------->
 
             <x-slot:table_body name="table_body">
+                @foreach($enquiries as $index=>$row)
 
-                @foreach($list as $index=>$row)
                     <x-table.row>
 
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
 
-                        <x-table.cell-text left>
-                            <span class="capitalize">
-                                <a href="{{route('leads',[$row->id])}}">
-                                    {{$row->contact->vname}}</a>
-                            </span>
+{{--                        <x-table.cell-text left>--}}
+{{--                            <span class="capitalize">--}}
+{{--                                <a href="{{route('leads',[$row->id])}}">--}}
+{{--                                    {{$row->contact->vname}}</a>--}}
+{{--                            </span>--}}
+{{--                        </x-table.cell-text>--}}
+
+                        <x-table.cell-text><a href="{{route('leads',[$row->id])}}">{{$row->contact_person}}</a>
                         </x-table.cell-text>
 
                         <x-table.cell-text><a href="{{route('leads',[$row->id])}}">{{$row->vname}}</a>
                         </x-table.cell-text>
+                        {{----}}
 
+                        <x-table.cell-text> {{$row->whatsapp}}
+                        </x-table.cell-text>
+
+                        <x-table.cell-text> {{$row->email}}
+                        </x-table.cell-text>
+                        {{----}}
                         <x-table.cell-text>
                             <a href="{{route('leads',[$row->id])}}" class="line-clamp-1">
                                 {!!  \Illuminate\Support\Str::words($row->body,14) !!}
@@ -47,9 +62,19 @@
 
 
                         {{--                        <x-table.cell-text>{{$row->status_id}}</x-table.cell-text>--}}
-                        <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
-                            {{App\Enums\Status::tryFrom($row->status_id)->getName()}}
-                        </x-table.cell-text>
+{{--                        <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>--}}
+{{--                            {{App\Enums\Status::tryFrom($row->status_id)->getName()}}--}}
+{{--                        </x-table.cell-text>--}}
+
+{{--                      <td>--}}
+{{--                          <div class="flex justify-center items-center sm:gap-4 gap-2 px-1 self-center">--}}
+{{--                              <a href="{{route('enquiry',[$row->id])}}" class="pt-1">--}}
+{{--                                  <x-button.edit/>--}}
+{{--                              </a>--}}
+{{--                              <x-button.delete wire:click="getDelete({{$row->id}})"/>--}}
+
+{{--                          </div>--}}
+{{--                      </td>--}}
 
                         <x-table.cell-action id="{{$row->id}}"/>
                     </x-table.row>
@@ -58,49 +83,72 @@
             </x-slot:table_body>
 
         </x-table.form>
-
         <x-modal.delete/>
 
-        <div class="pt-5">{{ $list->links() }}</div>
+        <!-- Create  -------------------------------------------------------------------------------------------------->
 
-        <!--Create Form ----------------------------------------------------------------------------------------------->
         <x-forms.create :id="$common->vid">
-            <div class="flex flex-col  gap-3">
 
-                <!-- Party Name --------------------------------------------------------------------------------------->
-
-                <x-dropdown.wrapper label="Party Name" type="contactTyped">
-                    <div class="relative ">
-                        <x-dropdown.input label="Party Name" id="contact_name"
-                                          wire:model.live.debounce="contact_name"
-                                          wire:keydown.arrow-up="decrementContact"
-                                          wire:keydown.arrow-down="incrementContact"
-                                          wire:keydown.enter="enterContact" />
-                        @error('contact_id')
-                        <span class="text-red-500">{{'The Party Name is Required.'}}</span>
-                        @enderror
-                        <x-dropdown.select>
-                            @if($contactCollection)
-                                @forelse ($contactCollection as $i => $contact)
-                                    <x-dropdown.option highlight="{{$highlightContact === $i  }}"
-                                                       wire:click.prevent="setContact('{{$contact->vname}}','{{$contact->id}}')">
-                                        {{ $contact->vname }}
-                                    </x-dropdown.option>
-                                @empty
-                                    @livewire('controls.model.contact-model',[$contact_name])
-                                @endforelse
-                            @endif
-                        </x-dropdown.select>
-                    </div>
-                </x-dropdown.wrapper>
-                @error('contact_name')
-                <span class="text-red-400">{{$message}}</span>@enderror
-
+            <div class="space-y-4">
+{{--                <x-dropdown.wrapper label="Party Name" type="contactTyped">--}}
+{{--                    <div class="relative ">--}}
+{{--                        <x-dropdown.input label="Name" id="contact_name"--}}
+{{--                                          wire:model.live.debounce="contact_name"--}}
+{{--                                          wire:keydown.arrow-up="decrementContact"--}}
+{{--                                          wire:keydown.arrow-down="incrementContact"--}}
+{{--                                          wire:keydown.enter="enterContact"/>--}}
+{{--                        @error('contact_id')--}}
+{{--                        <span class="text-red-500">{{'The Party Name is Required.'}}</span>--}}
+{{--                        @enderror--}}
+{{--                        <x-dropdown.select>--}}
+{{--                            @if($contactCollection)--}}
+{{--                                @forelse ($contactCollection as $i => $contact)--}}
+{{--                                    <x-dropdown.option highlight="{{$highlightContact === $i  }}"--}}
+{{--                                                       wire:click.prevent="setContact('{{$contact->vname}}','{{$contact->id}}')">--}}
+{{--                                        {{ $contact->vname }}--}}
+{{--                                    </x-dropdown.option>--}}
+{{--                                @empty--}}
+{{--                                    @livewire('controls.model.contact-model',[$contact_name])--}}
+{{--                                @endforelse--}}
+{{--                            @endif--}}
+{{--                        </x-dropdown.select>--}}
+{{--                    </div>--}}
+{{--                </x-dropdown.wrapper>--}}
+{{--                @error('contact_name')--}}
+{{--                <span class="text-red-400">{{$message}}</span>@enderror--}}
 
 
                 <div>
-                    <x-input.floating wire:model="common.vname" :label="'Title'"/>
+                    <x-input.floating wire:model="contact_person" :label="'Name'"/>
+                    @error('contact_person')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+
+                <div>
+                    <x-input.floating wire:model.lazy="common.vname"  :label="'Mobile'"/>
                     @error('common.vname')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+                <div>
+                    <x-input.floating wire:model="whatsapp" :label="'Whatsapp Number'"/>
+                    @error('whatsapp')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+                <div>
+                    <x-input.floating wire:model="email" :label="'Mail'"/>
+                    @error('email')
                     <div class="text-xs text-red-500">
                         {{$message}}
                     </div>
@@ -116,14 +164,13 @@
                     @enderror
                 </div>
 
-                <x-input.model-select wire:model="status_id" :label="'Status'">
-                    <option value="">Choose...</option>
-                    @foreach(App\Enums\Status::cases() as $status)
-                        <option value="{{$status->value}}">{{$status->getName()}}</option>
-                    @endforeach
-                </x-input.model-select>
-
             </div>
         </x-forms.create>
+
+
+        <div class="pt-5">{{ $enquiries->links() }}</div>
+
+
     </x-forms.m-panel>
+
 </div>

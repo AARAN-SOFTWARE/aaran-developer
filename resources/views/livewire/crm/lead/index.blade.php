@@ -5,13 +5,57 @@
 
         <x-forms.top-controls :show-filters="$showFilters"/>
 
-        <div class="hidden lg:flex justify-end mb-6">
+        <div class="hidden lg:flex justify-end mb-2">
             <a href="{{ route('enquiries') }}"
                class="transition-colors duration-300 relative inline-flex items-center text-lg hover:text-blue-500 gap-1 mr-2">
                 <x-icons.icon-fill :iconfill="'chevron-d-left'" class="w-5 h-5"></x-icons.icon-fill>
                 Back
             </a>
         </div>
+
+                <div class="max-w-xl h-50 mx-auto rounded-lg border bg-zinc-50 space-y-5 flex-col justify-evenly flex text-sm font-lex p-5 shadow">
+                    <div class="flex justify-between text-2xl">
+                        <div class="w-full">Contact Name</div>
+                        <div wire:model="contactName" class="w-full">{{$enquiry_data->contact_person}}</div>
+                    </div>
+                    <div  class="flex justify-between">
+                        <div class="w-full">Mobile</div>
+                        <div wire:model="mobile" class="w-full text-gray-500 ">{{$enquiry_data->vname}}</div>
+                    </div>
+                </div>
+
+{{--        --}}{{----}}
+
+
+
+{{--        <div class="max-w-2xl h-80 mx-auto rounded-lg border bg-zinc-50 space-y-5 flex-col justify-evenly flex text-sm font-lex p-5 shadow">--}}
+{{--            <div class="flex justify-between text-2xl">--}}
+{{--                <div class="w-full">Contact Name</div>--}}
+{{--                <div wire:model="contactName" class="w-full">Aaran</div>--}}
+{{--            </div>--}}
+{{--            <div  class="flex justify-between">--}}
+{{--                <div class="w-full">Mobile</div>--}}
+{{--                <div wire:model="mobile" class="w-full text-gray-500 ">9876543210</div>--}}
+{{--            </div>--}}
+{{--            <div  class="flex justify-between">--}}
+{{--                <div class="w-full">Software Type</div>--}}
+{{--                <div wire:model="softwareType" class="w-full text-gray-500 ">Billing</div>--}}
+{{--            </div>--}}
+{{--            <div  class="flex justify-between">--}}
+{{--                <div class="w-full">Assign to</div>--}}
+{{--                <div wire="assing" class="w-full text-gray-500 ">Developer</div>--}}
+{{--            </div>--}}
+{{--            <div  class="flex justify-end">--}}
+{{--                <div class="bg-green-50 border border-green-800 rounded px-4 py-2 text-md font-semibold max-w-max">Pending</div>--}}
+
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        --}}
+{{--        --}}{{----}}
+
+
+
+
 
         <!-- Table Header  ------------------------------------------------------------------------------------------>
 

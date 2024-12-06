@@ -4,22 +4,15 @@
     <!-- Top Controls ------------------------------------------------------------------------------------------------>
 
     <x-forms.m-panel>
-
         <x-tabs.tab-panel>
-
             <x-slot name="tabs">
                 <x-tabs.tab>Mandatory</x-tabs.tab>
                 <x-tabs.tab>Detailing</x-tabs.tab>
             </x-slot>
-
             <x-slot name="content">
-
                 <x-tabs.content>
-
                     <div class="lg:flex-row flex flex-col sm:gap-8 gap-4">
-
                         <!-- Left area -------------------------------------------------------------------------------->
-
                         <div class="sm:w-1/2 w-full flex flex-col gap-3 ">
 
                             <x-input.floating wire:model.live="vname" label="Contact Name"/>

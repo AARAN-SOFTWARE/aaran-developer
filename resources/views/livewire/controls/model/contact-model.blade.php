@@ -22,7 +22,7 @@
                                 @error('vname')
                                 <span class="text-red-400">{{$message}}</span>
                                 @enderror
-                                <x-input.floating wire:model="mobile" label="Mobile" />
+                                <x-input.floating wire:model="mobile" label="Mobile"  />
                                 <x-input.floating wire:model="whatsapp" label="Whatsapp" />
                                 <x-input.floating wire:model="contact_person" label="Contact Person" />
                                 <x-input.floating wire:model.live="gstin" label="GST No" />
