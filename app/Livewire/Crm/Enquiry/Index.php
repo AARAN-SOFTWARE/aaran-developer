@@ -21,6 +21,7 @@ class Index extends Component
     public string $body = '';
     public mixed $status_id;
 
+
     //
     public $mobile;
     public $whatsapp;
