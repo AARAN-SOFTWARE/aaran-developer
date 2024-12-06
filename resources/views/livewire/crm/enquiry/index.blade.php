@@ -35,18 +35,19 @@
 
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
 
-                        <x-table.cell-text left>
-                            <span class="capitalize">
-                                <a href="{{route('leads',[$row->id])}}">
-                                    {{$row->contact->vname}}</a>
-                            </span>
+{{--                        <x-table.cell-text left>--}}
+{{--                            <span class="capitalize">--}}
+{{--                                <a href="{{route('leads',[$row->id])}}">--}}
+{{--                                    {{$row->contact->vname}}</a>--}}
+{{--                            </span>--}}
+{{--                        </x-table.cell-text>--}}
+
+                        <x-table.cell-text><a href="{{route('leads',[$row->id])}}">{{$row->contact_person}}</a>
                         </x-table.cell-text>
 
                         <x-table.cell-text><a href="{{route('leads',[$row->id])}}">{{$row->vname}}</a>
                         </x-table.cell-text>
                         {{----}}
-                        <x-table.cell-text> {{$row->mobile}}
-                        </x-table.cell-text>
 
                         <x-table.cell-text> {{$row->whatsapp}}
                         </x-table.cell-text>
@@ -64,26 +65,108 @@
 {{--                        <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>--}}
 {{--                            {{App\Enums\Status::tryFrom($row->status_id)->getName()}}--}}
 {{--                        </x-table.cell-text>--}}
-                      <td>
-                          <div class="flex justify-center items-center sm:gap-4 gap-2 px-1 self-center">
-                              <a href="{{route('enquiries.upsert',[$row->id])}}" class="pt-1">
-                                  <x-button.edit/>
-                              </a>
-                              <x-button.delete wire:click="getDelete({{$row->id}})"/>
 
-                          </div>
-                      </td>
+{{--                      <td>--}}
+{{--                          <div class="flex justify-center items-center sm:gap-4 gap-2 px-1 self-center">--}}
+{{--                              <a href="{{route('enquiry',[$row->id])}}" class="pt-1">--}}
+{{--                                  <x-button.edit/>--}}
+{{--                              </a>--}}
+{{--                              <x-button.delete wire:click="getDelete({{$row->id}})"/>--}}
 
+{{--                          </div>--}}
+{{--                      </td>--}}
 
-
+                        <x-table.cell-action id="{{$row->id}}"/>
                     </x-table.row>
                 @endforeach
 
             </x-slot:table_body>
 
         </x-table.form>
-
         <x-modal.delete/>
+
+        <!-- Create  -------------------------------------------------------------------------------------------------->
+
+        <x-forms.create :id="$common->vid">
+
+            <div class="space-y-4">
+{{--                <x-dropdown.wrapper label="Party Name" type="contactTyped">--}}
+{{--                    <div class="relative ">--}}
+{{--                        <x-dropdown.input label="Name" id="contact_name"--}}
+{{--                                          wire:model.live.debounce="contact_name"--}}
+{{--                                          wire:keydown.arrow-up="decrementContact"--}}
+{{--                                          wire:keydown.arrow-down="incrementContact"--}}
+{{--                                          wire:keydown.enter="enterContact"/>--}}
+{{--                        @error('contact_id')--}}
+{{--                        <span class="text-red-500">{{'The Party Name is Required.'}}</span>--}}
+{{--                        @enderror--}}
+{{--                        <x-dropdown.select>--}}
+{{--                            @if($contactCollection)--}}
+{{--                                @forelse ($contactCollection as $i => $contact)--}}
+{{--                                    <x-dropdown.option highlight="{{$highlightContact === $i  }}"--}}
+{{--                                                       wire:click.prevent="setContact('{{$contact->vname}}','{{$contact->id}}')">--}}
+{{--                                        {{ $contact->vname }}--}}
+{{--                                    </x-dropdown.option>--}}
+{{--                                @empty--}}
+{{--                                    @livewire('controls.model.contact-model',[$contact_name])--}}
+{{--                                @endforelse--}}
+{{--                            @endif--}}
+{{--                        </x-dropdown.select>--}}
+{{--                    </div>--}}
+{{--                </x-dropdown.wrapper>--}}
+{{--                @error('contact_name')--}}
+{{--                <span class="text-red-400">{{$message}}</span>@enderror--}}
+
+
+                <div>
+                    <x-input.floating wire:model="contact_person" :label="'Name'"/>
+                    @error('contact_person')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+
+                <div>
+                    <x-input.floating wire:model.lazy="common.vname"  :label="'Mobile'"/>
+                    @error('common.vname')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+                <div>
+                    <x-input.floating wire:model="whatsapp" :label="'Whatsapp Number'"/>
+                    @error('whatsapp')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+                <div>
+                    <x-input.floating wire:model="email" :label="'Mail'"/>
+                    @error('email')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+                <div>
+                    <x-input.rich-text wire:model="body" :placeholder="'Write Your Enquiries'"/>
+                    @error('body')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+            </div>
+        </x-forms.create>
+
 
         <div class="pt-5">{{ $enquiries->links() }}</div>
 

@@ -16,11 +16,11 @@
                 <div class="max-w-xl h-50 mx-auto rounded-lg border bg-zinc-50 space-y-5 flex-col justify-evenly flex text-sm font-lex p-5 shadow">
                     <div class="flex justify-between text-2xl">
                         <div class="w-full">Contact Name</div>
-                        <div wire:model="contactName" class="w-full">{{$enquiry_data->contact->vname}}</div>
+                        <div wire:model="contactName" class="w-full">{{$enquiry_data->contact_person}}</div>
                     </div>
                     <div  class="flex justify-between">
                         <div class="w-full">Mobile</div>
-                        <div wire:model="mobile" class="w-full text-gray-500 ">{{$enquiry_data->mobile}}</div>
+                        <div wire:model="mobile" class="w-full text-gray-500 ">{{$enquiry_data->vname}}</div>
                     </div>
                 </div>
 

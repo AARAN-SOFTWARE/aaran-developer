@@ -65,8 +65,8 @@ class Upsert extends Component
             $this->email = $obj->email;
             //
             $this->body = $obj->body;
-            $this->status_id = $obj->status_id;
-            $this->common->active_id =$obj->active_id;
+//            $this->status_id = $obj->status_id;
+//            $this->common->active_id =$obj->active_id;
         }
     }
 
@@ -80,8 +80,7 @@ class Upsert extends Component
     #endregion
 
     #region[getSave]
-    public
-    function getSave(): void
+    public function getSave(): void
     {
         $this->validate($this->rules());
 
