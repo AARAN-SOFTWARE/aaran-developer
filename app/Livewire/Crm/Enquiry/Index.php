@@ -29,10 +29,9 @@ class Index extends Component
     public $contact_person;
 
     //
-
     #endregion
 
-    // Auto-fil
+    #region[Auto-fil]
     public function updatedCommonVname($value)
     {
         $obj = Enquiry::where('vname', $value)->first();
@@ -45,9 +44,10 @@ class Index extends Component
             $this->email = '';
         }
     }
+    #endregion
 
 
-    #region[Validation]
+    #region[Rules]
     public function rules(): array
     {
         return [
@@ -56,6 +56,9 @@ class Index extends Component
             'body' => 'required|min:5',
         ];
     }
+    #endregion
+
+    #region[Validation]
     public function validationAttributes()
     {
         return [
@@ -64,7 +67,9 @@ class Index extends Component
             'contact_person' => 'Contact Name',
         ];
     }
+    #endregion
 
+    #region[Messages]
     public function messages()
     {
         return [
@@ -78,6 +83,7 @@ class Index extends Component
 
         ];
     }
+    #endregion
 
     #region[getSave]
     public function getSave(): void
@@ -125,8 +131,7 @@ class Index extends Component
         }
 //        $this-> redirect(route('enquiries'));
     }
-
-#endregion
+    #endregion
 
     #region[getObj]
     public function getObj($id)
@@ -146,7 +151,7 @@ class Index extends Component
         }
         return null;
     }
-#endregion
+    #endregion
 
     #region[Clear Fields]
     public function clearFields(): void
@@ -164,8 +169,7 @@ class Index extends Component
         $this->body = '';
         $this->status_id = '';
     }
-
-#endregion
+    #endregion
 
 //    public function create(): void
 //    {
@@ -240,7 +244,7 @@ class Index extends Component
 //
 //    #endregion
 
-
+    #region[render]
     public function render()
     {
 //        $this->getContactList();
