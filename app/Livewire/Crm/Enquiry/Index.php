@@ -20,30 +20,61 @@ class Index extends Component
     #region[Properties]
     public string $body = '';
     public mixed $status_id;
-
-
-    //
+    public $contact_person;
     public $mobile;
     public $whatsapp;
     public $email;
-    public $contact_person;
-
-    //
     #endregion
 
-    #region[Auto-fil]
+    //
+    public $showConfirmation = false;
+    public $existingData = [];
+    //
+
+//    #region[Auto-fill]
+//    public function updatedCommonVname($value)
+//    {
+//        $obj = Enquiry::where('vname', $value)->first();
+//
+//        if ($obj) {
+//            $this->whatsapp = $obj->whatsapp;
+//            $this->email = $obj->email;
+//        } else {
+//            $this->whatsapp = '';
+//            $this->email = '';
+//        }
+//    }
+//    #endregion
+
+   #region[Confirmation Message and Auto-Fill]
     public function updatedCommonVname($value)
     {
-        $obj = Enquiry::where('vname', $value)->first();
+        // Check if mobile exists
+        $existingEntry = Enquiry::where('vname', $value)->first();
 
-        if ($obj) {
-            $this->whatsapp = $obj->whatsapp;
-            $this->email = $obj->email;
+        if ($existingEntry) {
+            $this->showConfirmation = true;
+            $this->existingData = [
+                'contact_person' => $existingEntry->contact_person,
+                'whatsapp' => $existingEntry->whatsapp,
+                'email' => $existingEntry->email,
+            ];
         } else {
-            $this->whatsapp = '';
-            $this->email = '';
+            $this->showConfirmation = false;
+            $this->existingData = [];
         }
     }
+
+    public function autofill()
+    {
+        // Autofill fields with existing data
+        $this->contact_person = $this->existingData['contact_person'];
+        $this->whatsapp = $this->existingData['whatsapp'];
+        $this->email = $this->existingData['email'];
+
+        $this->showConfirmation = false; // Hide the confirmation message
+    }
+
     #endregion
 
 
@@ -170,12 +201,6 @@ class Index extends Component
         $this->status_id = '';
     }
     #endregion
-
-//    public function create(): void
-//    {
-//        $this->redirect(route('enquiries.upsert', ['0']));
-//    }
-
 
 
 
