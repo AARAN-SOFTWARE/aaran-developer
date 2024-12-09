@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('contact_id')->constrained('contacts')->nullable();
             $table->string('contact_person')->nullable();
-            $table->string('vname');  //title
+            $table->string('vname');  //mobile
             $table->string('whatsapp')->nullable();;
             $table->string('email')->nullable();
             //

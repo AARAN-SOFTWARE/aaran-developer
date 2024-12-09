@@ -15,14 +15,10 @@
                 <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" left>
                     Name
                 </x-table.header-text>
-{{--                <x-table.header-text sortIcon="none">Title</x-table.header-text>--}}
-                {{----}}
                 <x-table.header-text sortIcon="none">Mobile Number</x-table.header-text>
                 <x-table.header-text sortIcon="none">Whatsapp</x-table.header-text>
                 <x-table.header-text sortIcon="none">Email</x-table.header-text>
-                {{----}}
                 <x-table.header-text sortIcon="none">Enquiry</x-table.header-text>
-{{--                <x-table.header-text sortIcon="none">Status</x-table.header-text>--}}
                 <x-table.header-action/>
             </x-slot:table_header>
 
@@ -79,7 +75,6 @@
                         <x-table.cell-action id="{{$row->id}}"/>
                     </x-table.row>
                 @endforeach
-
             </x-slot:table_body>
 
         </x-table.form>
@@ -90,34 +85,8 @@
         <x-forms.create :id="$common->vid">
 
             <div class="space-y-4">
-{{--                <x-dropdown.wrapper label="Party Name" type="contactTyped">--}}
-{{--                    <div class="relative ">--}}
-{{--                        <x-dropdown.input label="Name" id="contact_name"--}}
-{{--                                          wire:model.live.debounce="contact_name"--}}
-{{--                                          wire:keydown.arrow-up="decrementContact"--}}
-{{--                                          wire:keydown.arrow-down="incrementContact"--}}
-{{--                                          wire:keydown.enter="enterContact"/>--}}
-{{--                        @error('contact_id')--}}
-{{--                        <span class="text-red-500">{{'The Party Name is Required.'}}</span>--}}
-{{--                        @enderror--}}
-{{--                        <x-dropdown.select>--}}
-{{--                            @if($contactCollection)--}}
-{{--                                @forelse ($contactCollection as $i => $contact)--}}
-{{--                                    <x-dropdown.option highlight="{{$highlightContact === $i  }}"--}}
-{{--                                                       wire:click.prevent="setContact('{{$contact->vname}}','{{$contact->id}}')">--}}
-{{--                                        {{ $contact->vname }}--}}
-{{--                                    </x-dropdown.option>--}}
-{{--                                @empty--}}
-{{--                                    @livewire('controls.model.contact-model',[$contact_name])--}}
-{{--                                @endforelse--}}
-{{--                            @endif--}}
-{{--                        </x-dropdown.select>--}}
-{{--                    </div>--}}
-{{--                </x-dropdown.wrapper>--}}
-{{--                @error('contact_name')--}}
-{{--                <span class="text-red-400">{{$message}}</span>@enderror--}}
 
-
+                {{--Name--}}
                 <div>
                     <x-input.floating wire:model="contact_person" :label="'Name'"/>
                     @error('contact_person')
@@ -127,7 +96,7 @@
                     @enderror
                 </div>
 
-
+                {{--Mobile--}}
                 <div>
                     <x-input.floating wire:model.lazy="common.vname"  :label="'Mobile'"/>
                     @error('common.vname')
@@ -135,8 +104,31 @@
                         {{$message}}
                     </div>
                     @enderror
+
+                    {{-- Confirmation Message --}}
+                    @if($showConfirmation)
+                        <div class="bg-yellow-100 text-yellow-700 p-2 mt-2 rounded">
+                            Mobile number already exists. Do you want to autofill the data?
+                            <div class="flex space-x-2 mt-2">
+                                <button
+                                    type="button"
+                                    wire:click="autofill"
+                                    class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600">
+                                    Yes
+                                </button>
+                                <button
+                                    type="button"
+                                    wire:click="$set('showConfirmation', false)"
+                                    class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600">
+                                    No
+                                </button>
+                            </div>
+                        </div>
+                    @endif
+
                 </div>
 
+                {{--Whatsapp--}}
                 <div>
                     <x-input.floating wire:model="whatsapp" :label="'Whatsapp Number'"/>
                     @error('whatsapp')
@@ -146,6 +138,7 @@
                     @enderror
                 </div>
 
+                {{--Email--}}
                 <div>
                     <x-input.floating wire:model="email" :label="'Mail'"/>
                     @error('email')
@@ -155,6 +148,7 @@
                     @enderror
                 </div>
 
+                {{--Enquiry--}}
                 <div>
                     <x-input.rich-text wire:model="body" :placeholder="'Write Your Enquiries'"/>
                     @error('body')
@@ -167,7 +161,7 @@
             </div>
         </x-forms.create>
 
-
+        {{-- Pagination Here --}}
         <div class="pt-5">{{ $enquiries->links() }}</div>
 
 
