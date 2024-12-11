@@ -18,43 +18,12 @@
                         <div class="w-full">Contact Name</div>
                         <div wire:model="contactName" class="w-full">{{$enquiry_data->contact_person}}</div>
                     </div>
+
                     <div  class="flex justify-between">
                         <div class="w-full">Mobile</div>
                         <div wire:model="mobile" class="w-full text-gray-500 ">{{$enquiry_data->vname}}</div>
                     </div>
                 </div>
-
-{{--        --}}{{----}}
-
-
-
-{{--        <div class="max-w-2xl h-80 mx-auto rounded-lg border bg-zinc-50 space-y-5 flex-col justify-evenly flex text-sm font-lex p-5 shadow">--}}
-{{--            <div class="flex justify-between text-2xl">--}}
-{{--                <div class="w-full">Contact Name</div>--}}
-{{--                <div wire:model="contactName" class="w-full">Aaran</div>--}}
-{{--            </div>--}}
-{{--            <div  class="flex justify-between">--}}
-{{--                <div class="w-full">Mobile</div>--}}
-{{--                <div wire:model="mobile" class="w-full text-gray-500 ">9876543210</div>--}}
-{{--            </div>--}}
-{{--            <div  class="flex justify-between">--}}
-{{--                <div class="w-full">Software Type</div>--}}
-{{--                <div wire:model="softwareType" class="w-full text-gray-500 ">Billing</div>--}}
-{{--            </div>--}}
-{{--            <div  class="flex justify-between">--}}
-{{--                <div class="w-full">Assign to</div>--}}
-{{--                <div wire="assing" class="w-full text-gray-500 ">Developer</div>--}}
-{{--            </div>--}}
-{{--            <div  class="flex justify-end">--}}
-{{--                <div class="bg-green-50 border border-green-800 rounded px-4 py-2 text-md font-semibold max-w-max">Pending</div>--}}
-
-{{--            </div>--}}
-{{--        </div>--}}
-{{--        --}}
-{{--        --}}{{----}}
-
-
-
 
 
         <!-- Table Header  ------------------------------------------------------------------------------------------>
@@ -65,6 +34,7 @@
 
                 <x-table.header-serial></x-table.header-serial>
                 <x-table.header-text sort-icon="none">Title</x-table.header-text>
+                <x-table.header-text sort-icon="none">Lead By</x-table.header-text>
                 <x-table.header-text sort-icon="none">Description</x-table.header-text>
                 <x-table.header-text sort-icon="none">Assigned To</x-table.header-text>
                 <x-table.header-text sort-icon="none">Software Type</x-table.header-text>
@@ -84,6 +54,10 @@
 
                         <x-table.cell-text>
                             <a href="{{route('followups', $row->id)}}">{{$row->vname}}</a>
+                        </x-table.cell-text>
+
+                        <x-table.cell-text>
+                            {{$row->lead->name}}
                         </x-table.cell-text>
 
                         <x-table.cell-text>
@@ -121,7 +95,7 @@
             <div class="space-y-4">
 
                 <div>
-                    <x-input.floating wire:model="common.vname" :label="'Leads'"/>
+                    <x-input.floating wire:model="common.vname" :label="'Title'"/>
                     @error('common.vname')
                     <div class="text-xs text-red-500">
                         {{$message}}
@@ -129,8 +103,15 @@
                     @enderror
                 </div>
 
+                <x-input.model-select wire:model="assignee_name" :label="'Lead By'">
+                    <option value="">Choose...</option>
+                    @foreach(\App\Models\User::all() as $user)
+                        <option value="{{$user->id}}">{{$user->name}}</option>
+                    @endforeach
+                </x-input.model-select>
+
                 <div>
-                    <x-input.rich-text :placeholder="'body'" wire:model="body"/>
+                    <x-input.rich-text :placeholder="'Description'" wire:model="body"/>
                     @error('body')
                     <div class="text-xs text-red-500">
                         {{$message}}

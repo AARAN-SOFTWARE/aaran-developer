@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('enquiry_id')->references('id')->on('enquiries')->onDelete('cascade');
             $table->string('vname');
+            $table->foreignId('lead_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('body');
             $table->string('status_id',3)->nullable();
             $table->string('softwareType_id',3)->nullable();

@@ -16,6 +16,7 @@ class Index extends Component
     #region[property]
     public $body;
     public mixed $status_id;
+    public $lead_id;
     public $assignee_id;
     public $enquiry_id;
     public $enquiry_data;
@@ -70,6 +71,7 @@ class Index extends Component
             $extraFields = [
                 'enquiry_id' => $this->enquiry_id,
                 'body' => $this->body,
+                'lead_id' => $this->lead_id ?: 1,
                 'status_id' => $this->status_id ?: 1,
                 'assignee_id' => $this->assignee_id ?: 1,
                 'softwareType_id' => $this->softwareType_id ?: 1,
@@ -88,6 +90,7 @@ class Index extends Component
             $extraFields = [
                 'enquiry_id' => $this->enquiry_id,
                 'body' => $this->body,
+                'lead_id' => $this->lead_id ?: 1,
                 'status_id' => $this->status_id ?: 1,
                 'assignee_id' => $this->assignee_id ?: 1,
                 'softwareType_id' => $this->softwareType_id ?: 1,
@@ -110,6 +113,7 @@ class Index extends Component
             $obj = Lead::find($id);
             $this->common->vid = $obj->id;
             $this->common->vname = $obj->vname;
+            $this->lead_id = $obj->lead_id;
             $this->body = $obj->body;
             $this->assignee_id = $obj->assignee_id;
             $this->softwareType_id = $obj->softwareType_id;
@@ -128,6 +132,7 @@ class Index extends Component
         $this->common->vid = '';
         $this->common->vname = '';
         $this->common->active_id = '1';
+        $this->lead_id = '';
         $this->body = '';
         $this->assignee_id = '';
         $this->softwareType_id = '';

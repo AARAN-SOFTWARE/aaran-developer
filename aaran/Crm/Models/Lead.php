@@ -31,6 +31,11 @@ class Lead extends Model
         return $this->belongsTo(User::class, 'assignee_id');
     }
 
+    public function lead(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'lead_id');
+    }
+
     public function softwareType(): BelongsTo
     {
         return $this->belongsTo(Common::class,'softwareType_id');
