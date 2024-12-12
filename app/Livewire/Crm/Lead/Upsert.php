@@ -9,7 +9,7 @@ use App\Livewire\Trait\CommonTraitNew;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
-class Index extends Component
+class Upsert extends Component
 {
     use CommonTraitNew;
 
