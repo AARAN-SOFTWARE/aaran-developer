@@ -79,7 +79,6 @@
             </div>
         </div>
         <!-- Table Header  ------------------------------------------------------------------------------------------>
-
         <x-table.form>
 
             <x-slot:table_header name="table_header" class="bg-green-100">
@@ -91,6 +90,8 @@
 {{--                <x-table.header-text sort-icon="none">Assigned To</x-table.header-text>--}}
                 <x-table.header-text sort-icon="none">Software Type</x-table.header-text>
 {{--                <x-table.header-text sort-icon="none">Status</x-table.header-text>--}}
+                <x-table.header-text sort-icon="none">Verified By</x-table.header-text>
+
                 <x-table.header-action/>
 
             </x-slot:table_header>
@@ -100,6 +101,8 @@
             <x-slot:table_body name="table_body">
 
                 @foreach($list as $index=>$row)
+
+                    @dd($list)
 
                     <x-table.row>
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
@@ -131,7 +134,17 @@
 {{--                        </x-table.cell-text>--}}
 
 
-                        <x-table.cell-action id="{{$row->id}}"/>
+{{--                        <x-table.cell-action id="{{$row->id}}"/>--}}
+
+                        <td>
+                            <div class="flex justify-center items-center sm:gap-4 gap-2 px-1 self-center">
+                                <a href="{{route('leads.upsert',[$row->id])}}" class="pt-1">
+                                    <x-button.edit/>
+                                </a>
+                                <x-button.delete wire:click="getDelete({{$row->id}})"/>
+
+                            </div>
+                        </td>
                     </x-table.row>
                 @endforeach
 

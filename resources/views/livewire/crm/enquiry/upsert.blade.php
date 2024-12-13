@@ -1,7 +1,7 @@
 <div>
     <x-slot name="header">Enquiry Entry</x-slot>
 
-{{--    <x-forms.m-panel>--}}
+    <x-forms.m-panel>
         <!--Create Form ----------------------------------------------------------------------------------------------->
 
             <div class="flex flex-col  gap-3">
@@ -37,16 +37,16 @@
 
 
 
-{{--                <div>--}}
-{{--                    <x-input.floating wire:model="common.vname" :label="'Title'"/>--}}
-{{--                    @error('common.vname')--}}
-{{--                    <div class="text-xs text-red-500">--}}
-{{--                        {{$message}}--}}
-{{--                    </div>--}}
-{{--                    @enderror--}}
-{{--                </div>--}}
+                <div>
+                    <x-input.floating wire:model="common.vname" :label="'Title'"/>
+                    @error('common.vname')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
 
-                {{-------------------------------------------------------------------------}}
+{{--                -----------------------------------------------------------------------}}
                 <div>
                     <x-input.floating wire:model="mobile" :label="'Mobile'"/>
                     @error('mobile')
@@ -73,7 +73,7 @@
                     </div>
                     @enderror
                 </div>
-                {{-----------------------------------------------------------------------------------------------------}}
+{{--                ---------------------------------------------------------------------------------------------------}}
 
                 <div>
                     <x-input.rich-text wire:model="body" :placeholder="'Write Your Enquiries'"/>
@@ -84,17 +84,17 @@
                     @enderror
                 </div>
 
-{{--                <x-input.model-select wire:model="status_id" :label="'Status'">--}}
-{{--                    <option value="">Choose...</option>--}}
-{{--                    @foreach(App\Enums\Status::cases() as $status)--}}
-{{--                        <option value="{{$status->value}}">{{$status->getName()}}</option>--}}
-{{--                    @endforeach--}}
-{{--                </x-input.model-select>--}}
+                <x-input.model-select wire:model="status_id" :label="'Status'">
+                    <option value="">Choose...</option>
+                    @foreach(App\Enums\Status::cases() as $status)
+                        <option value="{{$status->value}}">{{$status->getName()}}</option>
+                    @endforeach
+                </x-input.model-select>
 
             </div>
 
 
-{{--    </x-forms.m-panel>--}}
+    </x-forms.m-panel>
 
     <!-- Save Button area --------------------------------------------------------------------------------------------->
     <x-forms.m-panel-bottom-button wire:model="getRoute" active save back/>

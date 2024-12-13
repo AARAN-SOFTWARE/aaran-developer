@@ -17,7 +17,7 @@ class Index extends Component
     public $body;
     public mixed $status_id;
     public $lead_id;
-    public $assignee_id;
+//    public $assignee_id;
     public $enquiry_id;
     public $enquiry_data;
     public $verified_by;
@@ -36,104 +36,10 @@ class Index extends Component
 
     #endregion
 
-    public function addAttempt(){
-//        dd('Hi');
-        $this->showAttemptModal = true;
-    }
-
-    #region[Mount]
-    public function mount($id)
+    public function create(): void
     {
-        $this->enquiry_id = $id;
-        $this->enquiry_data = Enquiry::find($id);
-
+        $this->redirect(route('leads.upsert', ['0']));
     }
-    #endregion
-
-    #region[Validation]
-    public function rules(): array
-    {
-        return [
-            'common.vname' => 'required|min:3',
-            'body' => 'required|min:5',
-            'questions.question1' => 'nullable|string',
-            'questions.question2' => 'nullable|string',
-            'questions.question3' => 'nullable|string',
-            'questions.question4' => 'nullable|string',
-            'questions.question5' => 'nullable|string',
-            'questions.question6' => 'nullable|string',
-            'questions.question7' => 'nullable|string',
-        ];
-    }
-
-    public function messages()
-    {
-        return [
-            'common.vname.required' => ' Mention The :attribute',
-            'body.required' => ' :attribute is required. ',
-
-        ];
-    }
-
-    public function validationAttributes()
-    {
-        return [
-            'common.vname' => 'Lead',
-            'body' => 'Description',
-        ];
-    }
-    #endregion
-
-    #region[getSave]
-    public function getSave(): void
-    {
-        $this->validate($this->rules());
-
-        if ($this->common->vid == '') {
-
-            $lead = new Lead();
-
-            $extraFields = [
-                'enquiry_id' => $this->enquiry_id,
-                'body' => $this->body,
-                'lead_id' => $this->lead_id ?: 1,
-                'status_id' => $this->status_id ?: 1,
-                'assignee_id' => $this->assignee_id ?: 1,
-                'softwareType_id' => $this->softwareType_id ?: 1,
-                'user_id' => auth()->id(),
-                'questions' => json_encode($this->questions),
-                'verified_by' => $this->verified_by ?: 1,
-            ];
-
-            $this->common->save($lead, $extraFields);
-            $this->common->logEntry('lead','create',$this->common->vname.' has been created');
-            $this->clearFields();
-            $message = "Saved";
-
-        } else {
-
-            $lead = Lead::find($this->common->vid);
-
-            $extraFields = [
-                'enquiry_id' => $this->enquiry_id,
-                'body' => $this->body,
-                'lead_id' => $this->lead_id ?: 1,
-                'status_id' => $this->status_id ?: 1,
-                'assignee_id' => $this->assignee_id ?: 1,
-                'softwareType_id' => $this->softwareType_id ?: 1,
-                'user_id' => auth()->id(),
-                'questions' => json_encode($this->questions),
-                'verified_by' => $this->verified_by ?: 1,
-            ];
-
-            $this->common->edit($lead, $extraFields);
-            $this->common->logEntry('lead','update',$this->common->vname.' has been updated');
-            $this->clearFields();
-            $message = "Updated";
-        }
-        $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
-    }
-    #endregion
 
     #region[getObj]
     public function getObj($id)
@@ -144,7 +50,7 @@ class Index extends Component
             $this->common->vname = $obj->vname;
             $this->lead_id = $obj->lead_id;
             $this->body = $obj->body;
-            $this->assignee_id = $obj->assignee_id;
+//            $this->assignee_id = $obj->assignee_id;
             $this->softwareType_id = $obj->softwareType_id;
             $this->softwareType_name = Common::find($obj->softwareType_id)->vname;
             $this->status_id = $obj->status_id;
@@ -156,31 +62,82 @@ class Index extends Component
         return null;
     }
     #endregion
+    public function addAttempt(){
+//        dd('Hi');
+        $this->showAttemptModal = true;
+    }
+
+    #region[Mount]
+    public function mount($id)
+    {
+        $this->enquiry_id = $id;
+        $this->enquiry_data = Enquiry::find($id);
+
+//dd($this->enquiry_data);
+    }
+    #endregion
+
+//    #region[Validation]
+//    public function rules(): array
+//    {
+//        return [
+//            'common.vname' => 'required|min:3',
+//            'body' => 'required|min:5',
+//            'questions.question1' => 'nullable|string',
+//            'questions.question2' => 'nullable|string',
+//            'questions.question3' => 'nullable|string',
+//            'questions.question4' => 'nullable|string',
+//            'questions.question5' => 'nullable|string',
+//            'questions.question6' => 'nullable|string',
+//            'questions.question7' => 'nullable|string',
+//        ];
+//    }
+
+//    public function messages()
+//    {
+//        return [
+//            'common.vname.required' => ' Mention The :attribute',
+//            'body.required' => ' :attribute is required. ',
+//
+//        ];
+//    }
+
+//    public function validationAttributes()
+//    {
+//        return [
+//            'common.vname' => 'Lead',
+//            'body' => 'Description',
+//        ];
+//    }
+//    #endregion
+
+
+
 
     #region[Clear Fields]
-    public function clearFields(): void
-    {
-        $this->common->vid = '';
-        $this->common->vname = '';
-        $this->common->active_id = '1';
-        $this->lead_id = '';
-        $this->body = '';
-        $this->assignee_id = '';
-        $this->softwareType_id = '';
-        $this->softwareType_name = '';
-        $this->status_id = '';
-        $this->questions = [
-            'question1' => null,
-            'question2' => null,
-            'question3' => null,
-            'question4' => null,
-            'question5' => null,
-            'question6' => null,
-            'question7' => null,
-        ];
-        $this->verified_by = '';
-
-    }
+//    public function clearFields(): void
+//    {
+//        $this->common->vid = '';
+//        $this->common->vname = '';
+//        $this->common->active_id = '1';
+//        $this->lead_id = '';
+//        $this->body = '';
+////        $this->assignee_id = '';
+//        $this->softwareType_id = '';
+//        $this->softwareType_name = '';
+//        $this->status_id = '';
+//        $this->questions = [
+//            'question1' => null,
+//            'question2' => null,
+//            'question3' => null,
+//            'question4' => null,
+//            'question5' => null,
+//            'question6' => null,
+//            'question7' => null,
+//        ];
+//        $this->verified_by = '';
+//
+//    }
 
     #region[softwareType]
     public $softwareType_id = '';
@@ -260,7 +217,7 @@ class Index extends Component
         $this->getSoftwareTypeList();
         return view('livewire.crm.lead.index')->with([
             'list' => $this->getListForm->getList(Lead::class, function ($query) {
-                return $query->where('enquiry_id', $this->enquiry_id);
+                return $query;
             })
         ]);
     }

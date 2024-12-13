@@ -15,12 +15,13 @@ class Upsert extends Component
 
     #region[property]
     public $body;
-    public mixed $status_id;
     public $lead_id;
     public $assignee_id;
     public $enquiry_id;
-    public $enquiry_data;
+//    public $enquiry_data;
     public $verified_by;
+
+//    public $status_id;
 
     public bool $showAttemptModal = false;
 
@@ -36,21 +37,7 @@ class Upsert extends Component
 
     #endregion
 
-    public function addAttempt(){
-//        dd('Hi');
-        $this->showAttemptModal = true;
-    }
-
-    #region[Mount]
-    public function mount($id)
-    {
-        $this->enquiry_id = $id;
-        $this->enquiry_data = Enquiry::find($id);
-
-    }
-    #endregion
-
-    #region[Validation]
+    #region[Rules]
     public function rules(): array
     {
         return [
@@ -74,6 +61,27 @@ class Upsert extends Component
 
         ];
     }
+    #endregion
+
+    #region[Mount]
+    public function mount($id)
+    {
+        if ($id != 0) {
+            $obj = Lead::find($id);
+            $this->common->vid = $obj->id;
+//            $this->enquiry_id = $obj->enquiry_id ??;
+            $this->common->vname = $obj->vname;
+            $this->assignee_id = $obj->assignee_id;
+            $this->lead_id = $obj->lead_id;
+            $this->body = $obj->body;
+            $this->softwareType_id = $obj->softwareType_id;
+            $this->questions = $obj->questions;
+            $this->verified_by = $obj->verified_by;
+
+    }
+
+    }
+    #endregion
 
     public function validationAttributes()
     {
@@ -85,7 +93,7 @@ class Upsert extends Component
     #endregion
 
     #region[getSave]
-    public function getSave(): void
+    public function save()
     {
         $this->validate($this->rules());
 
@@ -94,14 +102,14 @@ class Upsert extends Component
             $lead = new Lead();
 
             $extraFields = [
-                'enquiry_id' => $this->enquiry_id,
+                'enquiry_id' => $this->enquiry_id ?: 1,
                 'body' => $this->body,
                 'lead_id' => $this->lead_id ?: 1,
-                'status_id' => $this->status_id ?: 1,
                 'assignee_id' => $this->assignee_id ?: 1,
                 'softwareType_id' => $this->softwareType_id ?: 1,
-                'user_id' => auth()->id(),
+//                'user_id' => auth()->id(),
                 'questions' => json_encode($this->questions),
+//                'status_id' => $this->status_id ?: 1,
                 'verified_by' => $this->verified_by ?: 1,
             ];
 
@@ -109,7 +117,7 @@ class Upsert extends Component
             $this->common->logEntry('lead','create',$this->common->vname.' has been created');
             $this->clearFields();
             $message = "Saved";
-
+//            $this->getBack();
         } else {
 
             $lead = Lead::find($this->common->vid);
@@ -118,11 +126,11 @@ class Upsert extends Component
                 'enquiry_id' => $this->enquiry_id,
                 'body' => $this->body,
                 'lead_id' => $this->lead_id ?: 1,
-                'status_id' => $this->status_id ?: 1,
                 'assignee_id' => $this->assignee_id ?: 1,
                 'softwareType_id' => $this->softwareType_id ?: 1,
-                'user_id' => auth()->id(),
+//                'user_id' => auth()->id(),
                 'questions' => json_encode($this->questions),
+//                'status_id' => $this->status_id ?: 1,
                 'verified_by' => $this->verified_by ?: 1,
             ];
 
@@ -132,6 +140,8 @@ class Upsert extends Component
             $message = "Updated";
         }
         $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
+//        $this->getBack();
+//        return redirect()->route('leads', ['id' => $this->enquiry_id]);
     }
     #endregion
 
@@ -144,10 +154,10 @@ class Upsert extends Component
             $this->common->vname = $obj->vname;
             $this->lead_id = $obj->lead_id;
             $this->body = $obj->body;
-            $this->assignee_id = $obj->assignee_id;
+            $this->enquiry_id = $obj->enquiry_id;
             $this->softwareType_id = $obj->softwareType_id;
             $this->softwareType_name = Common::find($obj->softwareType_id)->vname;
-            $this->status_id = $obj->status_id;
+//            $this->status_id = $obj->status_id;
             $this->questions = json_decode($obj->questions, true) ?? $this->questions;
             $this->verified_by = $obj->verified_by;
             $this->common->active_id = $obj->active_id;
@@ -165,10 +175,10 @@ class Upsert extends Component
         $this->common->active_id = '1';
         $this->lead_id = '';
         $this->body = '';
-        $this->assignee_id = '';
+        $this->enquiry_id = '';
         $this->softwareType_id = '';
         $this->softwareType_name = '';
-        $this->status_id = '';
+//        $this->status_id = '';
         $this->questions = [
             'question1' => null,
             'question2' => null,
@@ -180,6 +190,13 @@ class Upsert extends Component
         ];
         $this->verified_by = '';
 
+    }
+
+
+    #region[Route]
+    public function getRoute(): void
+    {
+        $this->redirect(route('leads'));
     }
 
     #region[softwareType]
@@ -258,12 +275,18 @@ class Upsert extends Component
     public function render()
     {
         $this->getSoftwareTypeList();
-        return view('livewire.crm.lead.index')->with([
+        return view('livewire.crm.lead.upsert')->with([
             'list' => $this->getListForm->getList(Lead::class, function ($query) {
-                return $query->where('enquiry_id', $this->enquiry_id);
+                return $query;
             })
         ]);
     }
     #endregion
 
+    public function getBack()
+    {
+        return redirect()->route('leads',$this->lead_id );
+//        return redirect()->back();
+    }
+    #endregion
 }
