@@ -16,9 +16,9 @@ class Upsert extends Component
     #region[property]
     public $body;
     public $lead_id;
-    public $assignee_id;
+//    public $assignee_id;
     public $enquiry_id;
-//    public $enquiry_data;
+    public $enquiry_data;
     public $verified_by;
 
 //    public $status_id;
@@ -61,6 +61,14 @@ class Upsert extends Component
 
         ];
     }
+
+    public function validationAttributes()
+    {
+        return [
+            'common.vname' => 'Lead',
+            'body' => 'Description',
+        ];
+    }
     #endregion
 
     #region[Mount]
@@ -69,9 +77,9 @@ class Upsert extends Component
         if ($id != 0) {
             $obj = Lead::find($id);
             $this->common->vid = $obj->id;
-//            $this->enquiry_id = $obj->enquiry_id ??;
+            $this->enquiry_id = $obj->enquiry_id;
             $this->common->vname = $obj->vname;
-            $this->assignee_id = $obj->assignee_id;
+//            $this->assignee_id = $obj->assignee_id;
             $this->lead_id = $obj->lead_id;
             $this->body = $obj->body;
             $this->softwareType_id = $obj->softwareType_id;
@@ -79,16 +87,6 @@ class Upsert extends Component
             $this->verified_by = $obj->verified_by;
 
     }
-
-    }
-    #endregion
-
-    public function validationAttributes()
-    {
-        return [
-            'common.vname' => 'Lead',
-            'body' => 'Description',
-        ];
     }
     #endregion
 
@@ -105,7 +103,7 @@ class Upsert extends Component
                 'enquiry_id' => $this->enquiry_id ?: 1,
                 'body' => $this->body,
                 'lead_id' => $this->lead_id ?: 1,
-                'assignee_id' => $this->assignee_id ?: 1,
+//                'assignee_id' => $this->assignee_id ?: 1,
                 'softwareType_id' => $this->softwareType_id ?: 1,
 //                'user_id' => auth()->id(),
                 'questions' => json_encode($this->questions),
@@ -126,7 +124,7 @@ class Upsert extends Component
                 'enquiry_id' => $this->enquiry_id,
                 'body' => $this->body,
                 'lead_id' => $this->lead_id ?: 1,
-                'assignee_id' => $this->assignee_id ?: 1,
+//                'assignee_id' => $this->assignee_id ?: 1,
                 'softwareType_id' => $this->softwareType_id ?: 1,
 //                'user_id' => auth()->id(),
                 'questions' => json_encode($this->questions),
@@ -154,7 +152,7 @@ class Upsert extends Component
             $this->common->vname = $obj->vname;
             $this->lead_id = $obj->lead_id;
             $this->body = $obj->body;
-            $this->enquiry_id = $obj->enquiry_id;
+            $this->enquiry_id = $obj->enquiry_id ?: 1;
             $this->softwareType_id = $obj->softwareType_id;
             $this->softwareType_name = Common::find($obj->softwareType_id)->vname;
 //            $this->status_id = $obj->status_id;
@@ -191,13 +189,14 @@ class Upsert extends Component
         $this->verified_by = '';
 
     }
-
+#endregion
 
     #region[Route]
     public function getRoute(): void
     {
         $this->redirect(route('leads'));
     }
+    #endregion
 
     #region[softwareType]
     public $softwareType_id = '';
@@ -283,6 +282,7 @@ class Upsert extends Component
     }
     #endregion
 
+    #region[route]
     public function getBack()
     {
         return redirect()->route('leads',$this->lead_id );

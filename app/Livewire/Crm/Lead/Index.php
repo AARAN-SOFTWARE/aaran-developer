@@ -36,191 +36,56 @@ class Index extends Component
 
     #endregion
 
+
     public function create(): void
     {
         $this->redirect(route('leads.upsert', ['0']));
     }
 
-    #region[getObj]
+
+
+    public function addAttempt()
+    {
+        $this->showAttemptModal = true;
+    }
+
     public function getObj($id)
     {
         if ($id) {
             $obj = Lead::find($id);
-            $this->common->vid = $obj->id;
-            $this->common->vname = $obj->vname;
-            $this->lead_id = $obj->lead_id;
-            $this->body = $obj->body;
-//            $this->assignee_id = $obj->assignee_id;
-            $this->softwareType_id = $obj->softwareType_id;
-            $this->softwareType_name = Common::find($obj->softwareType_id)->vname;
-            $this->status_id = $obj->status_id;
-            $this->questions = json_decode($obj->questions, true) ?? $this->questions;
-            $this->verified_by = $obj->verified_by;
-            $this->common->active_id = $obj->active_id;
-            return $obj;
+            if ($obj) {
+                $this->common->vid = $obj->id;
+                return $obj; // Return the found object, not null
+            }
         }
-        return null;
-    }
-    #endregion
-    public function addAttempt(){
-//        dd('Hi');
-        $this->showAttemptModal = true;
+        return null; // Return null if no object is found
     }
 
-    #region[Mount]
-    public function mount($id)
+
+    public function mount($id, $lead_id = null)
     {
         $this->enquiry_id = $id;
-        $this->enquiry_data = Enquiry::find($id);
+        $this->lead_id = $lead_id;
 
-//dd($this->enquiry_data);
-    }
-    #endregion
-
-//    #region[Validation]
-//    public function rules(): array
-//    {
-//        return [
-//            'common.vname' => 'required|min:3',
-//            'body' => 'required|min:5',
-//            'questions.question1' => 'nullable|string',
-//            'questions.question2' => 'nullable|string',
-//            'questions.question3' => 'nullable|string',
-//            'questions.question4' => 'nullable|string',
-//            'questions.question5' => 'nullable|string',
-//            'questions.question6' => 'nullable|string',
-//            'questions.question7' => 'nullable|string',
-//        ];
-//    }
-
-//    public function messages()
-//    {
-//        return [
-//            'common.vname.required' => ' Mention The :attribute',
-//            'body.required' => ' :attribute is required. ',
-//
-//        ];
-//    }
-
-//    public function validationAttributes()
-//    {
-//        return [
-//            'common.vname' => 'Lead',
-//            'body' => 'Description',
-//        ];
-//    }
-//    #endregion
-
-
-
-
-    #region[Clear Fields]
-//    public function clearFields(): void
-//    {
-//        $this->common->vid = '';
-//        $this->common->vname = '';
-//        $this->common->active_id = '1';
-//        $this->lead_id = '';
-//        $this->body = '';
-////        $this->assignee_id = '';
-//        $this->softwareType_id = '';
-//        $this->softwareType_name = '';
-//        $this->status_id = '';
-//        $this->questions = [
-//            'question1' => null,
-//            'question2' => null,
-//            'question3' => null,
-//            'question4' => null,
-//            'question5' => null,
-//            'question6' => null,
-//            'question7' => null,
-//        ];
-//        $this->verified_by = '';
-//
-//    }
-
-    #region[softwareType]
-    public $softwareType_id = '';
-    public $softwareType_name = '';
-    public Collection $softwareTypeCollection;
-    public $highlightSoftwareType = 0;
-    public $softwareTypeTyped = false;
-
-    public function decrementSoftwareType(): void
-    {
-        if ($this->highlightSoftwareType === 0) {
-            $this->highlightSoftwareType = count($this->softwareTypeCollection) - 1;
-            return;
+        if ($this->lead_id) {
+            $this->getObj($this->lead_id);
         }
-        $this->highlightSoftwareType--;
+
+        $this->enquiry_data = Enquiry::find($this->enquiry_id);
     }
 
-    public function incrementSoftwareType(): void
-    {
-        if ($this->highlightSoftwareType === count($this->softwareTypeCollection) - 1) {
-            $this->highlightSoftwareType = 0;
-            return;
-        }
-        $this->highlightSoftwareType++;
-    }
 
-    public function setSoftwareType($name, $id): void
-    {
-        $this->softwareType_name = $name;
-        $this->softwareType_id = $id;
-        $this->getSoftwareTypeList();
-    }
-
-    public function enterSoftwareType(): void
-    {
-        $obj = $this->softwareTypeCollection[$this->highlightSoftwareType] ?? null;
-
-        $this->softwareType_name = '';
-        $this->softwareTypeCollection = Collection::empty();
-        $this->highlightSoftwareType = 0;
-
-        $this->softwareType_name = $obj['vname'] ?? '';
-        $this->softwareType_id = $obj['id'] ?? '';
-    }
-
-    public function refreshSoftwareType($v): void
-    {
-        $this->softwareType_id = $v['id'];
-        $this->softwareType_name = $v['name'];
-        $this->softwareTypeTyped = false;
-    }
-
-    public function softwareTypeSave($name)
-    {
-        $obj = Common::create([
-            'label_id' => 26,
-            'vname' => $name,
-            'active_id' => '1'
-        ]);
-        $v = ['name' => $name, 'id' => $obj->id];
-        $this->refreshSoftwareType($v);
-    }
-
-    public function getSoftwareTypeList(): void
-    {
-        $this->softwareTypeCollection = $this->softwareType_name ?
-            Common::search(trim($this->softwareType_name))->where('label_id', '=', '26')->get() :
-            Common::where('label_id', '=', '26')->orWhere('label_id', '=', '1')->get();
-    }
-
-#endregion
 
 
     #region[Render]
     public function render()
     {
-        $this->getSoftwareTypeList();
+//        $this->getSoftwareTypeList();
         return view('livewire.crm.lead.index')->with([
-            'list' => $this->getListForm->getList(Lead::class, function ($query) {
-                return $query;
-            })
+            'list' => Lead::where('enquiry_id', $this->enquiry_id)->get(),
         ]);
     }
+
     #endregion
 
 }

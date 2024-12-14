@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->foreignId('lead_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('body');
             $table->string('softwareType_id',3)->nullable();
-            $table->foreignId('verified_by')->references('id')->on('users')->onDelete('cascade');
             $table->json('questions')->nullable();
+            $table->foreignId('verified_by')->references('id')->on('users')->onDelete('cascade');
             $table->string('active_id', 3);
             $table->timestamps();
         });
