@@ -5,15 +5,25 @@ namespace App\Livewire\Crm\Lead;
 use Aaran\Common\Models\Common;
 use Aaran\Crm\Models\Enquiry;
 use Aaran\Crm\Models\Lead;
+//use App\Livewire\Trait\CommonTraitNew;
+use App\Livewire\Forms\CommonForm;
+use App\Livewire\Forms\GetListForm;
 use App\Livewire\Trait\CommonTraitNew;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
 class Upsert extends Component
 {
-    use CommonTraitNew;
+//    use CommonTraitNew;
+
+    public CommonForm $common;
+
 
     #region[property]
+    public $vid;
+
+    public $title;
+
     public $body;
     public $lead_id;
 //    public $assignee_id;
@@ -22,6 +32,8 @@ class Upsert extends Component
     public $verified_by;
 
 //    public $status_id;
+
+    public GetListForm $getListForm;
 
     public bool $showAttemptModal = false;
 
@@ -41,7 +53,7 @@ class Upsert extends Component
     public function rules(): array
     {
         return [
-            'common.vname' => 'required|min:3',
+            'title' => 'required|min:3',
             'body' => 'required|min:5',
             'questions.question1' => 'nullable|string',
             'questions.question2' => 'nullable|string',
@@ -56,7 +68,7 @@ class Upsert extends Component
     public function messages()
     {
         return [
-            'common.vname.required' => ' Mention The :attribute',
+            'title.required' => ' Mention The :attribute',
             'body.required' => ' :attribute is required. ',
 
         ];
@@ -65,7 +77,7 @@ class Upsert extends Component
     public function validationAttributes()
     {
         return [
-            'common.vname' => 'Lead',
+            'title' => 'Lead',
             'body' => 'Description',
         ];
     }
@@ -78,7 +90,7 @@ class Upsert extends Component
             $obj = Lead::find($id);
             $this->common->vid = $obj->id;
             $this->enquiry_id = $obj->enquiry_id;
-            $this->common->vname = $obj->vname;
+            $this->title = $obj->title;
 //            $this->assignee_id = $obj->assignee_id;
             $this->lead_id = $obj->lead_id;
             $this->body = $obj->body;

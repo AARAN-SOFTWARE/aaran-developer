@@ -10,8 +10,8 @@
             <div class="w-full flex space-y-4 justify-evenly py-12">
                 <div class="space-y-5">
                     <div>
-                        <x-input.floating wire:model="common.vname" :label="'Title'"/>
-                        @error('common.vname')
+                        <x-input.floating wire:model="title" :label="'Title'"/>
+                        @error('title')
                         <div class="text-xs text-red-500">
                             {{$message}}
                         </div>

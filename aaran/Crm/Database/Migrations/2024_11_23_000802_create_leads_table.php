@@ -11,7 +11,8 @@ return new class extends Migration {
         Schema::create('leads', function (Blueprint $table) {
             $table->id();
             $table->foreignId('enquiry_id')->references('id')->on('enquiries')->onDelete('cascade');
-            $table->string('vname');
+//            $table->string('vname');
+            $table->string('title');
             $table->foreignId('lead_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('body');
             $table->string('softwareType_id',3)->nullable();

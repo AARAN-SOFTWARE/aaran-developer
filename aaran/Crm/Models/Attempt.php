@@ -9,4 +9,6 @@ class Attempt extends Model
 {
     /** @use HasFactory<\Aaran\Crm\Database\Factories\AttemptFactory> */
     use HasFactory;
+
+    protected $guarded=[];
 }

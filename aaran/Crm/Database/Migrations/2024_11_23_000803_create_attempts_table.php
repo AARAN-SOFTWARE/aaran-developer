@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('attempts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('enquiry_id')->references('id')->on('enquiries')->onDelete('cascade');
-            $table->string('vname');
+            $table->string('attempt_no');
             $table->foreignId('lead_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('body');
             $table->string('status_id',3)->nullable();

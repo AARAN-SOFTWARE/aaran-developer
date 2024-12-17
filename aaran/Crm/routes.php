@@ -18,5 +18,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('leads-attempt', App\Livewire\Crm\Lead\Attempt::class)->name('leads.attempt');
 
+    Route::get('leads-fresh/{id}', App\Livewire\Crm\Lead\Fresh::class)->name('leads.fresh');
 
 });

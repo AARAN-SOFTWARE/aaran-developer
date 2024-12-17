@@ -10,9 +10,7 @@
                     </div>
                     <x-forms.section-border class="py-2"/>
                     <div class="mt-4">
-
                         <div class="space-y-4">
-
                             <div>
                                 <x-input.floating wire:model="common.vname" :label="'Attempt No:'"/>
                                 @error('common.vname')
