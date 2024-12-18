@@ -18,7 +18,7 @@
                         @enderror
                     </div>
 
-                    <x-input.model-select wire:model="assignee_name" :label="'Lead By'">
+                    <x-input.model-select wire:model="lead_id" :label="'Lead By'">
                         <option value="">Choose...</option>
                         @foreach(\App\Models\User::all() as $user)
                             <option value="{{$user->id}}">{{$user->name}}</option>
@@ -68,7 +68,7 @@
                     <span class="text-red-400">{{$message}}</span>
                     @enderror
 
-                    <x-input.model-select wire:model="assignee_id" :label="'Verified By'">
+                    <x-input.model-select wire:model="verified_by" :label="'Verified By'">
                         <option value="">Choose...</option>
                         @foreach(\App\Models\User::all() as $user)
                             <option value="{{$user->id}}">{{$user->name}}</option>

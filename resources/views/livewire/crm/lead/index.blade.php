@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <!-- Button 2 -> Attempt-->
+
 
         <div class="flex sm:justify-center justify-between">
             <div class="self-end">

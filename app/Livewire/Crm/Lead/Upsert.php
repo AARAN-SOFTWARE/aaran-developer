@@ -5,6 +5,7 @@ namespace App\Livewire\Crm\Lead;
 use Aaran\Common\Models\Common;
 use Aaran\Crm\Models\Enquiry;
 use Aaran\Crm\Models\Lead;
+
 //use App\Livewire\Trait\CommonTraitNew;
 use App\Livewire\Forms\CommonForm;
 use App\Livewire\Forms\GetListForm;
@@ -21,20 +22,15 @@ class Upsert extends Component
 
     #region[property]
     public $vid;
-
     public $title;
-
-    public $body;
+    public $body = '';
     public $lead_id;
-//    public $assignee_id;
     public $enquiry_id;
     public $enquiry_data;
     public $verified_by;
+    public $active_id;
 
 //    public $status_id;
-
-    public GetListForm $getListForm;
-
     public bool $showAttemptModal = false;
 
     public $questions = [
@@ -88,80 +84,68 @@ class Upsert extends Component
     {
         if ($id != 0) {
             $obj = Lead::find($id);
-            $this->common->vid = $obj->id;
+            $this->vid = $obj->id;
             $this->enquiry_id = $obj->enquiry_id;
             $this->title = $obj->title;
-//            $this->assignee_id = $obj->assignee_id;
             $this->lead_id = $obj->lead_id;
             $this->body = $obj->body;
             $this->softwareType_id = $obj->softwareType_id;
             $this->questions = $obj->questions;
             $this->verified_by = $obj->verified_by;
-
-    }
+            $this->active_id = $obj->active_id;
+        }
     }
     #endregion
 
     #region[getSave]
     public function save()
     {
-        $this->validate($this->rules());
-
-        if ($this->common->vid == '') {
-
-            $lead = new Lead();
-
-            $extraFields = [
-                'enquiry_id' => $this->enquiry_id ?: 1,
-                'body' => $this->body,
+        if ($this->vid == '') {
+            $this->validate($this->rules());
+            $lead = Lead::create([
+                'enquiry_id' => $this->enquiry_id?:1,
+                'title' => $this->title,
                 'lead_id' => $this->lead_id ?: 1,
-//                'assignee_id' => $this->assignee_id ?: 1,
+                'body' => $this->body,
                 'softwareType_id' => $this->softwareType_id ?: 1,
-//                'user_id' => auth()->id(),
                 'questions' => json_encode($this->questions),
-//                'status_id' => $this->status_id ?: 1,
                 'verified_by' => $this->verified_by ?: 1,
-            ];
-
-            $this->common->save($lead, $extraFields);
-            $this->common->logEntry('lead','create',$this->common->vname.' has been created');
-            $this->clearFields();
+                'active_id' => 1
+            ]);
             $message = "Saved";
-//            $this->getBack();
+//            $this->getRoute();
+            return redirect()->route('leads.fresh', ['id' => $lead->enquiry_id]);
         } else {
 
-            $lead = Lead::find($this->common->vid);
-
-            $extraFields = [
-                'enquiry_id' => $this->enquiry_id,
-                'body' => $this->body,
-                'lead_id' => $this->lead_id ?: 1,
-//                'assignee_id' => $this->assignee_id ?: 1,
-                'softwareType_id' => $this->softwareType_id ?: 1,
-//                'user_id' => auth()->id(),
-                'questions' => json_encode($this->questions),
-//                'status_id' => $this->status_id ?: 1,
-                'verified_by' => $this->verified_by ?: 1,
-            ];
-
-            $this->common->edit($lead, $extraFields);
-            $this->common->logEntry('lead','update',$this->common->vname.' has been updated');
+            $obj = Lead::find($this->vid);
+            $obj->enquiry_id = $this->enquiry_id;
+            $obj->title = $this->title;
+            $obj->lead_id = $this->lead_id;
+            $obj->body = $this->body;
+            $obj->softwareType_id = $this->softwareType_id;
+            $obj->questions = json_encode($this->questions);
+            $obj->verified_by = $this->verified_by ?: 1;
+            $obj->save();
             $this->clearFields();
             $message = "Updated";
+
         }
         $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
 //        $this->getBack();
 //        return redirect()->route('leads', ['id' => $this->enquiry_id]);
+        return redirect()->route('leads.fresh', ['id' => $obj->enquiry_id]);
+
+
     }
     #endregion
 
-    #region[getObj]
+//    #region[getObj]
     public function getObj($id)
     {
         if ($id) {
             $obj = Lead::find($id);
-            $this->common->vid = $obj->id;
-            $this->common->vname = $obj->vname;
+            $this->vid = $obj->id;
+            $this->title = $obj->title;
             $this->lead_id = $obj->lead_id;
             $this->body = $obj->body;
             $this->enquiry_id = $obj->enquiry_id ?: 1;
@@ -170,7 +154,7 @@ class Upsert extends Component
 //            $this->status_id = $obj->status_id;
             $this->questions = json_decode($obj->questions, true) ?? $this->questions;
             $this->verified_by = $obj->verified_by;
-            $this->common->active_id = $obj->active_id;
+            $this->active_id = $obj->active_id;
             return $obj;
         }
         return null;
@@ -202,14 +186,6 @@ class Upsert extends Component
 
     }
 #endregion
-
-    #region[Route]
-    public function getRoute(): void
-    {
-        $this->redirect(route('leads'));
-    }
-    #endregion
-
     #region[softwareType]
     public $softwareType_id = '';
     public $softwareType_name = '';
@@ -286,19 +262,23 @@ class Upsert extends Component
     public function render()
     {
         $this->getSoftwareTypeList();
-        return view('livewire.crm.lead.upsert')->with([
-            'list' => $this->getListForm->getList(Lead::class, function ($query) {
-                return $query;
-            })
-        ]);
+        return view('livewire.crm.lead.upsert');
+    }
+    #endregion
+
+    #region[Route]
+    public function getRoute(): void
+    {
+        $this->redirect(route('leads'));
     }
     #endregion
 
     #region[route]
     public function getBack()
     {
-        return redirect()->route('leads',$this->lead_id );
-//        return redirect()->back();
+        return redirect()->route('leads.fresh', [$this->enquiry_id]);
     }
     #endregion
+
+
 }

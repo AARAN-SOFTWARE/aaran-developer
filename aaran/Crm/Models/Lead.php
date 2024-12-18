@@ -37,7 +37,7 @@ class Lead extends Model
         return $this->belongsTo(User::class, 'lead_id');
     }
 
-    public function verifiedBy(): BelongsTo
+    public function verified(): BelongsTo
     {
         return $this->belongsTo(User::class, 'verified_by');
     }
