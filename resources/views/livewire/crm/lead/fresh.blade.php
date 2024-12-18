@@ -249,7 +249,116 @@
             </x-slot:table_body>
 
         </x-table.form>
-        <!--Add Attempt Modal-->
+
+        <!--Add Info Modal-------------------------------------------------------------------------------------------------->
+        <form wire:submit.prevent="saveAddInfo">
+            <div class="w-full h-auto">
+                <x-jet.modal :maxWidth="'6xl'" wire:model.defer="showAddInfoEditModal">
+
+                    <div class="sm:px-6 px-2 pt-4">
+                        <div class="text-lg">
+                            Attempt Entry
+                        </div>
+                        <x-forms.section-border class="py-2"/>
+                        <div class="mt-4">
+
+                            <div>
+                                <x-input.floating wire:model="attempt_no" :label="'Attempt No'"/>
+                                @error('attempt_no')
+                                <div class="text-xs text-red-500">
+                                    {{$message}}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <x-input.model-select wire:model="lead_id" :label="'Lead By'">
+                                    <option value="">Choose...</option>
+                                    @foreach(\App\Models\User::all() as $user)
+                                        <option value="{{$user->id}}">{{$user->name}}</option>
+                                    @endforeach
+                                </x-input.model-select>
+                            </div>
+
+                            <div class="mt-3">
+                                <x-input.rich-text :placeholder="'Description'" wire:model="a_body"/>
+                                @error('body')
+                                <div class="text-xs text-red-500">
+                                    {{$message}}
+                                </div>
+                                @enderror
+                            </div>
+
+                            <div class="mt-3">
+                                <x-input.model-select wire:model="status_id" :label="'Status'">
+                                    <option value="">Choose...</option>
+                                    @foreach(App\Enums\Status::cases() as $status)
+                                        <option value="{{$status->value}}">{{$status->getName()}}</option>
+                                    @endforeach
+                                </x-input.model-select>
+                            </div>
+
+                            <div class="mt-3">
+                                <x-input.model-select wire:model="verified_by" :label="'Verified By'">
+                                    <option value="">Choose...</option>
+                                    @foreach(\App\Models\User::all() as $user)
+                                        <option value="{{$user->id}}">{{$user->name}}</option>
+                                    @endforeach
+                                </x-input.model-select>
+                            </div>
+
+
+                            <div class="mb-1">&nbsp;</div>
+                        </div>
+
+                        <div class="sm:px-6 px-3 py-3 bg-gray-100 text-right">
+                            <div class="w-full flex justify-between gap-3">
+                                <div class="py-2">
+                                    <label for="common.active_id"
+                                           class="inline-flex relative items-center cursor-pointer">
+                                        <input type="checkbox" id="active_id" class="sr-only peer"
+                                               wire:model="active_id">
+                                        <div
+                                            class="w-10 h-5 bg-gray-200 rounded-full peer peer-focus:ring-2
+                                        peer-focus:ring-blue-300
+                                         peer-checked:after:translate-x-full peer-checked:after:border-white
+                                         after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300
+                                         after:border after:rounded-full after:h-4 after:w-4 after:transition-all
+                                         peer-checked:bg-blue-600"></div>
+                                        <span class="ml-3 sm:text-sm text-xs font-medium text-gray-900">Active</span>
+                                    </label>
+                                </div>
+                                <div class="flex gap-3">
+
+                                    <x-button.cancel-x wire:click.prevent="$set('showAttemptEditModal', false)"/>
+                                    <x-button.save-x wire:click.prevent="saveAttempt"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </x-jet.modal>
+            </div>
+        </form>
+{{--        <!--End Region for Add Attempt Modal-->--}}
+{{--        --}}{{--        delete modaal of Atempt.    --}}
+{{--        <x-modal.confirmation wire:model.defer="showDeleteModal">--}}
+{{--            <x-slot name="title">Delete Entry</x-slot>--}}
+{{--            <x-slot name="content">--}}
+{{--                <div class="py-8 text-cool-gray-700 ">Are you sure you? This action is irreversible.</div>--}}
+{{--            </x-slot>--}}
+{{--            <x-slot name="footer">--}}
+{{--                <div class=" flex gap-5 justify-end">--}}
+
+{{--                    <x-button.cancel-x wire:click.prevent="$set('showDeleteModal', false)"/>--}}
+{{--                    <x-button.danger-x wire:click.prevent="trashDataAttempt($id)"/>--}}
+{{--                </div>--}}
+{{--            </x-slot>--}}
+{{--        </x-modal.confirmation>--}}
+
+
+
+        <!--Add Attempt Modal-------------------------------------------------------------------------------------------------->
         <form wire:submit.prevent="saveAttempt">
             <div class="w-full h-auto">
                 <x-jet.modal wire:model.defer="showAttemptEditModal">
@@ -348,16 +457,6 @@
             </x-slot>
             <x-slot name="footer">
                 <div class=" flex gap-5 justify-end">
-
-                    {{--            <button wire:click.prevent="$set('showDeleteModal', false)"--}}
-                    {{--               class='max-w-max bg-gradient-to-r from-slate-600 to-slate-500 hover:from-slate-500 hover:to-slate-600 focus:ring-2 focus:ring-offset-2--}}
-                    {{--                focus:ring-slate-600 text-white sm:px-4 sm:py-2 px-2 py-1 text-[12px] inline-flex items-center gap-x-2 rounded-md tracking-widest font-semibold--}}
-                    {{--                transition-all linear duration-400 '>--}}
-                    {{--                <x-icons.icon :icon="'chevrons-left'" class="sm:h-5 h-3 w-auto"/>--}}
-                    {{--                <span>CANCEL</span>--}}
-                    {{--            </button>--}}
-
-                    {{--            <x-button.danger wire:click.prevent="trashData">Delete</x-button.danger>--}}
 
                     <x-button.cancel-x wire:click.prevent="$set('showDeleteModal', false)"/>
                     <x-button.danger-x wire:click.prevent="trashDataAttempt($id)"/>

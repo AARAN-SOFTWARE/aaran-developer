@@ -15,7 +15,7 @@ class Fresh extends Component
 
     public $lead_id;
 
-    public $a_body;
+    public $body;
 
     public mixed $status_id;
 
@@ -59,7 +59,7 @@ class Fresh extends Component
                     'enquiry_id' => $this->enquiry_id,
                     'attempt_no' => $this->attempt_no,
                     'lead_id' => $this->lead_id,
-                    'body' => $this->a_body,
+                    'body' => $this->body,
                     'status_id' => $this->status_id,
                     'verified_by' => $this->verified_by,
 //                    'active_id'=>1,
@@ -71,7 +71,7 @@ class Fresh extends Component
                 $obj->enquiry_id = $this->enquiry_id;
                 $obj->attempt_no = $this->attempt_no;
                 $obj->lead_id = $this->lead_id;
-                $obj->body = $this->a_body;
+                $obj->body = $this->body;
                 $obj->status_id = $this->status_id;
                 $obj->verified_by = $this->verified_by;
 //                $obj->active_id = $this->active_id;
@@ -164,26 +164,163 @@ class Fresh extends Component
 
     ///////-- Add Information Place--/////////
     public $vid;
+
+    public $a_enquiry_id;
+
+    public $a_title;
+
+    public $a_lead_id;
+
+    public $a_body;
+
+    public $a_status_id;
+
+    public $a_active_id;
+
+    public $a_softwareType_id;
+
+    public $a_verified_by;
+
+    public $a_questions = [
+        'question1' => null,
+        'question2' => null,
+        'question3' => null,
+        'question4' => null,
+        'question5' => null,
+        'question6' => null,
+        'question7' => null,
+    ];
+
+    public $showAddInfoEditModal = false;
     public $showDeleteModalAddInfo = false; // Controls the modal visibility
     public $deleteId = null; // Stores the ID of the record to delete
 
+    ###########  Start ###############
+
+    #region[Create-AddInfo]
     public function createAddInfo(): void
     {
-        $this->redirect(route('leads.upsert', [0]));
+        $this->clearFieldsAddInfo();
+        $this->showAddInfoEditModal = true;
+    }
+    #endregion
+
+    #region[Save-AddInfo]
+    public function getSaveAddInfo(): string
+    {
+        if ($this->title != '') {
+
+            if ($this->vid == "") {
+                Lead::create([
+                    'enquiry_id' => $this->a_enquiry_id,
+                    'title' => $this->a_title,
+                    'lead_id' => $this->a_lead_id,
+                    'body' => $this->a_body,
+                    'softwareType_id' => $this->a_softwareType_id,
+                    'questions' => $this->a_questions,
+                    'verified_by' => $this->a_verified_by,
+                    'active_id'=>1,
+                ]);
+                $message = "Saved";
+
+            } else {
+                $obj = Lead::find($this->vid);
+                $obj->enquiry_id = $this->a_enquiry_id;
+                $obj->title = $this->a_title;
+                $obj->lead_id = $this->a_lead_id;
+                $obj->body = $this->a_body;
+                $obj->softwareType_id = $this->a_softwareType_id;
+                $obj->questions = $this->a_questions ;
+                $obj->verified_by = $this->a_verified_by;
+                $obj->active_id = $this->a_active_id;
+                $obj->save();
+                $message = "Updated";
+            }
+//            $this->desc = '';
+            $this->dispatch('notify', ...['type' => 'success', 'content' => $message . ' Successfully']);
+        }
+//        $this->clearFields();
+        return '';
     }
 
+    public function saveAddInfo(): void
+    {
+        $message = $this->getSaveAddInfo();
+        session()->flash('success', '"' . $this->a_title . '"  has been' . $message . ' .');
+        $this->clearFieldsAddInfo();
+        $this->showAddInfoEditModal = false;
+    }
 
+    #endregion
+
+    public function editAddInfo($id): void
+    {
+        $this->clearFieldsAddInfo();
+        $this->getObjAddInfo($id);
+        $this->showAddInfoEditModal = true;
+    }
+
+    #region[obj AddInfo]
     public function getObjAddInfo($id)
     {
         if ($id) {
             $obj = Lead::find($id);
-            if ($obj) {
             $this->vid = $obj->id;
+            $this->a_enquiry_id = $obj->enquiry_id;
+            $this->a_title = $obj->title;
+            $this->a_lead_id = $obj->lead_id;
+            $this->a_body = $obj->body;
+            $this->a_softwareType_id = $obj->softwareType_id;
+            $this->a_questions = $obj->questions;
+            $this->a_verified_by = $obj->verified_by;
+            $this->a_active_id = $obj->active_id;
             return $obj;
-            }
         }
         return null;
     }
+    #endregion
+
+    #region[Attempt]
+    public function clearFieldsAddInfo(): void
+    {
+        $this->vid = '';
+        $this->a_title = '';
+        $this->a_active_id = 1;
+    }
+
+//    public function getDeleteAddInfo($id): void
+//    {
+//        if ($id) {
+//            $this->clearFieldsAddInfo();
+//            $this->getObjAddInfo($id);
+//            $this->showDeleteModalAddInfo = true;
+//        }
+//    }
+
+//    public function trashDataAddInfo($id): void
+//    {
+//        if ($this->aid) {
+//            $obj = $this->getObjAddInfo($this->aid);
+//            $obj->delete();
+//            $this->showDeleteModalAddInfo = false;
+//            $this->clearFieldsAddInfo();
+//        }
+//    }
+
+    #endregion
+
+
+//    public function getObjAddInfo($id)
+//    {
+//        if ($id) {
+//            $obj = Lead::find($id);
+//            if ($obj) {
+//            $this->vid = $obj->id;
+//            return $obj;
+//            }
+//        }
+//        return null;
+//    }
 
     #region[ Delete-AddInfo]
     public function getDeleteAddInfo($id): void
