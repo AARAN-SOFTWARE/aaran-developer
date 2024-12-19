@@ -38,10 +38,10 @@
 {{--                            </span>--}}
 {{--                        </x-table.cell-text>--}}
 
-                        <x-table.cell-text><a href="{{route('leads',[$row->id])}}">{{$row->contact_person}}</a>
+                        <x-table.cell-text><a href="{{route('leads.fresh', $row->id)}}">{{$row->contact_person}}</a>
                         </x-table.cell-text>
 
-                        <x-table.cell-text><a href="{{route('leads',[$row->id])}}">{{$row->vname}}</a>
+                        <x-table.cell-text><a href="">{{$row->vname}}</a>
                         </x-table.cell-text>
                         {{----}}
 
