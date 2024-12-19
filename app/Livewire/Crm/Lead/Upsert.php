@@ -34,13 +34,13 @@ class Upsert extends Component
     public bool $showAttemptModal = false;
 
     public $questions = [
-        'question1' => null,
-        'question2' => null,
-        'question3' => null,
-        'question4' => null,
-        'question5' => null,
-        'question6' => null,
-        'question7' => null,
+        'question1' => '',
+        'question2' => '',
+        'question3' => '',
+        'question4' => '',
+        'question5' => '',
+        'question6' => '',
+        'question7' => '',
     ];
 
     #endregion

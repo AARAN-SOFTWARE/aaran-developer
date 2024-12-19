@@ -6,6 +6,8 @@ use Aaran\Crm\Models\Attempt;
 use Aaran\Crm\Models\Enquiry;
 use Aaran\Crm\Models\Lead;
 use Livewire\Component;
+use Aaran\Common\Models\Common;
+use Illuminate\Database\Eloquent\Collection;
 
 class Fresh extends Component
 {
@@ -36,6 +38,8 @@ class Fresh extends Component
         // Validate enquiry_id
         $this->enquiry_id = $id;
         $this->enquiry_data = Enquiry::find($this->enquiry_id);
+        // $this->e_enquiry_id = $id;
+        // $this->a_enquiry_data = Enquiry::find($this->a_enquiry_id);
 
     }
     #endregion
@@ -111,7 +115,7 @@ class Fresh extends Component
             $this->enquiry_id = $obj->enquiry_id;
             $this->attempt_no = $obj->attempt_no;
             $this->lead_id = $obj->lead_id;
-            $this->a_body = $obj->body;
+            $this->body = $obj->body;
             $this->status_id = $obj->status_id;
             $this->verified_by = $obj->verified_by;
             return $obj;
@@ -156,7 +160,8 @@ class Fresh extends Component
         return view('livewire.crm.lead.fresh')->with(
             [
                 'list' => Attempt::all(),
-                'leadList' => Lead::where('enquiry_id', $this->enquiry_id)->get(),
+                // 'leadList' => Lead::where('enquiry_id', $this->enquiry_id)->get(),
+                'leadList' => Lead::all(),
             ]);
     }
 
@@ -177,18 +182,18 @@ class Fresh extends Component
 
     public $a_active_id;
 
-    public $a_softwareType_id;
+    // public $softwareType_id;
 
     public $a_verified_by;
 
-    public $a_questions = [
+    public $questions = [
         'question1' => null,
-        'question2' => null,
-        'question3' => null,
-        'question4' => null,
-        'question5' => null,
-        'question6' => null,
-        'question7' => null,
+        'question2' => '',
+        'question3' => '',
+        'question4' => '',
+        'question5' => '',
+        'question6' => '',
+        'question7' => '',
     ];
 
     public $showAddInfoEditModal = false;
@@ -208,16 +213,16 @@ class Fresh extends Component
     #region[Save-AddInfo]
     public function getSaveAddInfo(): string
     {
-        if ($this->title != '') {
+        if ($this->a_title != '') {
 
             if ($this->vid == "") {
                 Lead::create([
-                    'enquiry_id' => $this->a_enquiry_id,
+                    'enquiry_id' => $this->enquiry_id,
                     'title' => $this->a_title,
                     'lead_id' => $this->a_lead_id,
                     'body' => $this->a_body,
-                    'softwareType_id' => $this->a_softwareType_id,
-                    'questions' => $this->a_questions,
+                    'softwareType_id' => $this->softwareType_id,
+                    'questions' => json_encode($this->questions),
                     'verified_by' => $this->a_verified_by,
                     'active_id'=>1,
                 ]);
@@ -225,12 +230,12 @@ class Fresh extends Component
 
             } else {
                 $obj = Lead::find($this->vid);
-                $obj->enquiry_id = $this->a_enquiry_id;
+                $obj->enquiry_id = $this->enquiry_id;
                 $obj->title = $this->a_title;
                 $obj->lead_id = $this->a_lead_id;
                 $obj->body = $this->a_body;
-                $obj->softwareType_id = $this->a_softwareType_id;
-                $obj->questions = $this->a_questions ;
+                $obj->softwareType_id = $this->softwareType_id;
+                $obj->questions = json_encode($this->questions);
                 $obj->verified_by = $this->a_verified_by;
                 $obj->active_id = $this->a_active_id;
                 $obj->save();
@@ -266,12 +271,12 @@ class Fresh extends Component
         if ($id) {
             $obj = Lead::find($id);
             $this->vid = $obj->id;
-            $this->a_enquiry_id = $obj->enquiry_id;
+            $this->enquiry_id = $obj->enquiry_id;
             $this->a_title = $obj->title;
             $this->a_lead_id = $obj->lead_id;
             $this->a_body = $obj->body;
-            $this->a_softwareType_id = $obj->softwareType_id;
-            $this->a_questions = $obj->questions;
+            $this->softwareType_id = $obj->softwareType_id;
+            $this->questions = $obj->questions;
             $this->a_verified_by = $obj->verified_by;
             $this->a_active_id = $obj->active_id;
             return $obj;
@@ -280,47 +285,13 @@ class Fresh extends Component
     }
     #endregion
 
-    #region[Attempt]
+    #region[Add Info]
     public function clearFieldsAddInfo(): void
     {
         $this->vid = '';
         $this->a_title = '';
         $this->a_active_id = 1;
     }
-
-//    public function getDeleteAddInfo($id): void
-//    {
-//        if ($id) {
-//            $this->clearFieldsAddInfo();
-//            $this->getObjAddInfo($id);
-//            $this->showDeleteModalAddInfo = true;
-//        }
-//    }
-
-//    public function trashDataAddInfo($id): void
-//    {
-//        if ($this->aid) {
-//            $obj = $this->getObjAddInfo($this->aid);
-//            $obj->delete();
-//            $this->showDeleteModalAddInfo = false;
-//            $this->clearFieldsAddInfo();
-//        }
-//    }
-
-    #endregion
-
-
-//    public function getObjAddInfo($id)
-//    {
-//        if ($id) {
-//            $obj = Lead::find($id);
-//            if ($obj) {
-//            $this->vid = $obj->id;
-//            return $obj;
-//            }
-//        }
-//        return null;
-//    }
 
     #region[ Delete-AddInfo]
     public function getDeleteAddInfo($id): void
@@ -341,6 +312,77 @@ class Fresh extends Component
         $this->reset(['showDeleteModalAddInfo', 'deleteId']); // Close the modal and reset
     }
     #endregion
+
+    #region[softwareType]
+    public $softwareType_id = '';
+    public $softwareType_name = '';
+    public Collection $softwareTypeCollection;
+    public $highlightSoftwareType = 0;
+    public $softwareTypeTyped = false;
+
+    public function decrementSoftwareType(): void
+    {
+        if ($this->highlightSoftwareType === 0) {
+            $this->highlightSoftwareType = count($this->softwareTypeCollection) - 1;
+            return;
+        }
+        $this->highlightSoftwareType--;
+    }
+
+    public function incrementSoftwareType(): void
+    {
+        if ($this->highlightSoftwareType === count($this->softwareTypeCollection) - 1) {
+            $this->highlightSoftwareType = 0;
+            return;
+        }
+        $this->highlightSoftwareType++;
+    }
+
+    public function setSoftwareType($name, $id): void
+    {
+        $this->softwareType_name = $name;
+        $this->softwareType_id = $id;
+        $this->getSoftwareTypeList();
+    }
+
+    public function enterSoftwareType(): void
+    {
+        $obj = $this->softwareTypeCollection[$this->highlightSoftwareType] ?? null;
+
+        $this->softwareType_name = '';
+        $this->softwareTypeCollection = Collection::empty();
+        $this->highlightSoftwareType = 0;
+
+        $this->softwareType_name = $obj['vname'] ?? '';
+        $this->softwareType_id = $obj['id'] ?? '';
+    }
+
+    public function refreshSoftwareType($v): void
+    {
+        $this->softwareType_id = $v['id'];
+        $this->softwareType_name = $v['name'];
+        $this->softwareTypeTyped = false;
+    }
+
+    public function softwareTypeSave($name)
+    {
+        $obj = Common::create([
+            'label_id' => 26,
+            'vname' => $name,
+            'active_id' => '1'
+        ]);
+        $v = ['name' => $name, 'id' => $obj->id];
+        $this->refreshSoftwareType($v);
+    }
+
+    public function getSoftwareTypeList(): void
+    {
+        $this->softwareTypeCollection = $this->softwareType_name ?
+            Common::search(trim($this->softwareType_name))->where('label_id', '=', '26')->get() :
+            Common::where('label_id', '=', '26')->orWhere('label_id', '=', '1')->get();
+    }
+
+#endregion
 
 
 
