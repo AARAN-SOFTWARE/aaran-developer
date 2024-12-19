@@ -129,6 +129,10 @@ class Fresh extends Component
     {
         $this->aid = '';
         $this->attempt_no = '';
+        $this->lead_id = '';
+        $this->body = '';
+        $this->status_id = '';
+        $this->verified_by = '';
         $this->active_id = 1;
     }
 
@@ -153,19 +157,7 @@ class Fresh extends Component
 
     #endregion
 
-    #region[Render]
-    public function render()
-    {
-//        $this->getSoftwareTypeList();
-        return view('livewire.crm.lead.fresh')->with(
-            [
-                'list' => Attempt::all(),
-                // 'leadList' => Lead::where('enquiry_id', $this->enquiry_id)->get(),
-                'leadList' => Lead::all(),
-            ]);
-    }
 
-    #endregion
 
     ///////-- Add Information Place--/////////
     public $vid;
@@ -276,7 +268,8 @@ class Fresh extends Component
             $this->a_lead_id = $obj->lead_id;
             $this->a_body = $obj->body;
             $this->softwareType_id = $obj->softwareType_id;
-            $this->questions = $obj->questions;
+            $this->softwareType_name = Common::find($obj->softwareType_id)->vname;
+            $this->questions = json_decode($obj->questions, true);
             $this->a_verified_by = $obj->verified_by;
             $this->a_active_id = $obj->active_id;
             return $obj;
@@ -290,6 +283,12 @@ class Fresh extends Component
     {
         $this->vid = '';
         $this->a_title = '';
+        $this->a_lead_id = '';
+        $this->a_body = '';
+        $this->softwareType_id = '';
+        $this->softwareType_name = '';
+        $this->questions = [];
+        $this->a_verified_by = '';
         $this->a_active_id = 1;
     }
 
@@ -384,8 +383,19 @@ class Fresh extends Component
 
 #endregion
 
+    #region[Render]
+    public function render()
+    {
+        $this->getSoftwareTypeList();
+        return view('livewire.crm.lead.fresh')->with(
+            [
+//                'list' => Attempt::all(),
+                'list' => Attempt::where('enquiry_id', $this->enquiry_id)->get(),
+                 'leadList' => Lead::where('enquiry_id', $this->enquiry_id)->get(),
+//                'leadList' => Lead::all(),
+            ]);
+    }
 
-
-
+    #endregion
 
 }

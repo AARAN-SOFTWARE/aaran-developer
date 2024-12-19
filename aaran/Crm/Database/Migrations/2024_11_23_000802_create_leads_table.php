@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('title');
             $table->foreignId('lead_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('body')->nullable();
-            $table->string('softwareType_id',3)->nullable();
+            $table->string('softwareType_id')->references('id')->on('commons')->onDelete('cascade');
             $table->json('questions')->nullable();
             $table->foreignId('verified_by')->references('id')->on('users')->onDelete('cascade');
             $table->string('active_id', 3);

@@ -108,9 +108,9 @@
                         <x-table.cell-text>{{$index+1}}</x-table.cell-text>
 
 
-                    <x-table.cell-text>
-                        <a href="{{route('followups', $rw->id)}}">{{$rw->title}}</a>
-                    </x-table.cell-text>
+                        <x-table.cell-text>
+                            <a href="{{route('followups', $rw->id)}}">{{$rw->title}}</a>
+                        </x-table.cell-text>
 
                         {{-- <x-table.cell-text>
                             {{$rw->title}}
@@ -128,7 +128,7 @@
 
 
                         <x-table.cell-text>
-                            {{$rw->softwareType_name}}
+                            {{$rw->softwareType->vname}}
                         </x-table.cell-text>
 
                         <x-table.cell-text>
@@ -142,9 +142,9 @@
 
                         <td>
                             <div class="flex items-center self-center justify-center gap-2 px-1 sm:gap-4">
-                                <a href="{{route('leads.upsert',[$rw->id])}}" class="pt-1">
-                                    <x-button.edit/>
-                                </a>
+{{--                                <a href="{{route('leads.upsert',[$rw->id])}}" class="pt-1">--}}
+                                    <x-button.edit wire:click="editAddInfo({{$rw->id}})" />
+{{--                                </a>--}}
                                 <x-button.delete wire:click="getDeleteAddInfo({{$rw->id}})"/>
 
                             </div>
@@ -163,15 +163,15 @@
             <x-slot name="footer">
                 <div class="flex justify-end gap-5 ">
 
-{{--                                <button wire:click.prevent="$set('showDeleteModal', false)"--}}
-{{--                                   class='max-w-max bg-gradient-to-r from-slate-600 to-slate-500 hover:from-slate-500 hover:to-slate-600 focus:ring-2 focus:ring-offset-2--}}
-{{--                                    focus:ring-slate-600 text-white sm:px-4 sm:py-2 px-2 py-1 text-[12px] inline-flex items-center gap-x-2 rounded-md tracking-widest font-semibold--}}
-{{--                                    transition-all linear duration-400 '>--}}
-{{--                                    <x-icons.icon :icon="'chevrons-left'" class="w-auto h-3 sm:h-5"/>--}}
-{{--                                    <span>CANCEL</span>--}}
-{{--                                </button>--}}
+                    {{--                                <button wire:click.prevent="$set('showDeleteModal', false)"--}}
+                    {{--                                   class='max-w-max bg-gradient-to-r from-slate-600 to-slate-500 hover:from-slate-500 hover:to-slate-600 focus:ring-2 focus:ring-offset-2--}}
+                    {{--                                    focus:ring-slate-600 text-white sm:px-4 sm:py-2 px-2 py-1 text-[12px] inline-flex items-center gap-x-2 rounded-md tracking-widest font-semibold--}}
+                    {{--                                    transition-all linear duration-400 '>--}}
+                    {{--                                    <x-icons.icon :icon="'chevrons-left'" class="w-auto h-3 sm:h-5"/>--}}
+                    {{--                                    <span>CANCEL</span>--}}
+                    {{--                                </button>--}}
 
-{{--                                <x-button.danger wire:click.prevent="trashData">Delete</x-button.danger>--}}
+                    {{--                                <x-button.danger wire:click.prevent="trashData">Delete</x-button.danger>--}}
 
                     <x-button.cancel-x wire:click.prevent="$set('showDeleteModalAddInfo', false)"/>
                     <x-button.danger-x wire:click.prevent="trashDataAddInfo($id)"/>
@@ -180,7 +180,6 @@
         </x-modal.confirmation>
 
         <!-- Create  -------------------------------------------------------------------------------------------------->
-
 
 
         <!--Table For Add Attempt-->
@@ -256,153 +255,173 @@
                             Additional Information Entry
                         </div>
                         <x-forms.section-border class="py-2"/>
-                        <div class="mt-4">
+                        <div class="p-16 flex justify-between gap-x-5">
 
-                            <div>
-                                <x-input.floating wire:model="a_title" :label="'Title'"/>
-                                @error('a_title')
-                                <div class="text-xs text-red-500">
-                                    {{$message}}
+                            <div class="space-y-5 py-5 flex flex-col justify-between">
+                                <div>
+                                    <x-input.floating wire:model="a_title" :label="'Title'"/>
+                                    @error('a_title')
+                                    <div class="text-xs text-red-500">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
                                 </div>
+
+                                <div>
+                                    <x-input.model-select wire:model="a_lead_id" :label="'Lead By'">
+                                        <option value="">Choose...</option>
+                                        @foreach(\App\Models\User::all() as $user)
+                                            <option value="{{$user->id}}">{{$user->name}}</option>
+                                        @endforeach
+                                    </x-input.model-select>
+                                </div>
+
+                                <div class="mt-3">
+                                    <x-input.rich-text :placeholder="'Description'" wire:model="a_body"/>
+                                    @error('a_body')
+                                    <div class="text-xs text-red-500">
+                                        {{$message}}
+                                    </div>
+                                    @enderror
+                                </div>
+
+                                <x-dropdown.wrapper label="Software Type" type="softwareType">
+                                    <div class="relative">
+                                        <x-dropdown.input label="Software Type" id="softwareType_name"
+                                                          wire:model.live="softwareType_name"
+                                                          wire:keydown.arrow-up="decrementSoftwareType"
+                                                          wire:keydown.arrow-down="incrementSoftwareType"
+                                                          wire:keydown.enter="enterSoftwareType"/>
+                                        <x-dropdown.select>
+                                            @if($softwareTypeCollection)
+                                                @forelse ($softwareTypeCollection as $i => $softwareType)
+                                                    <x-dropdown.option highlight="{{$highlightSoftwareType === $i}}"
+                                                                       wire:click.prevent="setSoftwareType('{{$softwareType->vname}}','{{$softwareType->id}}')">
+                                                        {{ $softwareType->vname }}
+                                                    </x-dropdown.option>
+                                                @empty
+                                                    <x-dropdown.create
+                                                        wire:click.prevent="softwareTypeSave('{{$softwareType_name}}')"
+                                                        label="Software Type"/>
+                                                @endforelse
+                                            @endif
+                                        </x-dropdown.select>
+                                    </div>
+                                </x-dropdown.wrapper>
+                                @error('software_type_name')
+                                <span class="text-red-400">{{$message}}</span>
                                 @enderror
-                            </div>
-
-                            <div>
-                                <x-input.model-select wire:model="a_lead_id" :label="'Lead By'">
-                                    <option value="">Choose...</option>
-                                    @foreach(\App\Models\User::all() as $user)
-                                        <option value="{{$user->id}}">{{$user->name}}</option>
-                                    @endforeach
-                                </x-input.model-select>
-                            </div>
-
-                            <div class="mt-3">
-                                <x-input.rich-text :placeholder="'Description'" wire:model="a_body"/>
-                                @error('a_body')
-                                <div class="text-xs text-red-500">
-                                    {{$message}}
+                                <div class="">
+                                    <x-input.model-select wire:model="a_verified_by" :label="'Verified By'">
+                                        <option value="">Choose...</option>
+                                        @foreach(\App\Models\User::all() as $user)
+                                            <option value="{{$user->id}}">{{$user->name}}</option>
+                                        @endforeach
+                                    </x-input.model-select>
                                 </div>
-                                @enderror
                             </div>
 
-                            <x-dropdown.wrapper label="Software Type" type="softwareType">
-                                <div class="relative">
-                                    <x-dropdown.input label="Software Type" id="softwareType_name"
-                                                      wire:model.live="softwareType_name"
-                                                      wire:keydown.arrow-up="decrementSoftwareType"
-                                                      wire:keydown.arrow-down="incrementSoftwareType"
-                                                      wire:keydown.enter="enterSoftwareType"/>
-                                    <x-dropdown.select>
-                                        @if($softwareTypeCollection)
-                                            @forelse ($softwareTypeCollection as $i => $softwareType)
-                                                <x-dropdown.option highlight="{{$highlightSoftwareType === $i}}"
-                                                                   wire:click.prevent="setSoftwareType('{{$softwareType->vname}}','{{$softwareType->id}}')">
-                                                    {{ $softwareType->vname }}
-                                                </x-dropdown.option>
-                                            @empty
-                                                <x-dropdown.create
-                                                    wire:click.prevent="softwareTypeSave('{{$softwareType_name}}')"
-                                                    label="Software Type"/>
-                                            @endforelse
-                                        @endif
-                                    </x-dropdown.select>
+                            <!-- Questions Section -->
+                            <div class="space-y-5 py-5">
+                                <div class="p-4 space-y-4 border rounded-lg">
+                                    <label class="block text-lg font-semibold">Questions</label>
+
+                                    <!-- Question 1 -->
+                                    <div>
+                                        <label for="question1" class="block text-sm font-medium">1. How are you
+                                            currently
+                                            managing your
+                                            billing process?</label>
+                                        <input type="text" id="question1" wire:model="questions.question1"
+                                               class="w-full form-input">
+                                        @error('questions.question1')
+                                        <span class="text-xs text-red-500">{{$message}}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Question 2 -->
+                                    <div>
+                                        <label for="question2" class="block text-sm font-medium">2. Are you using any
+                                            software for
+                                            billing, or it is managed manually?</label>
+                                        <input type="text" id="question2" wire:model="questions.question2"
+                                               class="w-full form-input">
+                                        @error('questions.question2')
+                                        <span class="text-xs text-red-500">{{$message}}</span>
+                                        @enderror
+                                    </div>
+
+
+                                    <!-- Question 3 -->
+                                    <div>
+                                        <label for="question3" class="block text-sm font-medium">3. What features do you
+                                            need in your
+                                            billing system?[Ex. Automated Invoicing, Tax Calculations, Payment
+                                            Tracking]</label>
+                                        <textarea id="question3" wire:model="questions.question3" rows="2"
+                                                  class="w-full form-textarea"></textarea>
+                                        @error('questions.question3')
+                                        <span class="text-xs text-red-500">{{$message}}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Question 4 -->
+                                    <div>
+                                        <label for="question4" class="block text-sm font-medium">4. How Many users will
+                                            need
+                                            to access
+                                            to the software?</label>
+                                        <input type="text" id="question4" wire:model="questions.question4"
+                                               class="w-full form-input">
+                                        @error('questions.question4')
+                                        <span class="text-xs text-red-500">{{$message}}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Question 5 -->
+                                    <div>
+                                        <label for="question5" class="block text-sm font-medium">5. Do you need support
+                                            for
+                                            multiple
+                                            currencies?</label>
+                                        <input type="text" id="question5" wire:model="questions.question5"
+                                               class="w-full form-input">
+                                        @error('questions.question5')
+                                        <span class="text-xs text-red-500">{{$message}}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Question 6 -->
+                                    <div>
+                                        <label for="question6" class="block text-sm font-medium">6. What is your
+                                            Budget?</label>
+                                        <input type="text" id="question6" wire:model="questions.question6"
+                                               class="w-full form-input">
+                                        @error('questions.question6')
+                                        <span class="text-xs text-red-500">{{$message}}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Question 7 -->
+                                    <div>
+                                        <label for="question7" class="block text-sm font-medium">7.Do you want implement
+                                            immediately or
+                                            Timeline?</label>
+                                        <input type="text" id="question7" wire:model="questions.question7"
+                                               class="w-full form-input">
+                                        @error('questions.question7')
+                                        <span class="text-xs text-red-500">{{$message}}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Add more questions as needed -->
                                 </div>
-                            </x-dropdown.wrapper>
-                            @error('software_type_name')
-                            <span class="text-red-400">{{$message}}</span>
-                            @enderror
+                            </div>
 
-                                <!-- Questions Section -->
-                <div class="p-4 space-y-4 border rounded-lg">
-                    <label class="block text-lg font-semibold">Questions</label>
+                            <!-- verified by -->
 
-                    <!-- Question 1 -->
-                    <div>
-                        <label for="question1" class="block text-sm font-medium">1. How are you currently managing your
-                            billing process?</label>
-                        <input type="text" id="question1" wire:model="questions.question1" class="w-full form-input">
-                        @error('questions.question1')
-                        <span class="text-xs text-red-500">{{$message}}</span>
-                        @enderror
-                    </div>
-
-                    <!-- Question 2 -->
-                    <div>
-                        <label for="question2" class="block text-sm font-medium">2. Are you using any software for
-                            billing, or it is managed manually?</label>
-                        <input type="text" id="question2" wire:model="questions.question2" class="w-full form-input">
-                        @error('questions.question2')
-                        <span class="text-xs text-red-500">{{$message}}</span>
-                        @enderror
-                    </div>
-
-
-                    <!-- Question 3 -->
-                    <div>
-                        <label for="question3" class="block text-sm font-medium">3. What features do you need in your
-                            billing system?[Ex. Automated Invoicing, Tax Calculations, Payment Tracking]</label>
-                        <textarea id="question3" wire:model="questions.question3" rows="2"
-                                  class="w-full form-textarea"></textarea>
-                        @error('questions.question3')
-                        <span class="text-xs text-red-500">{{$message}}</span>
-                        @enderror
-                    </div>
-
-                    <!-- Question 4 -->
-                    <div>
-                        <label for="question4" class="block text-sm font-medium">4. How Many users will need to access
-                            to the software?</label>
-                        <input type="text" id="question4" wire:model="questions.question4" class="w-full form-input">
-                        @error('questions.question4')
-                        <span class="text-xs text-red-500">{{$message}}</span>
-                        @enderror
-                    </div>
-
-                    <!-- Question 5 -->
-                    <div>
-                        <label for="question5" class="block text-sm font-medium">5. Do you need support for multiple
-                            currencies?</label>
-                        <input type="text" id="question5" wire:model="questions.question5" class="w-full form-input">
-                        @error('questions.question5')
-                        <span class="text-xs text-red-500">{{$message}}</span>
-                        @enderror
-                    </div>
-
-                    <!-- Question 6 -->
-                    <div>
-                        <label for="question6" class="block text-sm font-medium">6. What is your Budget?</label>
-                        <input type="text" id="question6" wire:model="questions.question6" class="w-full form-input">
-                        @error('questions.question6')
-                        <span class="text-xs text-red-500">{{$message}}</span>
-                        @enderror
-                    </div>
-
-                    <!-- Question 7 -->
-                    <div>
-                        <label for="question7" class="block text-sm font-medium">7.Do you want implement immediately or
-                            Timeline?</label>
-                        <input type="text" id="question7" wire:model="questions.question7" class="w-full form-input">
-                        @error('questions.question7')
-                        <span class="text-xs text-red-500">{{$message}}</span>
-                        @enderror
-                    </div>
-
-                    <!-- Add more questions as needed -->
-                </div>
-
-                <div class="mt-3">
-                    <x-input.model-select wire:model="a_verified_by" :label="'Verified By'">
-                        <option value="">Choose...</option>
-                        @foreach(\App\Models\User::all() as $user)
-                            <option value="{{$user->id}}">{{$user->name}}</option>
-                        @endforeach
-                    </x-input.model-select>
-                </div>
-
-
-
-                            <div class="mb-1">&nbsp;</div>
                         </div>
+
 
                         <div class="px-3 py-3 text-right bg-gray-100 sm:px-6">
                             <div class="flex justify-between w-full gap-3">
@@ -433,21 +452,21 @@
                 </x-jet.modal>
             </div>
         </form>
-{{--        <!--End Region for Add Attempt Modal-->--}}
-{{--        --}}{{--        delete modaal of Atempt.    --}}
-{{--        <x-modal.confirmation wire:model.defer="showDeleteModal">--}}
-{{--            <x-slot name="title">Delete Entry</x-slot>--}}
-{{--            <x-slot name="content">--}}
-{{--                <div class="py-8 text-cool-gray-700 ">Are you sure you? This action is irreversible.</div>--}}
-{{--            </x-slot>--}}
-{{--            <x-slot name="footer">--}}
-{{--                <div class="flex justify-end gap-5 ">--}}
+        {{--        <!--End Region for Add Attempt Modal-->--}}
+        {{--        --}}{{--        delete modaal of Atempt.    --}}
+        {{--        <x-modal.confirmation wire:model.defer="showDeleteModal">--}}
+        {{--            <x-slot name="title">Delete Entry</x-slot>--}}
+        {{--            <x-slot name="content">--}}
+        {{--                <div class="py-8 text-cool-gray-700 ">Are you sure you? This action is irreversible.</div>--}}
+        {{--            </x-slot>--}}
+        {{--            <x-slot name="footer">--}}
+        {{--                <div class="flex justify-end gap-5 ">--}}
 
-{{--                    <x-button.cancel-x wire:click.prevent="$set('showDeleteModal', false)"/>--}}
-{{--                    <x-button.danger-x wire:click.prevent="trashDataAttempt($id)"/>--}}
-{{--                </div>--}}
-{{--            </x-slot>--}}
-{{--        </x-modal.confirmation>--}}
+        {{--                    <x-button.cancel-x wire:click.prevent="$set('showDeleteModal', false)"/>--}}
+        {{--                    <x-button.danger-x wire:click.prevent="trashDataAttempt($id)"/>--}}
+        {{--                </div>--}}
+        {{--            </x-slot>--}}
+        {{--        </x-modal.confirmation>--}}
 
 
 
@@ -461,9 +480,9 @@
                             Attempt Entry
                         </div>
                         <x-forms.section-border class="py-2"/>
-                        <div class="mt-4">
+                        <div>
 
-                            <div>
+                            <div class="mb-2">
                                 <x-input.floating wire:model="attempt_no" :label="'Attempt No'"/>
                                 @error('attempt_no')
                                 <div class="text-xs text-red-500">
@@ -472,7 +491,7 @@
                                 @enderror
                             </div>
 
-                            <div>
+                            <div class="mt-2">
                                 <x-input.model-select wire:model="lead_id" :label="'Lead By'">
                                     <option value="">Choose...</option>
                                     @foreach(\App\Models\User::all() as $user)
