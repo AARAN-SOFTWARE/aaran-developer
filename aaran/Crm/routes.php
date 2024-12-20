@@ -12,7 +12,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/logbooks', \App\Livewire\Crm\LogBook\Index::class)->name('logbooks');
 
-    Route::get('enquiries-upsert/{id}', App\Livewire\Crm\Enquiry\Upsert::class)->name('enquiries.upsert');
+//    Route::get('enquiries-upsert/{id}', App\Livewire\Crm\Enquiry\Upsert::class)->name('enquiries.upsert');
 
+    Route::get('leads-upsert/{id}', App\Livewire\Crm\Lead\Upsert::class)->name('leads.upsert');
+
+    Route::get('leads-attempt', App\Livewire\Crm\Lead\Attempt::class)->name('leads.attempt');
+
+    Route::get('leads-fresh/{id}', App\Livewire\Crm\Lead\Fresh::class)->name('leads.fresh');
 
 });
