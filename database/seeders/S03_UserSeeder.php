@@ -11,6 +11,16 @@ class S03_UserSeeder extends Seeder
     public static function run(): void
     {
         User::create([
+            'name' => 'none',
+            'email' => 'none@none.com',
+            'password' => bcrypt('example@123'),
+            'email_verified_at' => now(),
+            'remember_token' => Str::random(10),
+            'tenant_id' => '1',
+            'role_id' => '1'
+        ]);
+
+        User::create([
             'name' => 'sundar',
             'email' => 'sundar@sundar.com',
             'password' => bcrypt('kalarani'),
