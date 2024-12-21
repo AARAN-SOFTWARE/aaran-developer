@@ -112,9 +112,6 @@
                             <a href="{{route('followups', $rw->id)}}">{{$rw->title}}</a>
                         </x-table.cell-text>
 
-                        {{-- <x-table.cell-text>
-                            {{$rw->title}}
-                        </x-table.cell-text> --}}
 
                         <x-table.cell-text>
                             {{$rw->lead->name}}
@@ -162,17 +159,6 @@
             </x-slot>
             <x-slot name="footer">
                 <div class="flex justify-end gap-5 ">
-
-                    {{--                                <button wire:click.prevent="$set('showDeleteModal', false)"--}}
-                    {{--                                   class='max-w-max bg-gradient-to-r from-slate-600 to-slate-500 hover:from-slate-500 hover:to-slate-600 focus:ring-2 focus:ring-offset-2--}}
-                    {{--                                    focus:ring-slate-600 text-white sm:px-4 sm:py-2 px-2 py-1 text-[12px] inline-flex items-center gap-x-2 rounded-md tracking-widest font-semibold--}}
-                    {{--                                    transition-all linear duration-400 '>--}}
-                    {{--                                    <x-icons.icon :icon="'chevrons-left'" class="w-auto h-3 sm:h-5"/>--}}
-                    {{--                                    <span>CANCEL</span>--}}
-                    {{--                                </button>--}}
-
-                    {{--                                <x-button.danger wire:click.prevent="trashData">Delete</x-button.danger>--}}
-
                     <x-button.cancel-x wire:click.prevent="$set('showDeleteModalAddInfo', false)"/>
                     <x-button.danger-x wire:click.prevent="trashDataAddInfo($id)"/>
                 </div>
@@ -452,23 +438,6 @@
                 </x-jet.modal>
             </div>
         </form>
-        {{--        <!--End Region for Add Attempt Modal-->--}}
-        {{--        --}}{{--        delete modaal of Atempt.    --}}
-        {{--        <x-modal.confirmation wire:model.defer="showDeleteModal">--}}
-        {{--            <x-slot name="title">Delete Entry</x-slot>--}}
-        {{--            <x-slot name="content">--}}
-        {{--                <div class="py-8 text-cool-gray-700 ">Are you sure you? This action is irreversible.</div>--}}
-        {{--            </x-slot>--}}
-        {{--            <x-slot name="footer">--}}
-        {{--                <div class="flex justify-end gap-5 ">--}}
-
-        {{--                    <x-button.cancel-x wire:click.prevent="$set('showDeleteModal', false)"/>--}}
-        {{--                    <x-button.danger-x wire:click.prevent="trashDataAttempt($id)"/>--}}
-        {{--                </div>--}}
-        {{--            </x-slot>--}}
-        {{--        </x-modal.confirmation>--}}
-
-
 
         <!--Add Attempt Modal-------------------------------------------------------------------------------------------------->
         <form wire:submit.prevent="saveAttempt">
