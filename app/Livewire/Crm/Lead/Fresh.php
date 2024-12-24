@@ -40,7 +40,8 @@ class Fresh extends Component
         $this->enquiry_data = Enquiry::find($this->enquiry_id);
         // $this->e_enquiry_id = $id;
         // $this->a_enquiry_data = Enquiry::find($this->a_enquiry_id);
-
+        $this->softwareTypeCollection = Common::all();
+        $this->getSoftwareTypeList();
     }
     #endregion
 
@@ -174,18 +175,20 @@ class Fresh extends Component
 
     public $a_active_id;
 
-    // public $softwareType_id;
+     public $softwareType_id;
+
+    public $softwareType_name = '';
 
     public $a_verified_by;
 
     public $questions = [
-        'question1' => null,
-        'question2' => '',
-        'question3' => '',
-        'question4' => '',
-        'question5' => '',
-        'question6' => '',
-        'question7' => '',
+//        'question1' => '',
+//        'question2' => '',
+//        'question3' => '',
+//        'question4' => '',
+//        'question5' => '',
+//        'question6' => '',
+//        'question7' => '',
     ];
 
     public $showAddInfoEditModal = false;
@@ -313,8 +316,6 @@ class Fresh extends Component
     #endregion
 
     #region[softwareType]
-    public $softwareType_id = '';
-    public $softwareType_name = '';
     public Collection $softwareTypeCollection;
     public $highlightSoftwareType = 0;
     public $softwareTypeTyped = false;
@@ -381,21 +382,75 @@ class Fresh extends Component
             Common::where('label_id', '=', '26')->orWhere('label_id', '=', '1')->get();
     }
 
+
+
 #endregion
 
     #region[Render]
     public function render()
     {
-        $this->getSoftwareTypeList();
-        return view('livewire.crm.lead.fresh')->with(
-            [
-//                'list' => Attempt::all(),
-                'list' => Attempt::where('enquiry_id', $this->enquiry_id)->get(),
-                 'leadList' => Lead::where('enquiry_id', $this->enquiry_id)->get(),
-//                'leadList' => Lead::all(),
-            ]);
+        return view('livewire.crm.lead.fresh', [
+            'questions' => $this->questions,
+            'softwareTypeCollection' => $this->softwareTypeCollection,
+            ])->with([
+                'list' => Attempt::where('enquiry_id', $this->a_enquiry_id)->get(),
+                'leadList' => Lead::where('enquiry_id', $this->a_enquiry_id)->get()
+        ]);
     }
 
     #endregion
+
+     //Starts here
+
+    public function updatedSoftwareType_name($value)
+    {
+        $this->questions = $this->getQuestions($value);
+    }
+
+    public function getQuestions($softwareType)
+    {
+        switch ($softwareType)
+    {
+        case 'Billing Software':
+            return
+                [
+                    'How are you currently managing your billing process?',
+                    'Are you using any software for billing, or is it managed manually?',
+                    'What features do you need in your billing system? (Ex. Automated Invoicing,
+                     Tax Calculations, Payment Tracking)',
+                    'How many users will need to access the software?',
+                    'Do you need support for multiple currencies?',
+                    'What is your budget?',
+                    'Do you want to implement immediately or have a timeline?'
+                ];
+            case 'Portfolio Software':
+                return
+                    [
+                        'How are you currently managing your portfolio?',
+                        'Are you using any software for portfolio management, or is it managed manually?',
+                        'What features do you need in your portfolio system?',
+                        'How many items do you manage?',
+                        'Do you need integration with financial platforms?',
+                        'What is your budget?',
+                        'Do you want to implement immediately or have a timeline?'
+                    ];
+                case 'Business Software':
+                    return
+                        [
+                            'How are you currently managing your business operations?',
+                            'Are you using any software for business management, or is it managed manually?',
+                            'What features do you need in your business system?',
+                            'How many users will need access?',
+                            'Do you need support for multiple departments?',
+                            'What is your budget?',
+                            'Do you want to implement immediately or have a timeline?'
+                        ];
+                    default:
+                        return [];
+    }
+
+    }
+
+
 
 }

@@ -13,7 +13,7 @@
         <div class="flex justify-between">
             <div class="w-full">Mobile</div>
             <div wire:model="mobile" class="w-full text-gray-500 ">{{$enquiry_data->vname}}</div>
-        </div>
+    </div>
     </div>
 
     <!-- Button 1 -> Additional Information-->
@@ -235,15 +235,16 @@
         <form wire:submit.prevent="saveAddInfo">
             <div class="w-full h-auto">
                 <x-jet.modal :maxWidth="'6xl'" wire:model.defer="showAddInfoEditModal">
+{{--                    <div wire:key="{{ $softwareType_name }}" class="modal-content">--}}
 
                     <div class="px-2 pt-4 sm:px-6">
                         <div class="text-lg">
                             Additional Information Entry
                         </div>
-                        <x-forms.section-border class="py-2"/>
-                        <div class="p-16 flex justify-between gap-x-5">
+                        <x-forms.section-border class="py-5"/>
+                        <div class="p-4 flex justify-between gap-x-5">
 
-                            <div class="space-y-5 py-5 flex flex-col justify-between">
+                            <div class="space-y-5 py-2 flex flex-col justify-between">
                                 <div>
                                     <x-input.floating wire:model="a_title" :label="'Title'"/>
                                     @error('a_title')
@@ -297,6 +298,7 @@
                                 @error('software_type_name')
                                 <span class="text-red-400">{{$message}}</span>
                                 @enderror
+
                                 <div class="">
                                     <x-input.model-select wire:model="a_verified_by" :label="'Verified By'">
                                         <option value="">Choose...</option>
@@ -308,101 +310,142 @@
                             </div>
 
                             <!-- Questions Section -->
+
+                            <!-- Questions Section -->
+{{--                            <div wire:key="question-{{ $index }}">--}}
+
+{{--                            <div class="space-y-5 py-5">--}}
+
+{{--                                <div class="p-4 space-y-4 border rounded-lg">--}}
+{{--                                    <p>Selected Software Type: {{ $softwareType_name }}</p>--}}
+{{--                                    <label class="block text-lg font-semibold">Questions</label>--}}
+
+{{--                                @foreach ($questions as $index => $question)--}}
+{{--                                        <div>--}}
+{{--                                        <label for="question{{ $index }}" class="block text-sm font-medium">--}}
+{{--                                            {{ $loop->iteration }}. {{ $question }}--}}
+{{--                                        </label>--}}
+{{--                                            <input type="text" id="question{{ $index }}" wire:model="questions.{{ $index }}"--}}
+{{--                                                   class="w-full form-input">--}}
+{{--                                            @error("questions.$index")--}}
+{{--                                            <span class="text-xs text-red-500">{{ $message }}</span>--}}
+{{--                                            @enderror--}}
+{{--                                        </div>--}}
+{{--                                    @endforeach--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+
+                            <!-- Debugging: Display Selected Software Type Name -->
+                            <div class="my-4"> <strong>Selected Software Type: </strong>{{ $softwareType_name }} </div>
+                            <!-- Questions Section -->
                             <div class="space-y-5 py-5">
                                 <div class="p-4 space-y-4 border rounded-lg">
                                     <label class="block text-lg font-semibold">Questions</label>
-
-                                    <!-- Question 1 -->
-                                    <div>
-                                        <label for="question1" class="block text-sm font-medium">1. How are you
-                                            currently
-                                            managing your
-                                            billing process?</label>
-                                        <input type="text" id="question1" wire:model="questions.question1"
-                                               class="w-full form-input">
-                                        @error('questions.question1')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Question 2 -->
-                                    <div>
-                                        <label for="question2" class="block text-sm font-medium">2. Are you using any
-                                            software for
-                                            billing, or it is managed manually?</label>
-                                        <input type="text" id="question2" wire:model="questions.question2"
-                                               class="w-full form-input">
-                                        @error('questions.question2')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-
-                                    <!-- Question 3 -->
-                                    <div>
-                                        <label for="question3" class="block text-sm font-medium">3. What features do you
-                                            need in your
-                                            billing system?[Ex. Automated Invoicing, Tax Calculations, Payment
-                                            Tracking]</label>
-                                        <textarea id="question3" wire:model="questions.question3" rows="2"
-                                                  class="w-full form-textarea"></textarea>
-                                        @error('questions.question3')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Question 4 -->
-                                    <div>
-                                        <label for="question4" class="block text-sm font-medium">4. How Many users will
-                                            need
-                                            to access
-                                            to the software?</label>
-                                        <input type="text" id="question4" wire:model="questions.question4"
-                                               class="w-full form-input">
-                                        @error('questions.question4')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Question 5 -->
-                                    <div>
-                                        <label for="question5" class="block text-sm font-medium">5. Do you need support
-                                            for
-                                            multiple
-                                            currencies?</label>
-                                        <input type="text" id="question5" wire:model="questions.question5"
-                                               class="w-full form-input">
-                                        @error('questions.question5')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Question 6 -->
-                                    <div>
-                                        <label for="question6" class="block text-sm font-medium">6. What is your
-                                            Budget?</label>
-                                        <input type="text" id="question6" wire:model="questions.question6"
-                                               class="w-full form-input">
-                                        @error('questions.question6')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Question 7 -->
-                                    <div>
-                                        <label for="question7" class="block text-sm font-medium">7.Do you want implement
-                                            immediately or
-                                            Timeline?</label>
-                                        <input type="text" id="question7" wire:model="questions.question7"
-                                               class="w-full form-input">
-                                        @error('questions.question7')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Add more questions as needed -->
+                                    @foreach ($questions as $index => $question)
+                                        <div>
+                                            <label for="question{{ $index }}" class="block text-sm font-medium">{{ $loop->iteration }}. {{ $question }}</label>
+                                            <input type="text" id="question{{ $index }}" wire:model.live="questions.{{ $index }}" class="w-full form-input">
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
+
+
+{{--                                <div class="p-4 space-y-4 border rounded-lg">--}}
+{{--                                    <label class="block text-lg font-semibold">Questions</label>--}}
+
+{{--                                    <!-- Question 1 -->--}}
+{{--                                    <div>--}}
+{{--                                        <label for="question1" class="block text-sm font-medium">1. How are you--}}
+{{--                                            currently--}}
+{{--                                            managing your--}}
+{{--                                            billing process?</label>--}}
+{{--                                        <input type="text" id="question1" wire:model="questions.question1"--}}
+{{--                                               class="w-full form-input">--}}
+{{--                                        @error('questions.question1')--}}
+{{--                                        <span class="text-xs text-red-500">{{$message}}</span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+
+{{--                                    <!-- Question 2 -->--}}
+{{--                                    <div>--}}
+{{--                                        <label for="question2" class="block text-sm font-medium">2. Are you using any--}}
+{{--                                            software for--}}
+{{--                                            billing, or it is managed manually?</label>--}}
+{{--                                        <input type="text" id="question2" wire:model="questions.question2"--}}
+{{--                                               class="w-full form-input">--}}
+{{--                                        @error('questions.question2')--}}
+{{--                                        <span class="text-xs text-red-500">{{$message}}</span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+
+
+{{--                                    <!-- Question 3 -->--}}
+{{--                                    <div>--}}
+{{--                                        <label for="question3" class="block text-sm font-medium">3. What features do you--}}
+{{--                                            need in your--}}
+{{--                                            billing system?[Ex. Automated Invoicing, Tax Calculations, Payment--}}
+{{--                                            Tracking]</label>--}}
+{{--                                        <textarea id="question3" wire:model="questions.question3" rows="2"--}}
+{{--                                                  class="w-full form-textarea"></textarea>--}}
+{{--                                        @error('questions.question3')--}}
+{{--                                        <span class="text-xs text-red-500">{{$message}}</span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+
+{{--                                    <!-- Question 4 -->--}}
+{{--                                    <div>--}}
+{{--                                        <label for="question4" class="block text-sm font-medium">4. How Many users will--}}
+{{--                                            need--}}
+{{--                                            to access--}}
+{{--                                            to the software?</label>--}}
+{{--                                        <input type="text" id="question4" wire:model="questions.question4"--}}
+{{--                                               class="w-full form-input">--}}
+{{--                                        @error('questions.question4')--}}
+{{--                                        <span class="text-xs text-red-500">{{$message}}</span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+
+{{--                                    <!-- Question 5 -->--}}
+{{--                                    <div>--}}
+{{--                                        <label for="question5" class="block text-sm font-medium">5. Do you need support--}}
+{{--                                            for--}}
+{{--                                            multiple--}}
+{{--                                            currencies?</label>--}}
+{{--                                        <input type="text" id="question5" wire:model="questions.question5"--}}
+{{--                                               class="w-full form-input">--}}
+{{--                                        @error('questions.question5')--}}
+{{--                                        <span class="text-xs text-red-500">{{$message}}</span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+
+{{--                                    <!-- Question 6 -->--}}
+{{--                                    <div>--}}
+{{--                                        <label for="question6" class="block text-sm font-medium">6. What is your--}}
+{{--                                            Budget?</label>--}}
+{{--                                        <input type="text" id="question6" wire:model="questions.question6"--}}
+{{--                                               class="w-full form-input">--}}
+{{--                                        @error('questions.question6')--}}
+{{--                                        <span class="text-xs text-red-500">{{$message}}</span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+
+{{--                                    <!-- Question 7 -->--}}
+{{--                                    <div>--}}
+{{--                                        <label for="question7" class="block text-sm font-medium">7.Do you want implement--}}
+{{--                                            immediately or--}}
+{{--                                            Timeline?</label>--}}
+{{--                                        <input type="text" id="question7" wire:model="questions.question7"--}}
+{{--                                               class="w-full form-input">--}}
+{{--                                        @error('questions.question7')--}}
+{{--                                        <span class="text-xs text-red-500">{{$message}}</span>--}}
+{{--                                        @enderror--}}
+{{--                                    </div>--}}
+
+{{--                                    <!-- Add more questions as needed -->--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
                             <!-- verified by -->
 
@@ -434,7 +477,7 @@
                             </div>
                         </div>
                     </div>
-
+{{--                    </div>--}}
                 </x-jet.modal>
             </div>
         </form>
