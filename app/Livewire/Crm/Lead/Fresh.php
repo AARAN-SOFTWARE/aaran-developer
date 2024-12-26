@@ -390,12 +390,14 @@ class Fresh extends Component
     public function render()
     {
         $this->getSoftwareTypeList();
-        return view('livewire.crm.lead.fresh')->with(
-            [
-                'list' => Attempt::where('enquiry_id', $this->enquiry_id)->get(),
-                'leadList' => Lead::where('enquiry_id', $this->enquiry_id)->get(),
-            ]);
+//        dd($this->enquiry_id); // Add this to confirm the value of enquiry_id
+        return view('livewire.crm.lead.fresh')->with([
+            'list' => Attempt::where('enquiry_id', $this->enquiry_id)->get(),
+            'leadList' => Lead::where('enquiry_id', $this->enquiry_id)->get(),
+        ]);
     }
+
+
 
     #endregion
 
