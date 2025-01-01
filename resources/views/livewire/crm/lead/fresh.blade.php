@@ -13,7 +13,7 @@
         <div class="flex justify-between">
             <div class="w-full">Mobile</div>
             <div wire:model="mobile" class="w-full text-gray-500 ">{{$enquiry_data->vname}}</div>
-        </div>
+         </div>
     </div>
 
     <!-- Button 1 -> Additional Information-->
@@ -78,98 +78,225 @@
     <x-forms.m-panel>
 
 
-        <!--Additional Information Table-->
-        <div class="text-blue-500">Additional Information</div>
-        <!-- Table Header  ------------------------------------------------------------------------------------------>
-        <x-table.form>
+{{--        <!--Additional Information Table-->--}}
+{{--        <div class="text-blue-500">Additional Information</div>--}}
+{{--        <!-- Table Header  ------------------------------------------------------------------------------------------>--}}
+{{--        <x-table.form>--}}
 
-            <x-slot:table_header name="table_header" class="bg-green-100">
-
-
-                <x-table.header-serial></x-table.header-serial>
-                <x-table.header-text sort-icon="none">Title</x-table.header-text>
-                <x-table.header-text sort-icon="none">Lead By</x-table.header-text>
-                <x-table.header-text sort-icon="none">Description</x-table.header-text>
-                <x-table.header-text sort-icon="none">Software Type</x-table.header-text>
-                <x-table.header-text sort-icon="none">Questions</x-table.header-text>
-                <x-table.header-text sort-icon="none">Verified By</x-table.header-text>
-
-                <x-table.header-action/>
-
-            </x-slot:table_header>
-
-            <!-- Table Body  - Add Info------------------------------------------------------------------------------------------>
-
-            <x-slot:table_body name="table_body">
-
-                @foreach($leadList as $index=>$rw)
-
-                    <x-table.row>
-                        <x-table.cell-text>{{$index+1}}</x-table.cell-text>
+{{--            <x-slot:table_header name="table_header" class="bg-green-100">--}}
 
 
-                        <x-table.cell-text>
-                            <a href="{{route('followups', $rw->id)}}">{{$rw->title}}</a>
-                        </x-table.cell-text>
+{{--                <x-table.header-serial></x-table.header-serial>--}}
+{{--                <x-table.header-text sort-icon="none">Title</x-table.header-text>--}}
+{{--                <x-table.header-text sort-icon="none">Lead By</x-table.header-text>--}}
+{{--                <x-table.header-text sort-icon="none">Description</x-table.header-text>--}}
+{{--                <x-table.header-text sort-icon="none">Software Type</x-table.header-text>--}}
+{{--                <x-table.header-text sort-icon="none">Questions</x-table.header-text>--}}
+{{--                <x-table.header-text sort-icon="none">Verified By</x-table.header-text>--}}
+
+{{--                <x-table.header-action/>--}}
+
+{{--            </x-slot:table_header>--}}
+
+{{--            <!-- Table Body  - Add Info------------------------------------------------------------------------------------------>--}}
+
+{{--            <x-slot:table_body name="table_body">--}}
+
+{{--                @foreach($leadList as $index=>$rw)--}}
+
+{{--                    <x-table.row>--}}
+{{--                        <x-table.cell-text>{{$index+1}}</x-table.cell-text>--}}
 
 
-                        <x-table.cell-text>
-                            {{$rw->lead->name}}
-                        </x-table.cell-text>
-
-                        <x-table.cell-text>
-                            <div class="line-clamp-1">
-                                {!! $rw->body !!}
-                            </div>
-                        </x-table.cell-text>
+{{--                        <x-table.cell-text>--}}
+{{--                            <a href="{{route('followups', $rw->id)}}">{{$rw->title}}</a>--}}
+{{--                        </x-table.cell-text>--}}
 
 
-                        <x-table.cell-text>
-                            {{$rw->softwareType->vname}}
-                        </x-table.cell-text>
+{{--                        <x-table.cell-text>--}}
+{{--                            {{$rw->lead->name}}--}}
+{{--                        </x-table.cell-text>--}}
 
-                        <x-table.cell-text>
-                            {{$rw->questions}}
-                        </x-table.cell-text>
-
-                        <x-table.cell-text>
-                            {{$rw->verified->name}}
-                        </x-table.cell-text>
+{{--                        <x-table.cell-text>--}}
+{{--                            <div class="line-clamp-1">--}}
+{{--                                {!! $rw->body !!}--}}
+{{--                            </div>--}}
+{{--                        </x-table.cell-text>--}}
 
 
-                        <td>
-                            <div class="flex items-center self-center justify-center gap-2 px-1 sm:gap-4">
+{{--                        <x-table.cell-text>--}}
+{{--                            {{$rw->softwareType->vname}}--}}
+{{--                        </x-table.cell-text>--}}
+
+{{--                        <x-table.cell-text>--}}
+{{--                            {{$rw->questions}}--}}
+{{--                        </x-table.cell-text>--}}
+
+{{--                        <x-table.cell-text>--}}
+{{--                            {{$rw->verified->name}}--}}
+{{--                        </x-table.cell-text>--}}
+
+
+{{--                        <td>--}}
+{{--                            <div class="flex items-center self-center justify-center gap-2 px-1 sm:gap-4">--}}
 {{--                                <a href="{{route('leads.upsert',[$rw->id])}}" class="pt-1">--}}
-                                    <x-button.edit wire:click="editAddInfo({{$rw->id}})" />
+{{--                                    <x-button.edit wire:click="editAddInfo({{$rw->id}})" />--}}
 {{--                                </a>--}}
-                                <x-button.delete wire:click="getDeleteAddInfo({{$rw->id}})"/>
+{{--                                <x-button.delete wire:click="getDeleteAddInfo({{$rw->id}})"/>--}}
 
-                            </div>
-                        </td>
-                    </x-table.row>
-                @endforeach
-            </x-slot:table_body>
-        </x-table.form>
+{{--                            </div>--}}
+{{--                        </td>--}}
+{{--                    </x-table.row>--}}
+{{--                @endforeach--}}
+{{--            </x-slot:table_body>--}}
+{{--        </x-table.form>--}}
 
-        {{--        delete modal of AddInfo.    --}}
+{{--                delete modal of AddInfo.--}}
+{{--        <x-modal.confirmation wire:model.defer="showDeleteModalAddInfo">--}}
+{{--            <x-slot name="title">Delete Entry</x-slot>--}}
+{{--            <x-slot name="content">--}}
+{{--                <div class="py-8 text-cool-gray-700 ">Are you sure you? This action is irreversible.</div>--}}
+{{--            </x-slot>--}}
+{{--            <x-slot name="footer">--}}
+{{--                <div class="flex justify-end gap-5 ">--}}
+{{--                    <x-button.cancel-x wire:click.prevent="$set('showDeleteModalAddInfo', false)"/>--}}
+{{--                    <x-button.danger-x wire:click.prevent="trashDataAddInfo($id)"/>--}}
+{{--                </div>--}}
+{{--            </x-slot>--}}
+{{--        </x-modal.confirmation>--}}
+
+       <!--Additional Information Card-->
+
+        <div class="bg-blue-100 font-semibold py-1 px-2 rounded inline-block">Additional Information</div>
+        <div class="space-y-4">
+            @foreach($leadList as $index => $rw)
+                <div class="bg-gray-50 p-4 shadow rounded-lg max-w-5xl border border-gray-300 mb-12">
+
+                    <!-- Title -->
+                    <div class="mb-2 border-b pb-2">
+                        <strong class="text-lg shadow-md"> Title:</strong>
+                        <a href="{{ route('followups', $rw->id) }}" class="text-gray-800">{{ $rw->title }}</a>
+                    </div>
+
+
+                    <!-- Lead By  -->
+                    <div class="mb-2 border-b pb-2">
+                        <strong class="text-lg shadow-md">Lead By:</strong>
+                        <span class="text-gray-800">{{ $rw->lead->name }}</span>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-2 border-b pb-2">
+                        <strong class="text-lg shadow-md">Description:</strong>
+                        <div class="text-sm text-gray-800 line-clamp-3">{!! $rw->body !!}</div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-2 border-b pb-2">
+                        <strong class="text-lg shadow-md">Software Type:</strong>
+                        <div class="text-sm text-gray-800 line-clamp-3">{{$rw->softwareType->vname}}</div>
+                    </div>
+
+                    <!-- Questions -->
+                    <div class="mb-2 border-b pb-2">
+                        <strong class="text-lg shadow-md">Questions:</strong>
+                        <div class="text-sm text-gray-800 line-clamp-3">{{ $rw->questions }}</div>
+                    </div>
+
+                    <!-- Verified By -->
+                    <div class="mb-4 border-b pb-2">
+                        <strong class="text-lg shadow-md">Verified By:</strong>
+                        <div class="text-sm text-gray-800">{{ $rw->verified->name }}</div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-between items-center">
+                        <x-button.edit wire:click="editAddInfo({{ $rw->id }})" />
+                        <x-button.delete wire:click="getDeleteAddInfo({{ $rw->id }})" />
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <!-- Modal -->
         <x-modal.confirmation wire:model.defer="showDeleteModalAddInfo">
             <x-slot name="title">Delete Entry</x-slot>
             <x-slot name="content">
-                <div class="py-8 text-cool-gray-700 ">Are you sure you? This action is irreversible.</div>
+                <div class="py-8 text-cool-gray-700">Are you sure you want to delete this entry? This action is irreversible.</div>
             </x-slot>
             <x-slot name="footer">
-                <div class="flex justify-end gap-5 ">
-                    <x-button.cancel-x wire:click.prevent="$set('showDeleteModalAddInfo', false)"/>
-                    <x-button.danger-x wire:click.prevent="trashDataAddInfo($id)"/>
+                <div class="flex justify-end gap-5">
+                    <x-button.cancel-x wire:click.prevent="$set('showDeleteModalAddInfo', false)" />
+                    <x-button.danger-x wire:click.prevent="trashDataAddInfo($id)" />
                 </div>
             </x-slot>
         </x-modal.confirmation>
 
-        <!-- Create  -------------------------------------------------------------------------------------------------->
+
+
+
+
+        {{--            <div class="space-y-4">--}}
+{{--                @foreach($leadList as $index=>$rw)--}}
+{{--                    <div class="bg-white p-4 shadow rounded-lg">--}}
+{{--                        <div class="flex justify-between items-center mb-2">--}}
+{{--                            <div class="font-semibold text-lg">Lead #{{ $index + 1 }}</div>--}}
+{{--                            <div class="text-sm text-gray-500">{{ $rw->softwareType->vname }}</div>--}}
+{{--                        </div>--}}
+
+{{--                        <div class="mb-2">--}}
+{{--                            <strong class="text-sm">Title:</strong>--}}
+{{--                            <a href="{{ route('followups', $rw->id) }}" class="text-blue-600 hover:underline">{{ $rw->title }}</a>--}}
+{{--                        </div>--}}
+
+{{--                        <div class="mb-2">--}}
+{{--                            <strong class="text-sm">Client Name:</strong>--}}
+{{--                            <span class="text-gray-800">{{ $rw->lead->name }}</span>--}}
+{{--                        </div>--}}
+
+{{--                        <div class="mb-2">--}}
+{{--                            <strong class="text-sm">Description:</strong>--}}
+{{--                            <div class="line-clamp-2">{!! $rw->body !!}</div>--}}
+{{--                        </div>--}}
+
+{{--                        <div class="mb-2">--}}
+{{--                            <strong class="text-sm">Questions:</strong>--}}
+{{--                            <div class="text-gray-800">{{ $rw->questions }}</div>--}}
+{{--                        </div>--}}
+
+{{--                        <div class="mb-2">--}}
+{{--                            <strong class="text-sm">Verified By:</strong>--}}
+{{--                            <div class="text-gray-800">{{ $rw->verified->name }}</div>--}}
+{{--                        </div>--}}
+
+{{--                        <div class="flex justify-between items-center mt-4">--}}
+{{--                            <x-button.edit wire:click="editAddInfo({{ $rw->id }})" />--}}
+{{--                            <x-button.delete wire:click="getDeleteAddInfo({{ $rw->id }})" />--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                @endforeach--}}
+{{--            </div>--}}
+
+{{--            <!-- Modal -->--}}
+{{--            <x-modal.confirmation wire:model.defer="showDeleteModalAddInfo">--}}
+{{--                <x-slot name="title">Delete Entry</x-slot>--}}
+{{--                <x-slot name="content">--}}
+{{--                    <div class="py-8 text-cool-gray-700">Are you sure you? This action is irreversible.</div>--}}
+{{--                </x-slot>--}}
+{{--                <x-slot name="footer">--}}
+{{--                    <div class="flex justify-end gap-5">--}}
+{{--                        <x-button.cancel-x wire:click.prevent="$set('showDeleteModalAddInfo', false)" />--}}
+{{--                        <x-button.danger-x wire:click.prevent="trashDataAddInfo($id)" />--}}
+{{--                    </div>--}}
+{{--                </x-slot>--}}
+{{--            </x-modal.confirmation>--}}
+
+
+            <!-- Create  -------------------------------------------------------------------------------------------------->
 
 
         <!--Table For Add Attempt-->
-        <div class="text-blue-500">Attempts</div>
+        <div class="bg-green-200 font-semibold py-1 px-2 rounded inline-block">Attempts</div>
         <x-table.form>
 
             <x-slot:table_header name="table_header" class="bg-green-100">
@@ -193,7 +320,7 @@
 
 
                         <x-table.cell-text>
-                            {{$row->attempt_no}}
+                            <div class="font-semibold text-lg">{{ $index + 1 }}</div>
                         </x-table.cell-text>
 
                         <x-table.cell-text>
@@ -235,15 +362,16 @@
         <form wire:submit.prevent="saveAddInfo">
             <div class="w-full h-auto">
                 <x-jet.modal :maxWidth="'6xl'" wire:model.defer="showAddInfoEditModal">
+{{--                    <div wire:key="{{ $softwareType_name }}" class="modal-content">--}}
 
                     <div class="px-2 pt-4 sm:px-6">
                         <div class="text-lg">
                             Additional Information Entry
                         </div>
-                        <x-forms.section-border class="py-2"/>
-                        <div class="p-16 flex justify-between gap-x-5">
+                        <x-forms.section-border class="py-5"/>
+                        <div class="p-4 flex justify-between gap-x-5">
 
-                            <div class="space-y-5 py-5 flex flex-col justify-between">
+                            <div class="space-y-5 py-2 flex flex-col justify-between">
                                 <div>
                                     <x-input.floating wire:model="a_title" :label="'Title'"/>
                                     @error('a_title')
@@ -297,6 +425,7 @@
                                 @error('software_type_name')
                                 <span class="text-red-400">{{$message}}</span>
                                 @enderror
+
                                 <div class="">
                                     <x-input.model-select wire:model="a_verified_by" :label="'Verified By'">
                                         <option value="">Choose...</option>
@@ -307,104 +436,75 @@
                                 </div>
                             </div>
 
-                            <!-- Questions Section -->
-                            <div class="space-y-5 py-5">
-                                <div class="p-4 space-y-4 border rounded-lg">
-                                    <label class="block text-lg font-semibold">Questions</label>
 
-                                    <!-- Question 1 -->
-                                    <div>
-                                        <label for="question1" class="block text-sm font-medium">1. How are you
-                                            currently
-                                            managing your
-                                            billing process?</label>
-                                        <input type="text" id="question1" wire:model="questions.question1"
-                                               class="w-full form-input">
-                                        @error('questions.question1')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
+        <!-----Questions Section------------------------------------------------------------------------------->
 
-                                    <!-- Question 2 -->
-                                    <div>
-                                        <label for="question2" class="block text-sm font-medium">2. Are you using any
-                                            software for
-                                            billing, or it is managed manually?</label>
-                                        <input type="text" id="question2" wire:model="questions.question2"
-                                               class="w-full form-input">
-                                        @error('questions.question2')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-
-                                    <!-- Question 3 -->
-                                    <div>
-                                        <label for="question3" class="block text-sm font-medium">3. What features do you
-                                            need in your
-                                            billing system?[Ex. Automated Invoicing, Tax Calculations, Payment
-                                            Tracking]</label>
-                                        <textarea id="question3" wire:model="questions.question3" rows="2"
-                                                  class="w-full form-textarea"></textarea>
-                                        @error('questions.question3')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Question 4 -->
-                                    <div>
-                                        <label for="question4" class="block text-sm font-medium">4. How Many users will
-                                            need
-                                            to access
-                                            to the software?</label>
-                                        <input type="text" id="question4" wire:model="questions.question4"
-                                               class="w-full form-input">
-                                        @error('questions.question4')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Question 5 -->
-                                    <div>
-                                        <label for="question5" class="block text-sm font-medium">5. Do you need support
-                                            for
-                                            multiple
-                                            currencies?</label>
-                                        <input type="text" id="question5" wire:model="questions.question5"
-                                               class="w-full form-input">
-                                        @error('questions.question5')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Question 6 -->
-                                    <div>
-                                        <label for="question6" class="block text-sm font-medium">6. What is your
-                                            Budget?</label>
-                                        <input type="text" id="question6" wire:model="questions.question6"
-                                               class="w-full form-input">
-                                        @error('questions.question6')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Question 7 -->
-                                    <div>
-                                        <label for="question7" class="block text-sm font-medium">7.Do you want implement
-                                            immediately or
-                                            Timeline?</label>
-                                        <input type="text" id="question7" wire:model="questions.question7"
-                                               class="w-full form-input">
-                                        @error('questions.question7')
-                                        <span class="text-xs text-red-500">{{$message}}</span>
-                                        @enderror
-                                    </div>
-
-                                    <!-- Add more questions as needed -->
+                            <div class="p-4 space-y-4 border rounded-lg">
+                                <div class="block my-4">
+                                    <strong>Selected Software Type: </strong>
+                                    <span class="bg-blue-100 text-blue-800 font-semibold py-1 px-2 rounded">
+            {{ $softwareType_name }}
+        </span>
                                 </div>
+                                @php
+                                    $questions = [
+                                        'Billing Software' => [
+                                            'How are you currently managing your billing process?',
+                                            'Are you using any software for billing, or it is managed manually?',
+                                            'What features do you need in your billing system?',
+                                            'How Many users will need to access to the software?',
+                                            'Do you need support for multiple currencies?',
+                                            'What is your Budget?',
+                                            'Do you want implement immediately or Timeline?'
+                                        ],
+                                        'Portfolio Software' => [
+                                            'How are you currently managing your portfolio?',
+                                            'Are you using any software for portfolio management, or is it managed manually?',
+                                            'What features do you need in your portfolio system?',
+                                            'How many items do you manage?',
+                                            'Do you need integration with financial platforms?',
+                                            'What is your Budget?',
+                                            'Do you want implement immediately or Timeline?'
+                                        ],
+                                        'Business Software' => [
+                                            'How are you currently managing your business operations?',
+                                            'Are you using any software for business management, or is it managed manually?',
+                                            'What features do you need in your business system?',
+                                            'How many users will need access?',
+                                            'Do you need support for multiple departments?',
+                                            'What is your Budget?',
+                                            'Do you want implement immediately or Timeline?'
+                                        ],
+                                    ];
+                                @endphp
+
+                                @if (array_key_exists($softwareType_name, $questions))
+                                    <label class="block text-xl font-semibold mb-6 text-gray-800">Questions</label>
+                                    @foreach ($questions[$softwareType_name] as $index => $question)
+                                        <div class="mb-6">
+                                            <label for="question{{ $index + 1 }}" class="block text-sm font-medium text-gray-600 mb-2">
+                                                {{ $index + 1 }}. {{ $question }}
+                                            </label>
+                                            <input type="text" id="question{{ $index + 1 }}" wire:model="questions.question{{ $index + 1 }}"
+                                                   class="w-full h-10 p-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-400 focus:border-blue-500 hover:bg-gray-100 transition duration-200 ease-in-out placeholder-gray-400 placeholder:text-sm"
+                                                   placeholder="Type your answer here...">
+                                            @error("questions.question{{ $index + 1 }}")
+                                            <span class="text-xs text-red-600 mt-1">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    @endforeach
+                                @endif
+
+
+
+
+
                             </div>
 
-                            <!-- verified by -->
+ <!-------------------- End Questions Section-->
+
+                        </div>
+
 
                         </div>
 
@@ -433,8 +533,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+{{--                    </div>--}}
                 </x-jet.modal>
             </div>
         </form>
@@ -530,7 +630,8 @@
             </div>
         </form>
         <!--End Region for Add Attempt Modal-->
-        {{--        delete modaal of Atempt.    --}}
+
+        {{--        delete modal of Atempt.    --}}
         <x-modal.confirmation wire:model.defer="showDeleteModal">
             <x-slot name="title">Delete Entry</x-slot>
             <x-slot name="content">
@@ -547,4 +648,5 @@
 
 
     </x-forms.m-panel>
+{{--</div>--}}
 </div>

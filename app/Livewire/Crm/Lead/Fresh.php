@@ -40,7 +40,8 @@ class Fresh extends Component
         $this->enquiry_data = Enquiry::find($this->enquiry_id);
         // $this->e_enquiry_id = $id;
         // $this->a_enquiry_data = Enquiry::find($this->a_enquiry_id);
-
+        $this->softwareTypeCollection = Common::all();
+        $this->getSoftwareTypeList();
     }
     #endregion
 
@@ -174,12 +175,14 @@ class Fresh extends Component
 
     public $a_active_id;
 
-    // public $softwareType_id;
+     public $softwareType_id;
+
+    public $softwareType_name = '';
 
     public $a_verified_by;
 
     public $questions = [
-        'question1' => null,
+        'question1' => '',
         'question2' => '',
         'question3' => '',
         'question4' => '',
@@ -313,8 +316,6 @@ class Fresh extends Component
     #endregion
 
     #region[softwareType]
-    public $softwareType_id = '';
-    public $softwareType_name = '';
     public Collection $softwareTypeCollection;
     public $highlightSoftwareType = 0;
     public $softwareTypeTyped = false;
@@ -381,20 +382,22 @@ class Fresh extends Component
             Common::where('label_id', '=', '26')->orWhere('label_id', '=', '1')->get();
     }
 
+
+
 #endregion
 
     #region[Render]
     public function render()
     {
         $this->getSoftwareTypeList();
-        return view('livewire.crm.lead.fresh')->with(
-            [
-//                'list' => Attempt::all(),
-                'list' => Attempt::where('enquiry_id', $this->enquiry_id)->get(),
-                 'leadList' => Lead::where('enquiry_id', $this->enquiry_id)->get(),
-//                'leadList' => Lead::all(),
-            ]);
+//        dd($this->enquiry_id); // Add this to confirm the value of enquiry_id
+        return view('livewire.crm.lead.fresh')->with([
+            'list' => Attempt::where('enquiry_id', $this->enquiry_id)->get(),
+            'leadList' => Lead::where('enquiry_id', $this->enquiry_id)->get(),
+        ]);
     }
+
+
 
     #endregion
 
