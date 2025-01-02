@@ -5,6 +5,8 @@ namespace App\Livewire\Crm\Lead;
 use Aaran\Crm\Models\Attempt;
 use Aaran\Crm\Models\Enquiry;
 use Aaran\Crm\Models\Lead;
+use Aaran\Crm\Models\Question;
+use Illuminate\Support\Facades\Config;
 use Livewire\Component;
 use Aaran\Common\Models\Common;
 use Illuminate\Database\Eloquent\Collection;
@@ -42,6 +44,7 @@ class Fresh extends Component
         // $this->a_enquiry_data = Enquiry::find($this->a_enquiry_id);
         $this->softwareTypeCollection = Common::all();
         $this->getSoftwareTypeList();
+
     }
     #endregion
 
@@ -182,13 +185,6 @@ class Fresh extends Component
     public $a_verified_by;
 
     public $questions = [
-        'question1' => '',
-        'question2' => '',
-        'question3' => '',
-        'question4' => '',
-        'question5' => '',
-        'question6' => '',
-        'question7' => '',
     ];
 
     public $showAddInfoEditModal = false;
@@ -210,6 +206,9 @@ class Fresh extends Component
     {
         if ($this->a_title != '') {
 
+//            $questions = Question::where('softwareType_id', $this->softwareType_id)->first();
+//            $questionsJson = $questions ? json_encode($questions->question) : null;
+
             if ($this->vid == "") {
                 Lead::create([
                     'enquiry_id' => $this->enquiry_id,
@@ -218,9 +217,11 @@ class Fresh extends Component
                     'body' => $this->a_body,
                     'softwareType_id' => $this->softwareType_id,
                     'questions' => json_encode($this->questions),
+//                    'questions_id' => $questions ? $questions->id : null,
                     'verified_by' => $this->a_verified_by,
                     'active_id'=>1,
                 ]);
+
                 $message = "Saved";
 
             } else {
@@ -231,6 +232,7 @@ class Fresh extends Component
                 $obj->body = $this->a_body;
                 $obj->softwareType_id = $this->softwareType_id;
                 $obj->questions = json_encode($this->questions);
+//                $obj->questions_id = $questions ? $questions->id : null;
                 $obj->verified_by = $this->a_verified_by;
                 $obj->active_id = $this->a_active_id;
                 $obj->save();
@@ -273,6 +275,7 @@ class Fresh extends Component
             $this->softwareType_id = $obj->softwareType_id;
             $this->softwareType_name = Common::find($obj->softwareType_id)->vname;
             $this->questions = json_decode($obj->questions, true);
+//            $this->questions = $obj->questions ? json_decode($obj->questions->question, true) : [];
             $this->a_verified_by = $obj->verified_by;
             $this->a_active_id = $obj->active_id;
             return $obj;
@@ -343,6 +346,7 @@ class Fresh extends Component
         $this->softwareType_name = $name;
         $this->softwareType_id = $id;
         $this->getSoftwareTypeList();
+//        $this->loadQuestions();
     }
 
     public function enterSoftwareType(): void
@@ -355,6 +359,7 @@ class Fresh extends Component
 
         $this->softwareType_name = $obj['vname'] ?? '';
         $this->softwareType_id = $obj['id'] ?? '';
+        $this->loadQuestions();
     }
 
     public function refreshSoftwareType($v): void
@@ -378,27 +383,41 @@ class Fresh extends Component
     public function getSoftwareTypeList(): void
     {
         $this->softwareTypeCollection = $this->softwareType_name ?
-            Common::search(trim($this->softwareType_name))->where('label_id', '=', '26')->get() :
+            Common::search(trim($this->softwareType_name))->where('label_id', '=', '26')->get():
             Common::where('label_id', '=', '26')->orWhere('label_id', '=', '1')->get();
     }
 
 
-
 #endregion
+
+//    public function loadQuestions(): void
+//    {
+//        if ($this->softwareType_id) { $questionsRecord = Question::where('softwareType_id', $this->softwareType_id)->first();
+//            $this->questions = $questionsRecord ? json_decode($questionsRecord->question, true) : []; }
+//    }
+
 
     #region[Render]
     public function render()
     {
         $this->getSoftwareTypeList();
-//        dd($this->enquiry_id); // Add this to confirm the value of enquiry_id
+//        $this->loadQuestions();
+        $questions = Question::where('softwareType_id', $this->softwareType_id)->get();
+
         return view('livewire.crm.lead.fresh')->with([
             'list' => Attempt::where('enquiry_id', $this->enquiry_id)->get(),
             'leadList' => Lead::where('enquiry_id', $this->enquiry_id)->get(),
+            'questions' => $this->questions,
         ]);
     }
 
-
-
     #endregion
+
+    public function getQuestionsProperty()
+    {
+        return Config::get('questions');
+    }
+
+
 
 }

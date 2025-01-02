@@ -191,7 +191,7 @@
                         <div class="text-sm text-gray-800 line-clamp-3">{!! $rw->body !!}</div>
                     </div>
 
-                    <!-- Description -->
+                    <!-- Software Type -->
                     <div class="mb-2 border-b pb-2">
                         <strong class="text-lg shadow-md">Software Type:</strong>
                         <div class="text-sm text-gray-800 line-clamp-3">{{$rw->softwareType->vname}}</div>
@@ -202,6 +202,7 @@
                         <strong class="text-lg shadow-md">Questions:</strong>
                         <div class="text-sm text-gray-800 line-clamp-3">{{ $rw->questions }}</div>
                     </div>
+
 
                     <!-- Verified By -->
                     <div class="mb-4 border-b pb-2">
@@ -234,68 +235,10 @@
 
 
 
+        <!-- Create  -------------------------------------------------------------------------------------------------------------------->
 
 
-        {{--            <div class="space-y-4">--}}
-{{--                @foreach($leadList as $index=>$rw)--}}
-{{--                    <div class="bg-white p-4 shadow rounded-lg">--}}
-{{--                        <div class="flex justify-between items-center mb-2">--}}
-{{--                            <div class="font-semibold text-lg">Lead #{{ $index + 1 }}</div>--}}
-{{--                            <div class="text-sm text-gray-500">{{ $rw->softwareType->vname }}</div>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="mb-2">--}}
-{{--                            <strong class="text-sm">Title:</strong>--}}
-{{--                            <a href="{{ route('followups', $rw->id) }}" class="text-blue-600 hover:underline">{{ $rw->title }}</a>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="mb-2">--}}
-{{--                            <strong class="text-sm">Client Name:</strong>--}}
-{{--                            <span class="text-gray-800">{{ $rw->lead->name }}</span>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="mb-2">--}}
-{{--                            <strong class="text-sm">Description:</strong>--}}
-{{--                            <div class="line-clamp-2">{!! $rw->body !!}</div>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="mb-2">--}}
-{{--                            <strong class="text-sm">Questions:</strong>--}}
-{{--                            <div class="text-gray-800">{{ $rw->questions }}</div>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="mb-2">--}}
-{{--                            <strong class="text-sm">Verified By:</strong>--}}
-{{--                            <div class="text-gray-800">{{ $rw->verified->name }}</div>--}}
-{{--                        </div>--}}
-
-{{--                        <div class="flex justify-between items-center mt-4">--}}
-{{--                            <x-button.edit wire:click="editAddInfo({{ $rw->id }})" />--}}
-{{--                            <x-button.delete wire:click="getDeleteAddInfo({{ $rw->id }})" />--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                @endforeach--}}
-{{--            </div>--}}
-
-{{--            <!-- Modal -->--}}
-{{--            <x-modal.confirmation wire:model.defer="showDeleteModalAddInfo">--}}
-{{--                <x-slot name="title">Delete Entry</x-slot>--}}
-{{--                <x-slot name="content">--}}
-{{--                    <div class="py-8 text-cool-gray-700">Are you sure you? This action is irreversible.</div>--}}
-{{--                </x-slot>--}}
-{{--                <x-slot name="footer">--}}
-{{--                    <div class="flex justify-end gap-5">--}}
-{{--                        <x-button.cancel-x wire:click.prevent="$set('showDeleteModalAddInfo', false)" />--}}
-{{--                        <x-button.danger-x wire:click.prevent="trashDataAddInfo($id)" />--}}
-{{--                    </div>--}}
-{{--                </x-slot>--}}
-{{--            </x-modal.confirmation>--}}
-
-
-            <!-- Create  -------------------------------------------------------------------------------------------------->
-
-
-        <!--Table For Add Attempt-->
+        <!--Table For Add Attempt------------------------------------------------------------------------------------------------->
         <div class="bg-green-200 font-semibold py-1 px-2 rounded inline-block">Attempts</div>
         <x-table.form>
 
@@ -358,7 +301,7 @@
 
         </x-table.form>
 
-        <!--Add Info Modal-------------------------------------------------------------------------------------------------->
+        <!-- Add Info Modal ------------------------------------------------------------------------------------------------------------------>
         <form wire:submit.prevent="saveAddInfo">
             <div class="w-full h-auto">
                 <x-jet.modal :maxWidth="'6xl'" wire:model.defer="showAddInfoEditModal">
@@ -437,50 +380,25 @@
                             </div>
 
 
-        <!-----Questions Section------------------------------------------------------------------------------->
+
+
+                            <!----- Questions Section ------------------------------------------------------------------------------->
 
                             <div class="p-4 space-y-4 border rounded-lg">
                                 <div class="block my-4">
                                     <strong>Selected Software Type: </strong>
+
                                     <span class="bg-blue-100 text-blue-800 font-semibold py-1 px-2 rounded">
             {{ $softwareType_name }}
-        </span>
-                                </div>
-                                @php
-                                    $questions = [
-                                        'Billing Software' => [
-                                            'How are you currently managing your billing process?',
-                                            'Are you using any software for billing, or it is managed manually?',
-                                            'What features do you need in your billing system?',
-                                            'How Many users will need to access to the software?',
-                                            'Do you need support for multiple currencies?',
-                                            'What is your Budget?',
-                                            'Do you want implement immediately or Timeline?'
-                                        ],
-                                        'Portfolio Software' => [
-                                            'How are you currently managing your portfolio?',
-                                            'Are you using any software for portfolio management, or is it managed manually?',
-                                            'What features do you need in your portfolio system?',
-                                            'How many items do you manage?',
-                                            'Do you need integration with financial platforms?',
-                                            'What is your Budget?',
-                                            'Do you want implement immediately or Timeline?'
-                                        ],
-                                        'Business Software' => [
-                                            'How are you currently managing your business operations?',
-                                            'Are you using any software for business management, or is it managed manually?',
-                                            'What features do you need in your business system?',
-                                            'How many users will need access?',
-                                            'Do you need support for multiple departments?',
-                                            'What is your Budget?',
-                                            'Do you want implement immediately or Timeline?'
-                                        ],
-                                    ];
-                                @endphp
+                                    </span>
 
-                                @if (array_key_exists($softwareType_name, $questions))
+                                    <button>Add Questions</button>
+
+                                </div>
+
+                                @if (array_key_exists($softwareType_name, config('questions')))
                                     <label class="block text-xl font-semibold mb-6 text-gray-800">Questions</label>
-                                    @foreach ($questions[$softwareType_name] as $index => $question)
+                                    @foreach (config('questions')[$softwareType_name] as $index => $question)
                                         <div class="mb-6">
                                             <label for="question{{ $index + 1 }}" class="block text-sm font-medium text-gray-600 mb-2">
                                                 {{ $index + 1 }}. {{ $question }}
@@ -489,19 +407,62 @@
                                                    class="w-full h-10 p-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-400 focus:border-blue-500 hover:bg-gray-100 transition duration-200 ease-in-out placeholder-gray-400 placeholder:text-sm"
                                                    placeholder="Type your answer here...">
                                             @error("questions.question{{ $index + 1 }}")
-                                            <span class="text-xs text-red-600 mt-1">{{ $message }}</span>
+                                            <span class="text-xs text-red-600 mt-1">{{ $message }} </span>
                                             @enderror
                                         </div>
                                     @endforeach
                                 @endif
 
-
-
-
-
                             </div>
 
- <!-------------------- End Questions Section-->
+ <!-------------------- End Questions Section----------------------------------------------------------->
+
+{{--                            <!----- Questions Section ------------------------------------------------------------------------------->--}}
+{{--                            <div class="p-4 space-y-4 border rounded-lg">--}}
+{{--                                <div class="block my-4">--}}
+{{--                                    <strong>Selected Software Type: </strong>--}}
+{{--                                    <span class="bg-blue-100 text-blue-800 font-semibold py-1 px-2 rounded">{{ $softwareType_name }}</span>--}}
+{{--                                </div>--}}
+{{--                                @if (!empty($questions))--}}
+{{--                                    <label class="block text-xl font-semibold mb-6 text-gray-800">Questions</label>--}}
+{{--                                    @foreach ($questions as $index => $question)--}}
+{{--                                        <div class="mb-6">--}}
+{{--                                            <label for="question{{ $index + 1 }}" class="block text-sm font-medium text-gray-600 mb-2"> {{ $index + 1 }}. {{ $question }}--}}
+{{--                                            </label>--}}
+{{--                                            <input type="text" id="question{{ $index + 1 }}" wire:model="questions.{{ $index }}"--}}
+{{--                                                   class="w-full h-10 p-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-400 focus:border-blue-500 hover:bg-gray-100 transition duration-200 ease-in-out placeholder-gray-400 placeholder:text-sm"--}}
+{{--                                                   placeholder="Type your answer here..."> @error("questions.{{ $index }}") <span class="text-xs text-red-600 mt-1">{{ $message }}--}}
+{{--                                            </span>--}}
+{{--                                            @enderror--}}
+{{--                                        </div>--}}
+{{--                                    @endforeach--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
+{{--                            <!-------------------- End Questions Section----------------------------------------------------------->--}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                         </div>
 
