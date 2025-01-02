@@ -47,4 +47,9 @@ class Lead extends Model
         return $this->belongsTo(Common::class,'softwareType_id');
     }
 
+//    public function questions()
+//    {
+//        return $this->belongsTo(Question::class, 'questions_id');
+//    }
+
 }
