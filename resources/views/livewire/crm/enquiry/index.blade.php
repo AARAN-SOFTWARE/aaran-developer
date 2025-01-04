@@ -161,7 +161,7 @@
             </div>
         </x-forms.create>
 
-        {{-- Pagination Here --}}
+{{--         Pagination Here --}}
         <div class="pt-5">{{ $enquiries->links() }}</div>
 
 

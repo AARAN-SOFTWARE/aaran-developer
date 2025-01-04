@@ -380,8 +380,6 @@
                             </div>
 
 
-
-
                             <!----- Questions Section ------------------------------------------------------------------------------->
 
                             <div class="p-4 space-y-4 border rounded-lg">
@@ -415,53 +413,7 @@
 
                             </div>
 
- <!-------------------- End Questions Section----------------------------------------------------------->
-
-{{--                            <!----- Questions Section ------------------------------------------------------------------------------->--}}
-{{--                            <div class="p-4 space-y-4 border rounded-lg">--}}
-{{--                                <div class="block my-4">--}}
-{{--                                    <strong>Selected Software Type: </strong>--}}
-{{--                                    <span class="bg-blue-100 text-blue-800 font-semibold py-1 px-2 rounded">{{ $softwareType_name }}</span>--}}
-{{--                                </div>--}}
-{{--                                @if (!empty($questions))--}}
-{{--                                    <label class="block text-xl font-semibold mb-6 text-gray-800">Questions</label>--}}
-{{--                                    @foreach ($questions as $index => $question)--}}
-{{--                                        <div class="mb-6">--}}
-{{--                                            <label for="question{{ $index + 1 }}" class="block text-sm font-medium text-gray-600 mb-2"> {{ $index + 1 }}. {{ $question }}--}}
-{{--                                            </label>--}}
-{{--                                            <input type="text" id="question{{ $index + 1 }}" wire:model="questions.{{ $index }}"--}}
-{{--                                                   class="w-full h-10 p-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-4 focus:ring-blue-400 focus:border-blue-500 hover:bg-gray-100 transition duration-200 ease-in-out placeholder-gray-400 placeholder:text-sm"--}}
-{{--                                                   placeholder="Type your answer here..."> @error("questions.{{ $index }}") <span class="text-xs text-red-600 mt-1">{{ $message }}--}}
-{{--                                            </span>--}}
-{{--                                            @enderror--}}
-{{--                                        </div>--}}
-{{--                                    @endforeach--}}
-{{--                                @endif--}}
-{{--                            </div>--}}
-{{--                            <!-------------------- End Questions Section----------------------------------------------------------->--}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ <!-------------------- End Questions Section---------------------------------------------------------->
 
 
                         </div>
