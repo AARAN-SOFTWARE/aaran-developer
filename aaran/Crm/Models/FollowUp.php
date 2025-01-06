@@ -6,6 +6,7 @@ use Aaran\Common\Models\Common;
 use Aaran\Crm\Database\Factories\EnquiryFactory;
 use Aaran\Crm\Database\Factories\FollowUpFactory;
 use Aaran\Crm\Models\Lead;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,12 +26,17 @@ class FollowUp extends Model
 
     public function lead(): BelongsTo
     {
-        return $this->belongsTo(Lead::class);
+        return $this->belongsTo(User::class);
     }
 
 
     public function action(): BelongsTo
     {
         return $this->belongsTo(Common::class, 'action_id');
+    }
+
+    public function verified(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'verified_by');
     }
 }

@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('follow_ups', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lead_id')->references('id')->on('leads')->onDelete('cascade');
-            $table->string('vname');
-            $table->longText('body');
-            $table->foreignId('action_id')->references('id')->on('commons')->onDelete('cascade');
-            $table->string('status_id');
-            $table->string('priority_id');
-            $table->string('active_id', 3);
+            $table->foreignId('id_for_lead')->references('id')->on('leads')->onDelete('cascade');
+            $table->string('vname'); // followup_no
+            $table->foreignId('lead_id')->references('id')->on('users')->onDelete('cascade')->nullable();
+            $table->string('feature');
+            $table->string('team_members');
+            $table->string('status')->nullable();
+            $table->string('body')->nullable();  // report
+            $table->foreignId('verified_by')->references('id')->on('users')->onDelete('cascade')->nullable();
+            $table->string('active_id',3)->nullable();
             $table->timestamps();
         });
     }

@@ -6,113 +6,169 @@
         <!-- Top Controls --------------------------------------------------------------------------------------------->
         <x-forms.top-controls :show-filters="$showFilters"/>
 
-
         <x-table.form>
 
             <!-- Table Header ----------------------------------------------------------------------------------------->
 
             <x-slot:table_header name="table_header" class="bg-green-600">
-                <x-table.header-serial width="20%"/>
-                <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" center="">
-                    Level
-                </x-table.header-text>
-                <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" center="">
-                    Description
-                </x-table.header-text>
-                <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" center="">
-                    Action
-                </x-table.header-text>
-                <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" center="">
-                    Status
-                </x-table.header-text>
-                <x-table.header-text wire:click.prevent="sortBy('vname')" sortIcon="{{$getListForm->sortAsc}}" center="">
-                    Priority
-                </x-table.header-text>
-
+                <x-table.header-text sortIcon="none">FollowUp No</x-table.header-text>
+                <x-table.header-text sortIcon="none">Leader</x-table.header-text>
+                <x-table.header-text sortIcon="none">Feature</x-table.header-text>
+                <x-table.header-text sortIcon="none">Responsible Team Members</x-table.header-text>
+                <x-table.header-text sortIcon="none">Status</x-table.header-text>
+                <x-table.header-text sortIcon="none">Report</x-table.header-text>
+                <x-table.header-text sortIcon="none">Verified By</x-table.header-text>
                 <x-table.header-action/>
             </x-slot:table_header>
 
             <!-- Table Body ------------------------------------------------------------------------------------------->
 
             <x-slot:table_body name="table_body">
-                @foreach($list as $index=>$row)
+                @foreach($followups as $index=>$row)
+
                     <x-table.row>
-                        <x-table.cell-text>{{$index+1}}</x-table.cell-text>
-                        <x-table.cell-text left><span class="capitalize">{{$row->vname}}</span></x-table.cell-text>
-                        <x-table.cell-text left><span class="capitalize">{!!  $row->body !!}</span></x-table.cell-text>
-                        <x-table.cell-text left><span class="capitalize">{{$row->action->vname}}</span></x-table.cell-text>
-                        <x-table.cell-text class="{{App\Enums\Status::tryFrom($row->status_id)->getStyle()}}" center>
-                            {{App\Enums\Status::tryFrom($row->status_id)->getName()}}
+
+{{--                        <x-table.cell-text>{{$index+1}}</x-table.cell-text>--}}
+
+                        <x-table.cell-text><a href="">{{$row->vname}}</a>
                         </x-table.cell-text>
-                        <x-table.cell-text class="{{App\Enums\Priority::tryFrom($row->priority_id)->getStyle()}}" center>
-                            {{App\Enums\Priority::tryFrom($row->priority_id)->getName()}}
+
+                        <x-table.cell-text> {{$row->lead->name}}
                         </x-table.cell-text>
+
+                        <x-table.cell-text> {{$row->feature}}
+                        </x-table.cell-text>
+
+                        <x-table.cell-text> {{$row->team_members}}
+                        </x-table.cell-text>
+
+
+
+                        <x-table.cell-text>
+                            <span class="{{ $row->status === 'Ongoing' ? 'text-orange-500' : ($row->status === 'Completed' ? 'text-green-500' : '') }}">
+                                {{ $row->status }}
+                            </span>
+                        </x-table.cell-text>
+
+
+                        <x-table.cell-text>
+                            {!! $row->body !!}
+                        </x-table.cell-text>
+
+                        <x-table.cell-text>
+                            {{$row->verified->name}}
+                        </x-table.cell-text>
+
                         <x-table.cell-action id="{{$row->id}}"/>
+
                     </x-table.row>
+
                 @endforeach
+
+
             </x-slot:table_body>
+
         </x-table.form>
 
-        <x-modal.delete/>
-
-        <div class="pt-5">{{ $list->links() }}</div>
-
-        <!--Create Form ----------------------------------------------------------------------------------------------->
-        <x-forms.create :id="$common->vid">
-            <div class="flex flex-col  gap-3">
 
 
 
-                <x-input.floating wire:model.live="common.vname" label="Level"/>
-                @error('common.vname')
-                <span class="text-red-400">{{$message}}</span>
-                @enderror
+        <!-- Create  -------------------------------------------------------------------------------------------------->
 
+        <x-forms.create :max-width="'2xl'" :id="$common->vid">
 
+            <div class="space-y-4">
 
-                <x-dropdown.wrapper label="Action" type="actionTyped">
-                    <div class="relative">
-                        <x-dropdown.input label="Action" id="action_name"
-                                          wire:model.live="action_name"
-                                          wire:keydown.arrow-up="decrementAction"
-                                          wire:keydown.arrow-down="incrementAction"
-                                          wire:keydown.enter="enterAction"/>
-                        <x-dropdown.select>
-                            @if($actionCollection)
-                                @forelse ($actionCollection as $i => $action)
-                                    <x-dropdown.option highlight="{{$highlightAction === $i}}"
-                                                       wire:click.prevent="setAction('{{$action->vname}}','{{$action->id}}')">
-                                        {{ $action->vname }}
-                                    </x-dropdown.option>
-                                @empty
-                                    <x-dropdown.create wire:click.prevent="actionSave('{{$action_name}}')" label="Action" />
-                                @endforelse
-                            @endif
-                        </x-dropdown.select>
+{{--                Followup No--}}
+                <div>
+                    <x-input.floating wire:model.lazy="common.vname"  :label="'Followup No'"/>
+                    @error('common.vname')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
                     </div>
-                </x-dropdown.wrapper>
-                @error('action_name')
-                <span class="text-red-400">{{$message}}</span>
-                @enderror
-                <x-input.rich-text wire:model="body" :placeholder="'Summarize your Action'"/>
-{{--                <x-input.floating wire:model="action" :placeholder="'Action'"/>--}}
-{{--                @error('common.action')--}}
-{{--                <span class="text-red-400">{{$message}}</span>--}}
-{{--                @enderror--}}
-                <x-input.model-select wire:model="status_id" :label="'Status'">
-                    <option value="">Choose...</option>
-                    @foreach(App\Enums\Status::cases() as $status)
-                        <option value="{{$status->value}}">{{$status->getName()}}</option>
-                    @endforeach
-                </x-input.model-select>
-                <x-input.model-select wire:model="priority_id" :label="'Status'">
-                    <option value="">Choose...</option>
-                    @foreach(App\Enums\Priority::cases() as $priorities)
-                        <option value="{{$priorities->value}}">{{$priorities->getName()}}</option>
-                    @endforeach
-                </x-input.model-select>
+                    @enderror
+                </div>
+
+{{--                Leader --}}
+                <div>
+                    <x-input.model-select wire:model="lead_id" :label="'Leader Name'">
+                        <option value="">Choose...</option>
+                        @foreach(\App\Models\User::all() as $user)
+                            <option value="{{$user->id}}">{{$user->name}}</option>
+                        @endforeach
+                    </x-input.model-select>
+                </div>
+
+
+{{--                Feature--}}
+                <div>
+                    <x-input.floating wire:model="feature" :label="'Feature You are Working on..'"/>
+                    @error('feature')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+
+{{--                Team Members--}}
+                <div>
+                    <x-input.floating wire:model="team_members" :label="'Responsible Team Members'"/>
+                    @error('team_members')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+                <div>
+                    <x-input.model-select wire:model="status" :label="'Status'">
+                        <option value="">Choose...</option>
+                        <option value="Ongoing">Ongoing..</option>
+                        <option value="Completed">Completed</option>
+                    </x-input.model-select>
+                    @error('status')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+
+{{--                Report --}}
+                <div class="mt-3">
+                    <x-input.rich-text :placeholder="'Write your Reports Here'" wire:model="body"/>
+                    @error('report')
+                    <div class="text-xs text-red-500">
+                        {{$message}}
+                    </div>
+                    @enderror
+                </div>
+
+ {{--                Verified By --}}
+
+                <div class="">
+                    <x-input.model-select wire:model="verified_by" :label="'Verified By'">
+                        <option value="">Choose...</option>
+                        @foreach(\App\Models\User::all() as $user)
+                            <option value="{{$user->id}}">{{$user->name}}</option>
+                        @endforeach
+                    </x-input.model-select>
+                </div>
 
             </div>
+
+
         </x-forms.create>
+
+{{--         Pagination Here--}}
+{{--        <div class="pt-5">{{ $followups->links() }}</div>--}}
+
+
     </x-forms.m-panel>
+
+    <x-modal.delete/>
+
+
+
 </div>
