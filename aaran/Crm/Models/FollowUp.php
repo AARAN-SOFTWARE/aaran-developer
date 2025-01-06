@@ -39,4 +39,13 @@ class FollowUp extends Model
     {
         return $this->belongsTo(User::class, 'verified_by');
     }
+
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
+
+    protected $dates = ['start_date', 'end_date'];
+
+
 }

@@ -29,6 +29,11 @@ class Index extends Component
     public $lead_data;
     public $id_for_lead;
 
+    public $start_date;
+    public $end_date;
+
+
+
     public function mount($id)
     {
         $this->id_for_lead = $id;
@@ -62,6 +67,12 @@ class Index extends Component
     {
         $this->validate($this->rules());
 
+//        // Check if the referenced lead exists
+//         if (!Lead::find($this->id_for_lead))
+//         {
+//             $this->dispatch('notify', ['type' => 'error', 'content' => 'Referenced lead does not exist.']); return;
+//         }
+
         if ($this->common->vname != '') {
 
             if ($this->common->vid == '') {
@@ -75,6 +86,8 @@ class Index extends Component
                     'team_members' => $this->team_members,
                     'status' => $this->status,
                     'body' => $this->body,  //report
+                    'start_date' => $this->start_date ?: null,
+                    'end_date' => $this->end_date ?: null,
                     'verified_by' => $this->verified_by,
                     'active_id' => 1
 
@@ -95,7 +108,10 @@ class Index extends Component
                     'team_members' => $this->team_members,
                     'status' => $this->status,
                     'body' => $this->body,
+                    'start_date' => $this->start_date ?: null,
+                    'end_date' => $this->end_date ?: null,
                     'verified_by' => $this->verified_by,
+
 
                 ];
                 $this->common->edit($obj, $extraFields);
@@ -121,6 +137,8 @@ class Index extends Component
             $this->team_members = $Common->team_members;
             $this->status = $Common->status;
             $this->body = $Common->body;
+            $this->start_date = $Common->start_date;
+            $this->end_date = $Common->end_date;
             $this->verified_by = $Common->verified_by;
             return $Common;
         }
@@ -138,6 +156,8 @@ class Index extends Component
         $this->team_members = '';
         $this->body = '';
         $this->status = '';
+        $this->start_date = '';
+        $this->end_date = '';
     }
     #endregion
 
